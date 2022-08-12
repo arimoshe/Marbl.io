@@ -41,11 +41,14 @@ Stretch Goals:
 # Wireframes
 
 https://wireframe.cc/3XTEuf
-![Screenshot 2022-08-12 004612](https://user-images.githubusercontent.com/107275066/184312469-2bf4aa04-2608-406d-bb8c-9d706d3e8780.png)
 
-![Screen Shot 2022-08-12 at 9 49 38 AM](https://user-images.githubusercontent.com/107275066/184412353-7c7dd65d-4ccb-4faf-86b0-701d3ef84b53.png)
+<img src="https://user-images.githubusercontent.com/107275066/184312469-2bf4aa04-2608-406d-bb8c-9d706d3e8780.png" alt="wireframe" width="400"/>
 
-![Screen Shot 2022-08-12 at 9 40 01 AM](https://user-images.githubusercontent.com/107275066/184412334-f66f6f40-0f4c-4a54-b8d7-359aacb5616d.png)
+
+<img src="https://user-images.githubusercontent.com/107275066/184412353-7c7dd65d-4ccb-4faf-86b0-701d3ef84b53.png" alt="wireframe2" width="400"/>
+
+
+<img src="https://user-images.githubusercontent.com/107275066/184412334-f66f6f40-0f4c-4a54-b8d7-359aacb5616d.png" alt="wireframe3" width="400"/>
 
 
 https://wireframe.cc/sCEHuG
