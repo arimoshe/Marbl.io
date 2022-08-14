@@ -1,0 +1,35 @@
+{
+  "name": "marbl.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "browserslist": [
+    "defaults"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch --mode=development",
+    "build": "webpack --mode=production"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "babel-loader": "^8.2.5",
+    "core-js": "^3.24.1",
+    "css-loader": "^6.7.1",
+    "mini-css-extract-plugin": "^2.6.1",
+    "regenerator-runtime": "^0.13.9",
+    "sass": "^1.54.4",
+    "sass-loader": "^13.0.2",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  }
+   
+  
+}
+
+
+
