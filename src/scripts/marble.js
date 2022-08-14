@@ -4,7 +4,7 @@ let MARBLE_DEFAULTS = {
     radius: 5,
     vel: [0, 0],
     texture: (ctx, context) => {
-        let gradient = ctx.createRadialGradient(context.pos[0] - (context.radius / 2.5), context.pos[1] - (context.radius / 2.5), 5, context.pos[0], context.pos[1], (context.radius * 2),);
+        let gradient = ctx.createRadialGradient(context.pos[0] - (context.radius / 2.5), context.pos[1] - (context.radius / 2.5), 5, context.pos[0], context.pos[1], (context.radius * 2));
         gradient.addColorStop(0, 'white');
         gradient.addColorStop(1, 'black');
         return gradient;
@@ -20,12 +20,12 @@ class Marble {
         this.vel = optionsHash.vel;
         optionsHash.texture ||= MARBLE_DEFAULTS.texture;
         this.texture = optionsHash.texture;
-        this.mousePosx = constants.GAME_DIMENTION_X / 2;
-        this.mousePosy = constants.GAME_DIMENTION_Y / 2;
+        this.mousePosx = constants.GAME_DIMENSION_X / 2;
+        this.mousePosy = constants.GAME_DIMENSION_Y / 2;
         window.addEventListener('mousemove', (event) => {
             this.mousePosx = event.clientX;
             this.mousePosy = event.clientY;
-            //(((constants.GAME_DIMENTION_X / 2) + 10) - this.mousePosx)/((constants.GAME_DIMENTION_X / 2))*-10
+            //(((constants.GAME_DIMENSION_X / 2) + 10) - this.mousePosx)/((constants.GAME_DIMENSION_X / 2))*-10
         });
 
     }
@@ -48,19 +48,18 @@ class Marble {
         ctx.fill()
     }
     move() {
-        let colisionDetectedVar = this.colisionDetected()
-        if (colisionDetectedVar) {
-            // if (this.vel[0] > 0) {
-            this.vel[0] /= 2
-            // } else if (this.vel[0] < 0) {
-            //     this.vel[0] += 0.1;
-            // }
-            // if (this.vel[1] > 0) {
-            this.vel[1] /= 2
-            // } else if (this.vel[1] < 0) {
-            //     this.vel[1] += 0.1
-            // }
-            this.move();
+        
+        if (this.colisionDetected(this.vel)) {
+            if (!this.colisionDetected([0, this.vel[1]])) {
+                this.pos[1] += this.vel[1];
+            } 
+            if ((!this.colisionDetected([this.vel[0], 0]))) {
+                this.pos[0] += this.vel[0];
+            } else { 
+                this.vel[0] /= 2;
+                this.vel[1] /= 2;
+                this.move();
+            }
         }
         else {
             this.pos[0] += this.vel[0];
@@ -68,20 +67,20 @@ class Marble {
         }
     }
     updateVectorMouse(){
-        if (this.mousePosx < constants.GAME_DIMENTION_X + 10 && this.mousePosy < constants.GAME_DIMENTION_Y + 10) {
+        if (this.mousePosx < constants.GAME_DIMENSION_X + 10 && this.mousePosy < constants.GAME_DIMENSION_Y + 10) {
             
-            this.vel[0] = (((constants.GAME_DIMENTION_X / 2) + 10) - this.mousePosx) / ((constants.GAME_DIMENTION_X / 2)) * -10;
+            this.vel[0] = (((constants.GAME_DIMENSION_X / 2) + 10) - this.mousePosx) / ((constants.GAME_DIMENSION_X / 2)) * -10;
 
-            this.vel[1] = (((constants.GAME_DIMENTION_Y / 2) + 10) - this.mousePosy) / ((constants.GAME_DIMENTION_Y / 2)) * -10;
+            this.vel[1] = (((constants.GAME_DIMENSION_Y / 2) + 10) - this.mousePosy) / ((constants.GAME_DIMENSION_Y / 2)) * -10;
     
             // console.log(this.vel)
         }
         
     }   
 
-    willCollide(wall) {
-        let aX = this.pos[0] + this.vel[0];
-        let aY = this.pos[1] + this.vel[1];
+    willCollide(wall, vel) {
+        let aX = this.pos[0] + vel[0];
+        let aY = this.pos[1] + vel[1];
         let bX = wall.pos[0];
         let bY = wall.pos[1];
         let aWidth = this.radius * 2;
@@ -119,9 +118,9 @@ class Marble {
 
     }
     
-    colisionDetected() {
+    colisionDetected(vel) {
         for (let ele of this.game.walls) {
-            if (this.willCollide(ele)) {
+            if (this.willCollide(ele, vel)) {
                 return true;
             }
         }

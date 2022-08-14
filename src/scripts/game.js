@@ -1,4 +1,4 @@
-
+import * as constants from "./constants"
 import Wall from "./wall";
 
 
@@ -10,22 +10,21 @@ class Game {
     }
 
     addWalls() {
-        for (let i = 0; i < 40; i++) {
-            let wallTop = new Wall({ pos: [0, 16 * i] });
+        for (let i = 0; i < constants.MAP_GRID_Y; i++) {
+            let wallTop = new Wall({ pos: [0, constants.MAP_GRID_SIZE * i] });
             this.walls.push(wallTop);
         }
-
-        for (let j = 1; j < 70; j++) {
-            this.walls.push(new Wall({ pos: [16 * j, 0] }))
+        for (let j = 1; j < constants.MAP_GRID_X; j++) {
+            this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * j, 0] }))
         }
-        for (let k = 0; k < 70; k++) {
-            this.walls.push(new Wall({ pos: [k * 16, 624] }))
+        for (let k = 0; k < constants.MAP_GRID_X; k++) {
+            this.walls.push(new Wall({ pos: [k * constants.MAP_GRID_SIZE, constants.GAME_DIMENSION_Y - constants.MAP_GRID_SIZE] }))
         }
-        for (let l = 0; l <= 40; l++) {
-            this.walls.push(new Wall({ pos: [1104, l * 16] }))
+        for (let l = 0; l <= constants.MAP_GRID_Y; l++) {
+            this.walls.push(new Wall({ pos: [constants.GAME_DIMENSION_X - constants.MAP_GRID_SIZE, l * constants.MAP_GRID_SIZE] }))
         }
         for (let l = 0; l <= 14; l++) {
-            this.walls.push(new Wall({ pos: [500, l * 16] }))
+            this.walls.push(new Wall({ pos: [500, l * constants.MAP_GRID_SIZE] }))
         }
     }
 

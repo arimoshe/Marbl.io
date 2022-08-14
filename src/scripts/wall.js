@@ -10,13 +10,12 @@ test.then((success) => {
 });
 
 let WALL_DEFAULTS = {
-    size: constants.GAME_DIMENTION_X / constants.MAP_GRID_X,
+    size: constants.GAME_DIMENSION_X / constants.MAP_GRID_X,
     texture: {
          sx: 32, sy: 0, swidth: 16, sheight: 16, width: 16, height: 16
     }
     
 }
-// console.log(WALL_DEFAULTS.size);
 
 class Wall {
     constructor(optionsHash) {
@@ -31,11 +30,6 @@ class Wall {
         
     }
 
-    
-
-    
-
-
 }
 
 
@@ -45,12 +39,3 @@ class Wall {
 export default  Wall;
 
 
-
-
-// const grabimage = (src) => {
-//     const wallPng = new Image();
-
-//     new Promise(resolve) { wallPng.onload = resolve }
-//     wallPng.src = src;
-
-// }
