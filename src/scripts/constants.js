@@ -6,5 +6,3 @@ export const GAME_DIMENSION_X = MAP_GRID_X * MAP_GRID_SIZE;
 console.log(GAME_DIMENSION_X);
 export const GAME_DIMENSION_Y = MAP_GRID_Y * MAP_GRID_SIZE;
 console.log(GAME_DIMENSION_Y);
-
- 

@@ -22,15 +22,33 @@ class Marble {
         this.texture = optionsHash.texture;
         optionsHash.texture ||= MARBLE_DEFAULTS.texture2;
         this.texture2 = optionsHash.texture2;
-        this.mousePosX = constants.GAME_DIMENSION_X / 2;
-        this.mousePosY = constants.GAME_DIMENSION_Y / 2;
+
         window.addEventListener('mousemove', (event) => {
-            this.mousePosX = event.clientX;
-            this.mousePosY = event.clientY;
-            //(((constants.GAME_DIMENSION_X / 2) + 10) - this.mousePosX)/((constants.GAME_DIMENSION_X / 2))*-10
+            this.mousePosx = event.clientX;
+            this.mousePosy = event.clientY;
+            //(((constants.GAME_DIMENSION_X / 2) + 10) - this.mousePosx)/((constants.GAME_DIMENSION_X / 2))*-10
         });
+        // this.mousePosX = 0;//constants.GAME_DIMENSION_X / 2;
+        // this.mousePosY = 0;//constants.GAME_DIMENSION_Y / 2;
+
+        
+        
 
     }
+
+    // captureMouse(object) { 
+    //     console.log(object)
+    //     if (object) {
+    //         window.addEventListener('mousemove', (event) => {
+    //             this.mousePosX = event.movementX;
+    //             this.mousePosY = event.movementY;
+    //             console.log(event.movementX, event.movementY)
+    //         });
+    //     }
+    // }
+
+    
+
 
     updateTexture () {
         this.texture = (canvasCtx, context) => {
@@ -93,11 +111,9 @@ class Marble {
         if (this.colisionDetected(this.vel)) {
             if (!this.colisionDetected([0, this.vel[1]])) {
                 this.pos[1] += this.vel[1];
-                this.vel[0] /= 2;
             } 
             if ((!this.colisionDetected([this.vel[0], 0]))) {
                 this.pos[0] += this.vel[0];
-                this.vel[1] /= 2;
             } else { 
                 this.vel[0] /= 2;
                 this.vel[1] /= 2;
@@ -109,22 +125,21 @@ class Marble {
             this.pos[1] += this.vel[1];
         }
     }
-    updateVectorMouse(){
-        // if (this.mousePosX < constants.GAME_DIMENSION_X + 10 && this.mousePosY < constants.GAME_DIMENSION_Y + 10 ) {
-            const horizontalCenter = screen.width / 2;
-            const verticalCenter = document.getElementById("main-app").getBoundingClientRect().top + (constants.GAME_DIMENSION_Y / 2)
-
-            this.vel[0] = ((horizontalCenter - this.mousePosX) / horizontalCenter) * - 10
-
-            this.vel[1] = ((verticalCenter - this.mousePosY) / verticalCenter) * -10
-            console.log(this.vel[1])
-            
-            // this.vel[0] = ((constants.GAME_DIMENSION_X / 2)  - (this.mousePosX - document.getElementById("main-app").getBoundingClientRect().left)) / ((constants.GAME_DIMENSION_X / 2)) * -10;
-
-            // this.vel[1] = ((constants.GAME_DIMENSION_Y / 2) - (this.mousePosY - document.getElementById("main-app").getBoundingClientRect().top)) / ((constants.GAME_DIMENSION_Y / 2)) * -10;
     
+    updateVectorMouse(){
+
+        
+
+        // if ((this.mousePosX - document.getElementById("main-app").getBoundingClientRect().left) < constants.GAME_DIMENSION_X && (this.mousePosY - document.getElementById("main-app").getBoundingClientRect().top) < constants.GAME_DIMENSION_Y + 10 ) {
+            
+            console.log(this.mousePosX, this.mousePosY)
+            this.vel[0] = (((constants.GAME_DIMENSION_X / 2) ) - (this.mousePosX - document.getElementById("main-app").getBoundingClientRect().left)) / ((constants.GAME_DIMENSION_X / 2)) * -10;
+
+            this.vel[1] = (((constants.GAME_DIMENSION_Y / 2) ) - (this.mousePosY - document.getElementById("main-app").getBoundingClientRect().top)) / ((constants.GAME_DIMENSION_Y / 2)) * -10;
+            
+            console.log(this.vel[0], this.vel[1])
             //  console.log(this.vel)
-    // }
+        // }
         
     }   
 

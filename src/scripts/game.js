@@ -24,12 +24,36 @@ class Game {
             this.walls.push(new Wall({ pos: [constants.GAME_DIMENSION_X - constants.MAP_GRID_SIZE, l * constants.MAP_GRID_SIZE] }))
         }
         for (let l = 0; l <= 14; l++) {
-            this.walls.push(new Wall({ pos: [500, l * constants.MAP_GRID_SIZE] }))
+            this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE*30, l * constants.MAP_GRID_SIZE] }))
+        }
+        for (let l = 0; l <= 8; l++) {
+            this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 36, l * constants.MAP_GRID_SIZE] }))
+        }
+        for (let l = 0; l <= 8; l++) {
+            this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 36 + l * constants.MAP_GRID_SIZE,  constants.MAP_GRID_SIZE * 9] }))
+        }
+        for (let l = 0; l <= 14; l++) {
+            this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 30 + l * constants.MAP_GRID_SIZE, constants.MAP_GRID_SIZE *15] }))
+        }
+        for (let l = 0; l <= 14; l++) {
+            this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 30, (constants.GAME_DIMENSION_Y - l * constants.MAP_GRID_SIZE) ] }))
+        }
+        for (let l = 0; l <= 14; l++) {
+            this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 30, (constants.GAME_DIMENSION_Y - l * constants.MAP_GRID_SIZE)] }))
         }
     }
 
+    drawBackground(ctx) {
+        ctx.beginPath();
+        ctx.rect(0,0, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y);
+        ctx.fillStyle = "white";
+        ctx.fill();
+    }
+
     drawWalls(ctx) {
-        
+        // ctx.beginPath();
+        // ctx.rect(constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2,3,3)
+        // ctx.fill();
         for (let ele of this.walls)
             
             if (ele.texture.image) {
