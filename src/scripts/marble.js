@@ -19,8 +19,8 @@ function handleOrientation(event) {
     const beta = event.beta;
     const gamma = event.gamma;
     this.alpha = alpha; 
-    this,beta = beta; 
-    this.gamma = gamma
+    this.beta = beta; 
+    this.gamma = gamma;
 
     console.log("alpha:" ,alpha, "beta:", beta, "gamma:", gamma)
 }
