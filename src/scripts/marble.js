@@ -283,8 +283,8 @@ class Marble {
 
     updateVectorOrientation() {
 
-        this.vel[0] = -1 * Math.max(Math.min(this.beta/2.5, 10), -10) ;
-        this.vel[1] = Math.max(Math.min(this.gamma / 2.5, 10), -10) ;
+        this.vel[0] = Math.max(Math.min(this.beta/2.5, 10), -10) ;
+        this.vel[1] = Math.max(Math.min(this.gamma / 2.5, 10), -10) * -1 ;
     }
     
 
