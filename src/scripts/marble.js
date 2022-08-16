@@ -11,14 +11,16 @@ let MARBLE_DEFAULTS = {
     }
 }
 
-addEventListener('deviceorientation', (event) => {
-    console.log(event);
-    this.alpha = event.alpha;
-    this.beta = event.beta;
-    this.gamma = event.gamma
-    window.Orient = event;
-    console.log("alpha:", event.alpha, "beta:", event.beta, "gamma:", event.gamma)
-})
+window.addEventListener("deviceorientation", handleOrientation, true);
+
+function handleOrientation(event) {
+    const absolute = event.absolute;
+    const alpha = event.alpha;
+    const beta = event.beta;
+    const gamma = event.gamma;
+
+    console.log("alpha:" ,alpha, "beta:", beta, "gamma:", gamma)
+}
 
 class Marble {
     constructor(optionsHash) {
