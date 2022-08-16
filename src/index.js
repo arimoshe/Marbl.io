@@ -12,6 +12,8 @@ addEventListener('DOMContentLoaded', (event) => {
     canvasElement.width = constants.GAME_DIMENSION_X;
     canvasElement.height = constants.GAME_DIMENSION_Y;
     const canvasCtx = canvasElement.getContext('2d');
+
+
     // function openFullscreen() {
     //     if (canvasElement.requestFullscreen) {
     //         canvasElement.requestFullscreen();
@@ -43,13 +45,14 @@ addEventListener('DOMContentLoaded', (event) => {
         marblio.drawBackground(canvasCtx)
         marvyn.draw(canvasCtx);
         marblio.drawWalls(canvasCtx)
+        marvyn.drawVector(canvasCtx)
     })();
 
 
     setInterval(()=>{
         marvyn.updateVectorMouse();
         marvyn.updateTexture();
-        marvyn.move();
+        marvyn.move(marvyn.vel);
     }, 1000 / constants.FRAME_RATE)
 
     

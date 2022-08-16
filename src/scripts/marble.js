@@ -11,6 +11,8 @@ let MARBLE_DEFAULTS = {
     }
 }
 
+
+
 class Marble {
     constructor(optionsHash) {
         this.game = optionsHash.game;
@@ -63,8 +65,40 @@ class Marble {
         // }
     }
  
+    // translateScreenCoordToGameCoords (position) {
+    //     console.log("position:",position) 
+    //     console.log([position[0] - document.getElementById("main-app").getBoundingClientRect().left, position[1] - document.getElementById("main-app").getBoundingClientRect().top])
+    //         // [
+    //         //     position[0] - document.getElementById("main-app").getBoundingClientRect().left, 
+    //         //     position[1] - document.getElementById("main-app").getBoundingClientRect().top
+    //         // ]
+    //         // )
+    //     return [position[0] - document.getElementById("main-app").getBoundingClientRect().left, position[1] - document.getElementById("main-app").getBoundingClientRect().top]
+    // }
+    
+    drawVector(ctx) {
+        
+        
+        const relativeMousePosX = this.mousePosX - document.getElementById("main-app").getBoundingClientRect().left 
+        const relativeMousePosY = this.mousePosY - document.getElementById("main-app").getBoundingClientRect().top 
+        const relativeGameCenter = [constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2]
+        // console.log(relativeMousePosX, relativeMousePosY)
+        ctx.beginPath();
+        ctx.moveTo(relativeGameCenter[0], relativeGameCenter[1]);
+
+        console.log(`x: ((${relativeGameCenter[0]} - ${relativeMousePosX}) / ${relativeGameCenter[0]}) * 10`)
+        console.log(`y: ((${relativeGameCenter[1]} - ${relativeMousePosY}) / ${relativeGameCenter[1]}) * 10`)
+        ctx.lineTo(
+            relativeGameCenter[0] + (((relativeGameCenter[0] - relativeMousePosX) / relativeGameCenter[0]) * -100),
+            relativeGameCenter[1] + (((relativeGameCenter[1] - relativeMousePosY) / relativeGameCenter[1]) * -100)
+        );
+        ctx.lineWidth = 5;
+
+        ctx.stroke();
+    }
 
     draw (ctx) {
+        
         ctx.beginPath();
         ctx.moveTo(this.pos[0], this.pos[1]);
         let objTexture
@@ -88,36 +122,162 @@ class Marble {
             ctx.fill();
         }
     }
-    move() {
+    // move(recurse) {
         
-        if (this.colisionDetected(this.vel)) {
-            if (!this.colisionDetected([0, this.vel[1]])) {
-                this.pos[1] += this.vel[1];
-                this.vel[0] /= 2;
-            } 
-            if ((!this.colisionDetected([this.vel[0], 0]))) {
-                this.pos[0] += this.vel[0];
-                this.vel[1] /= 2;
-            } else { 
-                this.vel[0] /= 2;
-                this.vel[1] /= 2;
-                this.move();
+    //     if (this.colisionDetected(this.vel)) {
+    //         if (!this.colisionDetected([0, this.vel[1]])) {
+    //             if (!recurse) {
+    //                 this.pos[1] += this.vel[1];
+    //                 this.move(true)
+                    
+    //             }
+    //             if (this.vel[0] > 0) { this.vel[0] -= .1;}
+    //             if (this.vel[0] < 0) { this.vel[0] += .1;}
+                
+    //             this.move(true)
+                
+                
+    //         } 
+    //         if ((!this.colisionDetected([this.vel[0], 0]))) {
+    //             if (!recurse) {this.pos[0] += this.vel[0];}
+    //             if (this.vel[1] > 0) { this.vel[1] -= .1; }
+    //             if (this.vel[1] < 0) { this.vel[1] += .1; }
+    //             console.log(this.vel)
+    //             this.move(true)
+    //         }
+    //     }
+    //     else {
+    //         this.pos[0] += this.vel[0];
+    //         this.pos[1] += this.vel[1];
+    //     }
+        
+    // }
+
+
+    // move(vector) {
+        
+    //     if (this.colisionDetected(vector)) {
+            
+    //         if (!this.colisionDetected([0, vector[1]])) {
+    //             // if (this.vel[0] < .1 && this.vel[0] > -.1) {
+    //             //     this.vel = [0, vector[1]];
+    //             //     this.pos[1] += vector[1];
+    //             // }
+    //             // if (this.vel[0] > 0 ) {
+    //             //     this.pos[1] += vector[1];
+    //             //     this.vel = [this.vel[0] -= .1, vector[1]];
+    //             //  };
+    //             // if (this.vel[0] < 0) {
+    //             //     this.pos[1] += vector[1];
+    //             //     this.vel = [this.vel[0] += .1, vector[1]];
+    //             // };
+    //             console.log(vector[0] / 2)
+    //             this.move([vector[0] / 2, vector[1]]);
+    //         }
+    //         if (!this.colisionDetected([vector[0], 0])) {
+    //             // if (this.vel[0] < .1 && this.vel[0] > -.1) {
+    //             //     this.vel = [vector[0], 0];
+    //             //     // this.pos[0] += vector[0];
+    //             // }
+    //             // if (this.vel[1] > 0) {
+    //             //     this.vel = [vector[1], this.vel[1] -= .1];
+    //             // };
+    //             // if (this.vel[1] < 0) {
+    //             //     this.vel = [vector[1], this.vel[1] += .1];
+    //             // };
+    //             console.log(vector[1] / 2)
+    //             this.move([vector[0],this.vel[1]/2]);
+    //         }
+    //     }
+    //     else {
+
+    //         this.pos[0] += vector[0];
+    //         this.pos[1] += vector[1];
+    //     }
+
+    // }
+
+    move(vector) {
+        while (this.colisionDetected(vector)) {
+            let xColision = !this.colisionDetected([0, vector[1]])
+            let yColision = !this.colisionDetected([vector[0], 0])
+            
+            if (!xColision && !yColision) {
+                if (vector[0] > 0 ) {
+                    if (!this.colisionDetected([0,.1])) {
+                        
+                        this.pos[1] += .1;
+                        this.move(vector);
+                        
+                    }
+                }
+                if (vector[0] < 0) {
+                    if (!this.colisionDetected([0,-.1])) {
+                        
+                        this.pos[1] -= .1;
+                        this.move(vector);
+                    }
+                }
+                if (vector[1] > 0) {
+                    if (!this.colisionDetected([.1, 0])) {
+                      
+                        this.pos[0] += .1;
+                        this.move(vector);
+
+                    }
+                }
+                if (vector[1] < 0) {
+                    if (!this.colisionDetected([-.1, 0])) {
+                       
+                        this.pos[0] -= .1;
+                        this.move(vector);
+                    }
+                }
+                return undefined
+            } else {
+
+                if (xColision) {
+                    while (this.colisionDetected(vector)) {
+                        if (vector[0] > .1) {
+                            vector[0] -= .1
+                        } else if (vector[0] < -.1) {
+                            vector[0] += .1
+                        } else {
+                            vector[0] = 0
+                        } 
+                    }
+                } 
+                if (yColision) {
+                    while (this.colisionDetected(vector)) {
+                        if (vector[1] > .1) {
+                            vector[1] -= .1
+                        } else if (vector[1] < -.1) {
+                            vector[1] += .1
+                        } else {
+                            vector[1] = 0
+                        }
+                    }
+                }
             }
-        }
-        else {
-            this.pos[0] += this.vel[0];
-            this.pos[1] += this.vel[1];
-        }
+
+        }  
+        this.pos[0] += vector[0];
+        this.pos[1] += vector[1];
+        
+
     }
+
+
+
     updateVectorMouse(){
         // if (this.mousePosX < constants.GAME_DIMENSION_X + 10 && this.mousePosY < constants.GAME_DIMENSION_Y + 10 ) {
             const horizontalCenter = screen.width / 2;
             const verticalCenter = document.getElementById("main-app").getBoundingClientRect().top + (constants.GAME_DIMENSION_Y / 2)
 
-            this.vel[0] = ((horizontalCenter - this.mousePosX) / horizontalCenter) * - 10
+            this.vel[0] = ((horizontalCenter - this.mousePosX) / horizontalCenter) * -10
 
             this.vel[1] = ((verticalCenter - this.mousePosY) / verticalCenter) * -10
-            console.log(this.vel[1])
+            
             
             // this.vel[0] = ((constants.GAME_DIMENSION_X / 2)  - (this.mousePosX - document.getElementById("main-app").getBoundingClientRect().left)) / ((constants.GAME_DIMENSION_X / 2)) * -10;
 

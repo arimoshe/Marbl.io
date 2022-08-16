@@ -9,6 +9,9 @@ class Game {
 
     }
 
+
+    
+
     addWalls() {
         for (let i = 0; i < constants.MAP_GRID_Y; i++) {
             let wallTop = new Wall({ pos: [0, constants.MAP_GRID_SIZE * i] });
@@ -23,24 +26,38 @@ class Game {
         for (let l = 0; l <= constants.MAP_GRID_Y; l++) {
             this.walls.push(new Wall({ pos: [constants.GAME_DIMENSION_X - constants.MAP_GRID_SIZE, l * constants.MAP_GRID_SIZE] }))
         }
-        for (let l = 0; l <= 14; l++) {
-            this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE*30, l * constants.MAP_GRID_SIZE] }))
+        for (let m = 1; m <= 7; m++) {
+            if (m % 2 === 0) {
+                for (let n = 0; n <= constants.MAP_GRID_X-15; n++) {
+                    this.walls.push(new Wall({ pos: [n *constants.MAP_GRID_SIZE , m * constants.MAP_GRID_SIZE * 6] }))
+                }
+            } else {
+                for (let n = 15; n <= constants.MAP_GRID_X; n++) {
+                    this.walls.push(new Wall({ pos: [n * constants.MAP_GRID_SIZE, m * constants.MAP_GRID_SIZE * 6] }))
+                }
+            }
+            
+
         }
-        for (let l = 0; l <= 8; l++) {
-            this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 36, l * constants.MAP_GRID_SIZE] }))
-        }
-        for (let l = 0; l <= 8; l++) {
-            this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 36 + l * constants.MAP_GRID_SIZE,  constants.MAP_GRID_SIZE * 9] }))
-        }
-        for (let l = 0; l <= 14; l++) {
-            this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 30 + l * constants.MAP_GRID_SIZE, constants.MAP_GRID_SIZE *15] }))
-        }
-        for (let l = 0; l <= 14; l++) {
-            this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 30, (constants.GAME_DIMENSION_Y - l * constants.MAP_GRID_SIZE) ] }))
-        }
-        for (let l = 0; l <= 14; l++) {
-            this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 30, (constants.GAME_DIMENSION_Y - l * constants.MAP_GRID_SIZE)] }))
-        }
+        // for (let l = 0; l <= 14; l++) {
+        //     this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE*30, l * constants.MAP_GRID_SIZE] }))
+        // }
+        // for (let l = 0; l <= 8; l++) {
+        //     this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 36, l * constants.MAP_GRID_SIZE] }))
+        // }
+        // for (let l = 0; l <= 8; l++) {
+        //     this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 36 + l * constants.MAP_GRID_SIZE,  constants.MAP_GRID_SIZE * 9] }))
+        // }
+        // for (let l = 0; l <= 14; l++) {
+        //     this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 30 + l * constants.MAP_GRID_SIZE, constants.MAP_GRID_SIZE *15] }))
+        // }
+        // for (let l = 0; l <= 14; l++) {
+        //     this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 30, (constants.GAME_DIMENSION_Y - l * constants.MAP_GRID_SIZE) ] }))
+        // }
+        // for (let l = 0; l <= 14; l++) {
+        //     this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 30, (constants.GAME_DIMENSION_Y - l * constants.MAP_GRID_SIZE)] }))
+        // }
+
     }
 
     drawBackground(ctx) {

@@ -15,3 +15,7 @@ body {
 #main-app {
   align-self: center;
 }
+
+body {
+  overflow: hidden;
+}
