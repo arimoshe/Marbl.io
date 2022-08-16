@@ -21,6 +21,6 @@ addEventListener('DOMContentLoaded', (event) => {
     GAME_REL_CENTER_Y = document.getElementById("main-app").width / 2
 });
 
-window.addEventListener('resize', (event) => { 
-    WINDOW_CENTER_X = screen.width / 2;
-})
+// window.addEventListener('resize', (event) => { 
+//    updateVectorOrientation()  WINDOW_CENTER_X 
+// })

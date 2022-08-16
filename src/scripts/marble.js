@@ -18,6 +18,9 @@ function handleOrientation(event) {
     const alpha = event.alpha;
     const beta = event.beta;
     const gamma = event.gamma;
+    this.alpha = alpha; 
+    this,beta = beta; 
+    this.gamma = gamma
 
     console.log("alpha:" ,alpha, "beta:", beta, "gamma:", gamma)
 }
@@ -35,6 +38,9 @@ class Marble {
         this.texture2 = optionsHash.texture2;
         this.mousePosX = constants.GAME_DIMENSION_X / 2;
         this.mousePosY = constants.GAME_DIMENSION_Y / 2;
+        this.alpha = undefined;
+        this.beta = undefined;
+        this.gamma = undefined;
         window.addEventListener('mousemove', (event) => {
             this.mousePosX = event.clientX;
             this.mousePosY = event.clientY;
@@ -118,7 +124,7 @@ class Marble {
             objTexture.addColorStop(0, 'white');
             objTexture.addColorStop(1, 'black');
         }
-        // console.log(objTexture);
+        
         
         ctx.arc(this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI )
         ctx.fillStyle = "#e0e0e0"
@@ -130,80 +136,7 @@ class Marble {
             ctx.fill();
         }
     }
-    // move(recurse) {
-        
-    //     if (this.colisionDetected(this.vel)) {
-    //         if (!this.colisionDetected([0, this.vel[1]])) {
-    //             if (!recurse) {
-    //                 this.pos[1] += this.vel[1];
-    //                 this.move(true)
-                    
-    //             }
-    //             if (this.vel[0] > 0) { this.vel[0] -= .1;}
-    //             if (this.vel[0] < 0) { this.vel[0] += .1;}
-                
-    //             this.move(true)
-                
-                
-    //         } 
-    //         if ((!this.colisionDetected([this.vel[0], 0]))) {
-    //             if (!recurse) {this.pos[0] += this.vel[0];}
-    //             if (this.vel[1] > 0) { this.vel[1] -= .1; }
-    //             if (this.vel[1] < 0) { this.vel[1] += .1; }
-    //             console.log(this.vel)
-    //             this.move(true)
-    //         }
-    //     }
-    //     else {
-    //         this.pos[0] += this.vel[0];
-    //         this.pos[1] += this.vel[1];
-    //     }
-        
-    // }
 
-
-    // move(vector) {
-        
-    //     if (this.colisionDetected(vector)) {
-            
-    //         if (!this.colisionDetected([0, vector[1]])) {
-    //             // if (this.vel[0] < .1 && this.vel[0] > -.1) {
-    //             //     this.vel = [0, vector[1]];
-    //             //     this.pos[1] += vector[1];
-    //             // }
-    //             // if (this.vel[0] > 0 ) {
-    //             //     this.pos[1] += vector[1];
-    //             //     this.vel = [this.vel[0] -= .1, vector[1]];
-    //             //  };
-    //             // if (this.vel[0] < 0) {
-    //             //     this.pos[1] += vector[1];
-    //             //     this.vel = [this.vel[0] += .1, vector[1]];
-    //             // };
-    //             console.log(vector[0] / 2)
-    //             this.move([vector[0] / 2, vector[1]]);
-    //         }
-    //         if (!this.colisionDetected([vector[0], 0])) {
-    //             // if (this.vel[0] < .1 && this.vel[0] > -.1) {
-    //             //     this.vel = [vector[0], 0];
-    //             //     // this.pos[0] += vector[0];
-    //             // }
-    //             // if (this.vel[1] > 0) {
-    //             //     this.vel = [vector[1], this.vel[1] -= .1];
-    //             // };
-    //             // if (this.vel[1] < 0) {
-    //             //     this.vel = [vector[1], this.vel[1] += .1];
-    //             // };
-    //             console.log(vector[1] / 2)
-    //             this.move([vector[0],this.vel[1]/2]);
-    //         }
-    //     }
-    //     else {
-
-    //         this.pos[0] += vector[0];
-    //         this.pos[1] += vector[1];
-    //     }
-
-    // }
 
     move(vector) {
         while (this.colisionDetected(vector)) {
@@ -275,16 +208,20 @@ class Marble {
 
     }
 
-
+    updateVectorOrientation() {
+        this.vel[0] = this.beta / 10;
+        this.vel[1] = this.alpha / 10;
+    }
+    i
 
     updateVectorMouse(){
         // if (this.mousePosX < constants.GAME_DIMENSION_X + 10 && this.mousePosY < constants.GAME_DIMENSION_Y + 10 ) {
             const horizontalCenter = screen.width / 2;
             const verticalCenter = document.getElementById("main-app").getBoundingClientRect().top + (constants.GAME_DIMENSION_Y / 2)
 
-            this.vel[0] = ((horizontalCenter - this.mousePosX) / horizontalCenter) * -10
+            this.vel[0] = ((horizontalCenter - this.mousePosX) / horizontalCenter) * -20
 
-            this.vel[1] = ((verticalCenter - this.mousePosY) / verticalCenter) * -10
+            this.vel[1] = ((verticalCenter - this.mousePosY) / verticalCenter) * -20
             
             
             // this.vel[0] = ((constants.GAME_DIMENSION_X / 2)  - (this.mousePosX - document.getElementById("main-app").getBoundingClientRect().left)) / ((constants.GAME_DIMENSION_X / 2)) * -10;
