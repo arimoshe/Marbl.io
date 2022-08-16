@@ -105,8 +105,8 @@ class Marble {
 
        if (this.beta) {
            ctx.lineTo(
-               relativeGameCenter[0] + (Math.max(Math.min(this.beta / 2.5, 10), -10) * -10),
-               relativeGameCenter[1] +  (Math.max(Math.min(this.beta/2.5, 10), -10) *10)
+               relativeGameCenter[0] + (Math.max(Math.min(this.beta / 2.5, 10), -10) * 10),
+               relativeGameCenter[1] + (Math.max(Math.min(this.gamma/2.5, 10), -10) * -10)
            );
        } else {
         ctx.lineTo(
