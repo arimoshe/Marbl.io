@@ -12,7 +12,9 @@ let MARBLE_DEFAULTS = {
 }
 
 
-
+function lowPass(prev, curr, co) {
+    return prev * co + curr * (1 - co);
+}
 
 
 class Marble {
@@ -37,13 +39,13 @@ class Marble {
             //(((constants.GAME_DIMENSION_X / 2) + 10) - this.mousePosX)/((constants.GAME_DIMENSION_X / 2))*-10
         });
         window.addEventListener("deviceorientation",  (event) =>  {
-            const absolute = event.absolute;
+            
             const alpha = event.alpha;
             const beta = event.beta;
             const gamma = event.gamma;
-            this.alpha = alpha;
-            this.beta = beta;
-            this.gamma = gamma;
+            this.alpha = lowPass(this.alpha, event.alpha, 0.8);
+            this.beta = lowPass(this.beta, event.beta, 0.8);
+            this.gamma = lowPass(this.gamma, event.gamma, 0.8);
 
             console.log("alpha:", alpha, "beta:", beta, "gamma:", gamma)
         });
@@ -146,13 +148,13 @@ class Marble {
     }
 
     move(vector) {
-        while (this.colisionDetected(vector)) {
-            let xColision = !this.colisionDetected([0, vector[1]])
-            let yColision = !this.colisionDetected([vector[0], 0])
+        while (this.colisionDetectedWall(vector)) {
+            let xColision = !this.colisionDetectedWall([0, vector[1]])
+            let yColision = !this.colisionDetectedWall([vector[0], 0])
 
             if (!xColision && !yColision) {
                 if (vector[0] > 0) {
-                    if (!this.colisionDetected([.1 ,0])) {
+                    if (!this.colisionDetectedWall([.1 ,0])) {
 
                         this.pos[1] -= .1;
                         this.move(vector);
@@ -160,14 +162,14 @@ class Marble {
                     }
                 }
                 if (vector[0] < 0) {
-                    if (!this.colisionDetected([ -.1, 0])) {
+                    if (!this.colisionDetectedWall([ -.1, 0])) {
 
                         this.pos[0] += .1;
                         this.move(vector);
                     }
                 }
                 if (vector[1] > 0) {
-                    if (!this.colisionDetected([ 0, -1])) {
+                    if (!this.colisionDetectedWall([ 0, -1])) {
 
                         this.pos[1] -= .1;
                         this.move(vector);
@@ -175,7 +177,7 @@ class Marble {
                     }
                 }
                 if (vector[1] < 0) {
-                    if (!this.colisionDetected([0, -.1])) {
+                    if (!this.colisionDetectedWall([0, -.1])) {
 
                         this.pos[1] -= .1;
                         this.move(vector);
@@ -185,7 +187,7 @@ class Marble {
             } else {
 
                 if (xColision) {
-                    while (this.colisionDetected(vector)) {
+                    while (this.colisionDetectedWall(vector)) {
                         if (vector[0] > .1) {
                             vector[0] -= .1
                         } else if (vector[0] < -.1) {
@@ -196,7 +198,7 @@ class Marble {
                     }
                 }
                 if (yColision) {
-                    while (this.colisionDetected(vector)) {
+                    while (this.colisionDetectedWall(vector)) {
                         if (vector[1] > .1) {
                             vector[1] -= .1
                         } else if (vector[1] < -.1) {
@@ -213,73 +215,7 @@ class Marble {
         this.pos[1] += vector[1];
     }
 
-    // move(vector) {
-    //     while (this.colisionDetected(vector)) {
-    //         let xColision = !this.colisionDetected([0, vector[1]])
-    //         let yColision = !this.colisionDetected([vector[0], 0])
-            
-    //         if (!xColision && !yColision) {
-    //             if (vector[0] > 0 ) {
-    //                 if (!this.colisionDetected([0,.1])) {
-                        
-    //                     this.pos[1] += .1;
-    //                     this.move(vector);
-                        
-    //                 }
-    //             }
-    //             if (vector[0] < 0) {
-    //                 if (!this.colisionDetected([0,-.1])) {
-                        
-    //                     this.pos[1] -= .1;
-    //                     this.move(vector);
-    //                 }
-    //             }
-    //             if (vector[1] > 0) {
-    //                 if (!this.colisionDetected([.1, 0])) {
-                      
-    //                     this.pos[0] += .1;
-    //                     this.move(vector);
-
-    //                 }
-    //             }
-    //             if (vector[1] < 0) {
-    //                 if (!this.colisionDetected([-.1, 0])) {
-                       
-    //                     this.pos[0] -= .1;
-    //                     this.move(vector);
-    //                 }
-    //             }
-    //             return undefined
-    //         } else {
-
-    //             if (xColision) {
-    //                 while (this.colisionDetected(vector)) {
-    //                     if (vector[0] > .1) {
-    //                         vector[0] -= .1
-    //                     } else if (vector[0] < -.1) {
-    //                         vector[0] += .1
-    //                     } else {
-    //                         vector[0] = 0
-    //                     } 
-    //                 }
-    //             } 
-    //             if (yColision) {
-    //                 while (this.colisionDetected(vector)) {
-    //                     if (vector[1] > .1) {
-    //                         vector[1] -= .1
-    //                     } else if (vector[1] < -.1) {
-    //                         vector[1] += .1
-    //                     } else {
-    //                         vector[1] = 0
-    //                     }
-    //                 }
-    //             }
-    //         }
-
-    //     }  
-    //     this.pos[0] += vector[0];
-    //     this.pos[1] += vector[1];
-    // }
+    
 
     updateVectorOrientation() {
 
@@ -298,16 +234,10 @@ class Marble {
             this.vel[1] = ((verticalCenter - this.mousePosY) / verticalCenter) * -20
             
             
-            // this.vel[0] = ((constants.GAME_DIMENSION_X / 2)  - (this.mousePosX - document.getElementById("main-app").getBoundingClientRect().left)) / ((constants.GAME_DIMENSION_X / 2)) * -10;
-
-            // this.vel[1] = ((constants.GAME_DIMENSION_Y / 2) - (this.mousePosY - document.getElementById("main-app").getBoundingClientRect().top)) / ((constants.GAME_DIMENSION_Y / 2)) * -10;
-    
-            //  console.log(this.vel)
-    // }
         
     }   
 
-    willCollide(wall, vel) {
+    willCollideWall(wall, vel) {
         let aX = this.pos[0] + vel[0];
         let aY = this.pos[1] + vel[1];
         let bX = wall.pos[0];
@@ -317,40 +247,43 @@ class Marble {
         let bWidth = wall.size;
         let bHeight = wall.size;
 
-        // let distBetween = Math.sqrt(((aX - bX) ** 2) + ((aY - bY) ** 2))
-
         
-        // console.log(`(${aX} < (${bX} + ${bWidth})) `,
-        // (aX < (bX + bWidth)), 
-        // `((${aX} + ${aWidth}) > ${bX}))`, 
-        // ((aX + aWidth) > bX),   
-        // `(${aY} < (${bY} + ${bHeight}))`,
-        // (aY < (bY + bHeight)),
-        // `((${aY} + ${aHeight}) > ${bY})`,
-        // ((aY + aHeight) > bY) )
-
         let output = (aX < (bX + (bWidth*2))) && 
         ((aX + (aWidth/2)) > bX) && 
         (aY < (bY + (bHeight*2))) && 
         ((aY + (aHeight/2)) > bY)  ;
-        // let collide =
-        // if (collide && Math.abs(aX-bX) < this.radius ) {
-        //     output += "x"
-        // }
-        // if (collide && Math.abs(aY - bY) < this.radius) {
-        //     output += "y"
-        // }
-        // if (!collide) {
-        //     output = false
-        // }
+        
         return output; 
 
     }
+
+    willCollideHole(hole, vel) {
+        
+        const a = ((this.pos[0] + vel[0]) - hole.pos[0]);
+        const b = ((this.pos[1] + vel[1]) - hole.pos[1]);
+        console.log(this.radius + (hole.radius / 1.5), Math.sqrt(a ** 2 + b ** 2), this.radius + (hole.radius / 1.5) > Math.sqrt(a ** 2 + b ** 2));
+        return this.radius + (hole.radius/10) > Math.sqrt(a ** 2 + b ** 2);
+
+
+        
+
+    }
     
-    colisionDetected(vel) {
+    colisionDetectedWall(vel) {
         for (let ele of this.game.walls) {
-            if (this.willCollide(ele, vel)) {
+            if (this.willCollideWall(ele, vel)) {
                 return true;
+            }
+        }
+        return false
+    }
+
+    colisionDetectedHole(vel) {
+        for (let ele of this.game.holes) {
+            if (this.willCollideHole(ele, vel)) {
+                alert("hole")
+                return ele;
+                
             }
         }
         return false

@@ -2,7 +2,7 @@
 
 let HOLE_DEFAULTS = {
     radius: 20, 
-    draw: (ctx,pos, radius) => {
+    draw: (ctx,pos, radius, points) => {
         ctx.beginPath();
         ctx.moveTo(pos[0], pos[1]);
         ctx.arc(pos[0], pos[1], radius-4, 0, 2 * Math.PI);
@@ -18,11 +18,15 @@ let HOLE_DEFAULTS = {
         fillGradient.addColorStop(1, '#dddddd');
         ctx.fillStyle = fillGradient;
         ctx.fill();
+        ctx.font = "16px Silkscreen";
+        ctx.textAlign = "center"
+        ctx.fillText(points, pos[0], pos[1] + (radius * 2.2))
     }
 }
 
 class Hole {
     constructor(optionsHash) {
+        this.points = optionsHash.points
         this.game = optionsHash.game;
         optionsHash.radius ||= HOLE_DEFAULTS.radius;
         this.radius = optionsHash.radius;
@@ -33,6 +37,12 @@ class Hole {
         this.draw = optionsHash.draw
 
     }
+
+   
+
+
+
+
 
 }
 

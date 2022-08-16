@@ -50,8 +50,9 @@ addEventListener('DOMContentLoaded', (event) => {
     
     const marblio = new Game();
     const marvyn = new Marble({ pos: [constants.MAP_GRID_SIZE * 33.5, constants.MAP_GRID_SIZE * 3], radius: 15, vel: [0, 0] , game: marblio})
-    const hole = new Hole({pos: [60, 60], game: marblio})
+    const hole = new Hole({points:42 ,pos: [60, 60], game: marblio})
     marblio.marble = marvyn;
+    marblio.holes.push(hole);
     marblio.addWalls();
     
 
@@ -59,7 +60,7 @@ addEventListener('DOMContentLoaded', (event) => {
         requestAnimationFrame(animloop);
         canvasCtx.clearRect(0, 0, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y);
         marblio.drawBackground(canvasCtx)
-        hole.draw(canvasCtx, hole.pos, hole.radius) 
+        hole.draw(canvasCtx, hole.pos, hole.radius, hole.points) 
         marvyn.draw(canvasCtx);
         
         marblio.drawWalls(canvasCtx)
@@ -71,6 +72,7 @@ addEventListener('DOMContentLoaded', (event) => {
         marblio.handleVector(marvyn);
         marvyn.drawVector(canvasCtx);
         marvyn.updateTexture();
+        marvyn.colisionDetectedHole(marvyn.vel)
         marvyn.move(marvyn.vel);
     }, 1000 / constants.FRAME_RATE)
 
