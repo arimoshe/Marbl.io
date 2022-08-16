@@ -16,7 +16,7 @@ addEventListener('deviceorientation', (event) => {
     this.alpha = event.alpha;
     this.beta = event.beta;
     this.gamma = event.gamma
-    window.orient=event;
+    window.Orient = event;
     console.log("alpha:", event.alpha, "beta:", event.beta, "gamma:", event.gamma)
 })
 
