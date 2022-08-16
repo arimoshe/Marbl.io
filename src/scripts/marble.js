@@ -268,7 +268,7 @@ class Marble {
         
 
     }
-    
+
     colisionDetectedWall(vel) {
         for (let ele of this.game.walls) {
             if (this.willCollideWall(ele, vel)) {
