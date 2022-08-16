@@ -138,40 +138,39 @@ class Marble {
         }
     }
 
-
     move(vector) {
         while (this.colisionDetected(vector)) {
             let xColision = !this.colisionDetected([0, vector[1]])
             let yColision = !this.colisionDetected([vector[0], 0])
-            
+
             if (!xColision && !yColision) {
-                if (vector[0] > 0 ) {
-                    if (!this.colisionDetected([0,.1])) {
-                        
-                        this.pos[1] += .1;
+                if (vector[0] > 0) {
+                    if (!this.colisionDetected([.1 ,0])) {
+
+                        this.pos[1] -= .1;
                         this.move(vector);
-                        
+
                     }
                 }
                 if (vector[0] < 0) {
-                    if (!this.colisionDetected([0,-.1])) {
-                        
-                        this.pos[1] -= .1;
+                    if (!this.colisionDetected([ -.1, 0])) {
+
+                        this.pos[0] += .1;
                         this.move(vector);
                     }
                 }
                 if (vector[1] > 0) {
-                    if (!this.colisionDetected([.1, 0])) {
-                      
-                        this.pos[0] += .1;
+                    if (!this.colisionDetected([ 0, -1])) {
+
+                        this.pos[1] -= .1;
                         this.move(vector);
 
                     }
                 }
                 if (vector[1] < 0) {
-                    if (!this.colisionDetected([-.1, 0])) {
-                       
-                        this.pos[0] -= .1;
+                    if (!this.colisionDetected([0, -.1])) {
+
+                        this.pos[1] -= .1;
                         this.move(vector);
                     }
                 }
@@ -186,9 +185,9 @@ class Marble {
                             vector[0] += .1
                         } else {
                             vector[0] = 0
-                        } 
+                        }
                     }
-                } 
+                }
                 if (yColision) {
                     while (this.colisionDetected(vector)) {
                         if (vector[1] > .1) {
@@ -202,12 +201,78 @@ class Marble {
                 }
             }
 
-        }  
+        }
         this.pos[0] += vector[0];
         this.pos[1] += vector[1];
-        
-
     }
+
+    // move(vector) {
+    //     while (this.colisionDetected(vector)) {
+    //         let xColision = !this.colisionDetected([0, vector[1]])
+    //         let yColision = !this.colisionDetected([vector[0], 0])
+            
+    //         if (!xColision && !yColision) {
+    //             if (vector[0] > 0 ) {
+    //                 if (!this.colisionDetected([0,.1])) {
+                        
+    //                     this.pos[1] += .1;
+    //                     this.move(vector);
+                        
+    //                 }
+    //             }
+    //             if (vector[0] < 0) {
+    //                 if (!this.colisionDetected([0,-.1])) {
+                        
+    //                     this.pos[1] -= .1;
+    //                     this.move(vector);
+    //                 }
+    //             }
+    //             if (vector[1] > 0) {
+    //                 if (!this.colisionDetected([.1, 0])) {
+                      
+    //                     this.pos[0] += .1;
+    //                     this.move(vector);
+
+    //                 }
+    //             }
+    //             if (vector[1] < 0) {
+    //                 if (!this.colisionDetected([-.1, 0])) {
+                       
+    //                     this.pos[0] -= .1;
+    //                     this.move(vector);
+    //                 }
+    //             }
+    //             return undefined
+    //         } else {
+
+    //             if (xColision) {
+    //                 while (this.colisionDetected(vector)) {
+    //                     if (vector[0] > .1) {
+    //                         vector[0] -= .1
+    //                     } else if (vector[0] < -.1) {
+    //                         vector[0] += .1
+    //                     } else {
+    //                         vector[0] = 0
+    //                     } 
+    //                 }
+    //             } 
+    //             if (yColision) {
+    //                 while (this.colisionDetected(vector)) {
+    //                     if (vector[1] > .1) {
+    //                         vector[1] -= .1
+    //                     } else if (vector[1] < -.1) {
+    //                         vector[1] += .1
+    //                     } else {
+    //                         vector[1] = 0
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //     }  
+    //     this.pos[0] += vector[0];
+    //     this.pos[1] += vector[1];
+    // }
 
     updateVectorOrientation() {
         this.vel[0] = -this.beta/5 ;
