@@ -11,6 +11,15 @@ let MARBLE_DEFAULTS = {
     }
 }
 
+addEventListener('deviceorientation', (event) => { 
+
+    this.alpha = event.alpha;
+    this.beta = event.beta; 
+    this.gamma = event.gamma
+
+    console.log("alpha:", event.alpha, "beta:", event.beta, "gamma:", event.gamma)
+})
+
 class Marble {
     constructor(optionsHash) {
         this.game = optionsHash.game;
@@ -22,6 +31,9 @@ class Marble {
         this.texture = optionsHash.texture;
         optionsHash.texture ||= MARBLE_DEFAULTS.texture2;
         this.texture2 = optionsHash.texture2;
+        this.alpha = undefined;
+        this.beta = undefined;
+        this.gamma = undefined
 
         window.addEventListener('mousemove', (event) => {
             this.mousePosx = event.clientX;
