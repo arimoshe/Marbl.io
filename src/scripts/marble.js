@@ -11,7 +11,14 @@ let MARBLE_DEFAULTS = {
     }
 }
 
+addEventListener('deviceorientation', (event) => {
 
+    this.alpha = event.alpha;
+    this.beta = event.beta;
+    this.gamma = event.gamma
+
+    console.log("alpha:", event.alpha, "beta:", event.beta, "gamma:", event.gamma)
+})
 
 class Marble {
     constructor(optionsHash) {
@@ -86,8 +93,7 @@ class Marble {
         ctx.beginPath();
         ctx.moveTo(relativeGameCenter[0], relativeGameCenter[1]);
 
-        console.log(`x: ((${relativeGameCenter[0]} - ${relativeMousePosX}) / ${relativeGameCenter[0]}) * 10`)
-        console.log(`y: ((${relativeGameCenter[1]} - ${relativeMousePosY}) / ${relativeGameCenter[1]}) * 10`)
+       
         ctx.lineTo(
             relativeGameCenter[0] + (((relativeGameCenter[0] - relativeMousePosX) / relativeGameCenter[0]) * -100),
             relativeGameCenter[1] + (((relativeGameCenter[1] - relativeMousePosY) / relativeGameCenter[1]) * -100)
