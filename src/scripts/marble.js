@@ -11,19 +11,9 @@ let MARBLE_DEFAULTS = {
     }
 }
 
-window.addEventListener("deviceorientation", handleOrientation, true);
 
-function handleOrientation(event) {
-    const absolute = event.absolute;
-    const alpha = event.alpha;
-    const beta = event.beta;
-    const gamma = event.gamma;
-    this.alpha = alpha; 
-    this.beta = beta; 
-    this.gamma = gamma;
 
-    console.log("alpha:" ,alpha, "beta:", beta, "gamma:", gamma)
-}
+
 
 class Marble {
     constructor(optionsHash) {
@@ -38,13 +28,24 @@ class Marble {
         this.texture2 = optionsHash.texture2;
         this.mousePosX = constants.GAME_DIMENSION_X / 2;
         this.mousePosY = constants.GAME_DIMENSION_Y / 2;
-        this.alpha = undefined;
-        this.beta = undefined;
-        this.gamma = undefined;
+        // this.alpha = undefined;
+        // this.beta = undefined;
+        // this.gamma = undefined;
         window.addEventListener('mousemove', (event) => {
             this.mousePosX = event.clientX;
             this.mousePosY = event.clientY;
             //(((constants.GAME_DIMENSION_X / 2) + 10) - this.mousePosX)/((constants.GAME_DIMENSION_X / 2))*-10
+        });
+        window.addEventListener("deviceorientation",  (event) =>  {
+            const absolute = event.absolute;
+            const alpha = event.alpha;
+            const beta = event.beta;
+            const gamma = event.gamma;
+            this.alpha = alpha;
+            this.beta = beta;
+            this.gamma = gamma;
+
+            console.log("alpha:", alpha, "beta:", beta, "gamma:", gamma)
         });
 
     }
@@ -209,10 +210,10 @@ class Marble {
     }
 
     updateVectorOrientation() {
-        this.vel[0] = this.beta / 10;
-        this.vel[1] = this.alpha / 10;
+        this.vel[0] = this.gamma ;
+        this.vel[1] = this.beta ;
     }
-    i
+    
 
     updateVectorMouse(){
         // if (this.mousePosX < constants.GAME_DIMENSION_X + 10 && this.mousePosY < constants.GAME_DIMENSION_Y + 10 ) {

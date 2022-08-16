@@ -50,7 +50,7 @@ addEventListener('DOMContentLoaded', (event) => {
 
 
     setInterval(()=>{
-        marblio.handleVector();
+        marblio.handleVector(marvyn);
         marvyn.updateTexture();
         marvyn.move(marvyn.vel);
     }, 1000 / constants.FRAME_RATE)

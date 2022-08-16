@@ -83,10 +83,13 @@ class Game {
             }
     }
 
-    handleVector (){
-        if (this.marble.alpha) {
-            this.marble.updateVectorOrientation()    
+    handleVector (marble){
+        // alert(marble.beta)
+        if (marble.beta) {
+            // alert()
+            marble.updateVectorOrientation()    
         } else {
+
             this.marble.updateVectorMouse()
         } 
     }
