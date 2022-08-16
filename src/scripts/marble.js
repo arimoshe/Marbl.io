@@ -12,7 +12,7 @@ let MARBLE_DEFAULTS = {
 }
 
 addEventListener('deviceorientation', (event) => {
-
+    console.log(event);
     this.alpha = event.alpha;
     this.beta = event.beta;
     this.gamma = event.gamma
