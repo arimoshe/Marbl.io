@@ -102,11 +102,17 @@ class Marble {
         ctx.beginPath();
         ctx.moveTo(relativeGameCenter[0], relativeGameCenter[1]);
 
-       
+       if (this.beta) {
+           ctx.lineTo(
+               relativeGameCenter[0] + -this.beta*5,
+               relativeGameCenter[1] + this.gamma*5
+           );
+       } else {
         ctx.lineTo(
             relativeGameCenter[0] + (((relativeGameCenter[0] - relativeMousePosX) / relativeGameCenter[0]) * -100),
             relativeGameCenter[1] + (((relativeGameCenter[1] - relativeMousePosY) / relativeGameCenter[1]) * -100)
         );
+       }
         ctx.lineWidth = 5;
 
         ctx.stroke();
