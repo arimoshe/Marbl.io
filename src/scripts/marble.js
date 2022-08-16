@@ -39,21 +39,26 @@ class Marble {
             //(((constants.GAME_DIMENSION_X / 2) + 10) - this.mousePosX)/((constants.GAME_DIMENSION_X / 2))*-10
         });
         window.addEventListener("deviceorientation",  (event) =>  {
-            
+            // console.log (event)
+            const absolute = event.absolute;
             const alpha = event.alpha;
             const beta = event.beta;
             const gamma = event.gamma;
             this.alpha = lowPass(this.alpha, event.alpha, 0.8);
             this.beta = lowPass(this.beta, event.beta, 0.8);
             this.gamma = lowPass(this.gamma, event.gamma, 0.8);
-
+            this.vel[0] = Math.max(Math.min(event.beta / 2.5, 10), -10) * -1;
+            this.vel[1] = Math.max(Math.min(event.gamma / 2.5, 10), -10) ;
+            
             console.log("alpha:", alpha, "beta:", beta, "gamma:", gamma)
-        });
+        }, false);
+        
 
     }
 
     updateTexture () {
         this.texture = (canvasCtx, context) => {
+            
             let gradient = canvasCtx.createRadialGradient(
                 context.pos[0] + (((constants.GAME_DIMENSION_X / 2) + 10) - this.pos[0]) / ((constants.GAME_DIMENSION_X / 2)) * (context.radius / -2),
                 context.pos[1] + Math.abs((((constants.GAME_DIMENSION_X / 2) + 10) - this.pos[1]) / ((constants.GAME_DIMENSION_X / 2))) * (context.radius / -2),
@@ -218,9 +223,10 @@ class Marble {
     
 
     updateVectorOrientation() {
-
-        this.vel[0] = Math.max(Math.min(this.beta/2.5, 10), -10) ;
-        this.vel[1] = Math.max(Math.min(this.gamma / 2.5, 10), -10) * -1 ;
+        if (this.beta && this.gamma) {
+            this.vel[0] = Math.max(Math.min(this.beta/2.5, 10), -10)  ;
+            this.vel[1] = Math.max(Math.min(this.gamma / 2.5, 10), -10)  ;
+        }
     }
     
 
@@ -261,7 +267,6 @@ class Marble {
         
         const a = ((this.pos[0] + vel[0]) - hole.pos[0]);
         const b = ((this.pos[1] + vel[1]) - hole.pos[1]);
-        console.log(this.radius + (hole.radius / 1.5), Math.sqrt(a ** 2 + b ** 2), this.radius + (hole.radius / 1.5) > Math.sqrt(a ** 2 + b ** 2));
         return this.radius + (hole.radius/10) > Math.sqrt(a ** 2 + b ** 2);
 
 

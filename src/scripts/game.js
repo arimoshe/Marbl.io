@@ -86,7 +86,7 @@ class Game {
 
     handleVector (marble){
         // alert(marble.beta)
-        if (window.DeviceOrientationEvent) {
+        if (marble.beta) {
             // alert()
             marble.updateVectorOrientation()    
         } else {

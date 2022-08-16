@@ -69,7 +69,7 @@ addEventListener('DOMContentLoaded', (event) => {
 
 
     setInterval(()=>{
-        marblio.handleVector(marvyn);
+        marvyn.updateVectorOrientation();
         marvyn.drawVector(canvasCtx);
         marvyn.updateTexture();
         marvyn.colisionDetectedHole(marvyn.vel)
