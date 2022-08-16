@@ -1,6 +1,7 @@
 import * as constants from "./scripts/constants"
 import Marble from "./scripts/marble";
 import Game from "./scripts/game";
+import Hole from "./scripts/hole";
 
 
 
@@ -35,6 +36,7 @@ addEventListener('DOMContentLoaded', (event) => {
     
     const marblio = new Game();
     const marvyn = new Marble({ pos: [constants.MAP_GRID_SIZE * 33.5, constants.MAP_GRID_SIZE * 3], radius: 15, vel: [0, 0] , game: marblio})
+    const hole = new Hole({pos: [70, 70], game: marblio})
     marblio.marble = marvyn;
     marblio.addWalls();
     
@@ -44,6 +46,7 @@ addEventListener('DOMContentLoaded', (event) => {
         canvasCtx.clearRect(0, 0, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y);
         marblio.drawBackground(canvasCtx)
         marvyn.draw(canvasCtx);
+        hole.draw(canvasCtx, hole.pos, hole.radius)
         marblio.drawWalls(canvasCtx)
         marvyn.drawVector(canvasCtx)
     })();
