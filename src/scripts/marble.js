@@ -210,8 +210,8 @@ class Marble {
     }
 
     updateVectorOrientation() {
-        this.vel[0] = this.gamma ;
-        this.vel[1] = this.beta ;
+        this.vel[0] = this.beta/5 ;
+        this.vel[1] = this.gamma/5 ;
     }
     
 
