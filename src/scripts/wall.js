@@ -12,7 +12,7 @@ test.then((success) => {
 let WALL_DEFAULTS = {
     size: constants.GAME_DIMENSION_X / constants.MAP_GRID_X,
     texture: {
-         sx: 16, sy: 16, swidth: 16, sheight: 16, width: 16, height: 16
+         sx: 64, sy: 96, swidth: 32, sheight: 32, width: 16, height: 16
     }
     
 }

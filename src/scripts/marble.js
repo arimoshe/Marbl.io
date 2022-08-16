@@ -100,12 +100,13 @@ class Marble {
         const relativeGameCenter = [constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2]
         // console.log(relativeMousePosX, relativeMousePosY)
         ctx.beginPath();
+        ctx.strokeStyle = "black"
         ctx.moveTo(relativeGameCenter[0], relativeGameCenter[1]);
 
        if (this.beta) {
            ctx.lineTo(
-               relativeGameCenter[0] + -this.beta*5,
-               relativeGameCenter[1] + this.gamma*5
+               relativeGameCenter[0] + (Math.max(Math.min(this.beta / 2.5, 10), -10) * -10),
+               relativeGameCenter[1] +  (Math.max(Math.min(this.beta/2.5, 10), -10) *10)
            );
        } else {
         ctx.lineTo(
@@ -281,8 +282,9 @@ class Marble {
     // }
 
     updateVectorOrientation() {
-        this.vel[0] = -this.beta/2.5 ;
-        this.vel[1] = this.gamma/2.5 ;
+
+        this.vel[0] = -1 * Math.max(Math.min(this.beta/2.5, 10), -10) ;
+        this.vel[1] = Math.max(Math.min(this.gamma / 2.5, 10), -10) ;
     }
     
 

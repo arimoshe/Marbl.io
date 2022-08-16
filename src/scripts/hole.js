@@ -1,7 +1,7 @@
 
 
 let HOLE_DEFAULTS = {
-    radius: 18, 
+    radius: 20, 
     draw: (ctx,pos, radius) => {
         ctx.beginPath();
         ctx.moveTo(pos[0], pos[1]);
@@ -10,11 +10,12 @@ let HOLE_DEFAULTS = {
         strokeGradient.addColorStop(0, '#c0c0c0');
         strokeGradient.addColorStop(1, 'white');
         ctx.strokeStyle = strokeGradient;
-        ctx.lineWidth = radius/3;
+        ctx.lineWidth = radius/2;
         ctx.stroke();
         let fillGradient = ctx.createRadialGradient(pos[0], pos[1], radius*2, pos[0], pos[1] + radius, 0);
         fillGradient.addColorStop(0, '#000000');
-        fillGradient.addColorStop(1, '#66bbFF');
+        // fillGradient.addColorStop(1, '#66bbFF');
+        fillGradient.addColorStop(1, '#dddddd');
         ctx.fillStyle = fillGradient;
         ctx.fill();
     }

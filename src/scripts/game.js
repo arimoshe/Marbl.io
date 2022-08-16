@@ -6,6 +6,7 @@ class Game {
     constructor() {
         this.walls = [];
         this.marble = [];
+        this.holes = []
 
     }
 
@@ -93,6 +94,8 @@ class Game {
             this.marble.updateVectorMouse()
         } 
     }
+
+    
 
     
 
