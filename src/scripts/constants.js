@@ -1,5 +1,6 @@
-export let PAUSED = !document.hasFocus();
-export const FRAME_RATE =60;
+export let PAUSED = false
+export const FRAME_RATE = 60;
+export const DPI = 96;
 export const MAP_GRID_X = 84;
 export const MAP_GRID_Y = 49;
 export const MAP_GRID_SIZE = 16;
@@ -23,25 +24,32 @@ addEventListener('DOMContentLoaded', (event) => {
     GAME_REL_CENTER_X = document.getElementById("main-app").width /2
     GAME_REL_CENTER_Y = document.getElementById("main-app").width / 2
 });
+const pauseEvent = new Event('pauseToggle'); 
+
 
 window.addEventListener("blur", (event) => {
-    PAUSED = true
+    PAUSED = true;
+    window.dispatchEvent(pauseEvent);
 })
 
 window.addEventListener("focus", (event) => {
-    PAUSED = false
+    PAUSED = false;
+    window.dispatchEvent(pauseEvent);
 })
 document.addEventListener("mouseleave", (event) => {
     if (event.clientY <= 1 || event.clientX <= 1 || (event.clientX >= window.innerWidth-1 || event.clientY >= window.innerHeight-1)) {
         PAUSED = true;
+        window.dispatchEvent(pauseEvent);
     }
 });
-document.addEventListener("mouseenter", (event) => {
-     PAUSED = false;
-});
+// document.addEventListener("mouseenter", (event) => {
+//     PAUSED = false;
+//     window.dispatchEvent(pauseEvent);
+// });
 
 document.addEventListener("click", (event) => {
-   PAUSED = false;
+    PAUSED = false;
+    window.dispatchEvent(pauseEvent);
    
 });
 // window.addEventListener('resize', (event) => { 

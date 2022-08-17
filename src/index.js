@@ -24,30 +24,10 @@ addEventListener('DOMContentLoaded', (event) => {
     const canvasElement = document.getElementById("main-app");
     canvasElement.width = window.innerWidth //1920; //constants.GAME_DIMENSION_X;
     canvasElement.height = window.innerHeight //1080//constants.GAME_DIMENSION_Y;
-    setDPI(canvasElement, 192)
+    setDPI(canvasElement, constants.DPI)
 
     const canvasCtx = canvasElement.getContext('2d');
     canvasCtx.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
-    // canvasCtx.beginPath();
-    // canvasCtx.lineWidth = "6";
-    // canvasCtx.strokeStyle = "violet";
-    // canvasCtx.rect(5, 5, 290, 140);
-    // canvasCtx.stroke();
-
-    // // Green rectangle
-    // canvasCtx.beginPath();
-    // canvasCtx.lineWidth = "4";
-    // canvasCtx.strokeStyle = "green";
-    // canvasCtx.rect(30, 30, 50, 50);
-    // canvasCtx.stroke();
-
-    // // Blue rectangle
-    // canvasCtx.beginPath();
-    // canvasCtx.lineWidth = "10";
-    // canvasCtx.strokeStyle = "blue";
-    // canvasCtx.rect(1600, 700, 150, 90);
-    // canvasCtx.stroke();
-    
     
     // if (screen.width<1000) {
     //     canvasCtx.translate(300,160)
@@ -68,50 +48,79 @@ addEventListener('DOMContentLoaded', (event) => {
     //     canvasElement.requestPointerLock();
     // });
 
-    
-    
-    
-
-    
     const marblio = new Game();
     const marvyn = new Marble({ pos: [constants.MAP_GRID_SIZE * 33.5, constants.MAP_GRID_SIZE * 3], radius: 15, vel: [0, 0] , game: marblio})
     const hole = new Hole({points:42 ,pos: [60, 60], game: marblio, winner: false})
     marblio.marble = marvyn;
     marblio.holes.push(hole);
     marblio.addWalls();
-    
 
-    (function animloop() {    
-        requestAnimationFrame(animloop);
-        if (!constants.PAUSED) {
-            canvasCtx.clearRect(0, 0, screen.width, screen.height);
-            marblio.drawBackground(canvasCtx)
-            hole.draw(canvasCtx, hole.pos, hole.radius, hole.points) 
-            marvyn.draw(canvasCtx);
-            marblio.renderScore(canvasCtx)
-            marblio.renderLives(canvasCtx)
-            marblio.drawWalls(canvasCtx)
-            marvyn.drawVector(canvasCtx)
-        } else {
+    const pauseActions = () => {
+        
+        canvasCtx.filter = "blur(20px)"
+        let imgData = canvasCtx.getImageData(0, 0, window.innerWidth * (constants.DPI / 96), window.innerHeight * (constants.DPI / 96));
+        createImageBitmap(imgData)
+        .then( result => { 
+            canvasCtx.drawImage(result, -constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, window.innerWidth, window.innerHeight); 
+            canvasCtx.filter = "none"
             canvasCtx.beginPath();
             canvasCtx.font = "100px sans-serif";
             canvasCtx.fillStyle = "#999999";
             canvasCtx.textAlign = "center"
-            canvasCtx.fillText("PAUSED", constants.GAME_DIMENSION_X/2, constants.GAME_DIMENSION_Y/2);
-        }
-    })();
+            canvasCtx.fillText("PAUSED", constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2);   
+        })
+        
+    };
 
+    const drawActions = () => {
+        // console.log("drawloop");
+        canvasCtx.clearRect(0, 0, screen.width, screen.height);
+        marblio.drawBackground(canvasCtx)
+        hole.draw(canvasCtx, hole.pos, hole.radius, hole.points)
+        marvyn.draw(canvasCtx);
+        marblio.drawScore(canvasCtx);
+        marblio.drawLives(canvasCtx);
+        marblio.drawName(canvasCtx);
+        marblio.drawWalls(canvasCtx);
+        marvyn.drawVector(canvasCtx);
+    }
 
-    const gameInterval = setInterval(()=>{
-        if(!constants.PAUSED) {
-            marblio.handleVector(marvyn);
-            marvyn.drawVector(canvasCtx);
-            marvyn.updateTexture();
-            marblio.handleHoleHit()
-            marvyn.move(marvyn.vel);// dsfsadf
+    const gameActions = () => {
+        marblio.handleVector(marvyn);
+        marvyn.updateTexture();
+        marblio.handleHoleHit()
+        marvyn.move(marvyn.vel);
+    }
+    
+    function animate() {  
+       
+        if (!constants.PAUSED) {
+            drawActions()
+            requestAnimationFrame(animate);
+            ;
         }
-    }, 1000 / constants.FRAME_RATE)
+    };
+    animate()
 
     
+    let gameInterval ;
+    // if (!constants.PAUSED) {
+        gameInterval = setInterval(gameActions, 1000 / constants.FRAME_RATE);
+    // }
+  
+    
+    window.addEventListener("pauseToggle", (e) => {
+        if (constants.PAUSED) {
+
+            pauseActions();
+            clearInterval(gameInterval);
+
+        } else {
+            console.log("bad bunny")
+            animate();
+            clearInterval(gameInterval)
+            gameInterval = setInterval(gameActions, 1000 / constants.FRAME_RATE)
+        }
+    })
 
  });

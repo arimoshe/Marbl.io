@@ -23,7 +23,7 @@ class Game {
         for (let i = 0; i < constants.MAP_GRID_Y; i++) {
             let wallTop = new Wall({ pos: utils.translatePos([0, constants.MAP_GRID_SIZE * i]) });
             this.walls.push(wallTop);
-            // console.log(utils.translatePos([0, constants.MAP_GRID_SIZE * i]))
+            
         }
         for (let j = 1; j < constants.MAP_GRID_X; j++) {
             this.walls.push(new Wall({ pos: utils.translatePos([constants.MAP_GRID_SIZE * j, 0]) }))
@@ -47,24 +47,6 @@ class Game {
             
 
         }
-        // for (let l = 0; l <= 14; l++) {
-        //     this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE*30, l * constants.MAP_GRID_SIZE] }))
-        // }
-        // for (let l = 0; l <= 8; l++) {
-        //     this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 36, l * constants.MAP_GRID_SIZE] }))
-        // }
-        // for (let l = 0; l <= 8; l++) {
-        //     this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 36 + l * constants.MAP_GRID_SIZE,  constants.MAP_GRID_SIZE * 9] }))
-        // }
-        // for (let l = 0; l <= 14; l++) {
-        //     this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 30 + l * constants.MAP_GRID_SIZE, constants.MAP_GRID_SIZE *15] }))
-        // }
-        // for (let l = 0; l <= 14; l++) {
-        //     this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 30, (constants.GAME_DIMENSION_Y - l * constants.MAP_GRID_SIZE) ] }))
-        // }
-        // for (let l = 0; l <= 14; l++) {
-        //     this.walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 30, (constants.GAME_DIMENSION_Y - l * constants.MAP_GRID_SIZE)] }))
-        // }
 
     }
 
@@ -125,7 +107,7 @@ class Game {
         };
     }
 
-    renderScore(ctx) {
+    drawScore(ctx) {
         ctx.beginPath();
         ctx.font = "16px Silkscreen";
         ctx.fillStyle = "#e0e0e0";;
@@ -135,7 +117,7 @@ class Game {
 
     }
     
-    renderLives (ctx) {
+    drawLives (ctx) {
         ctx.beginPath();
 
         
@@ -148,6 +130,14 @@ class Game {
                 ctx.drawImage(texture.HEART_IMG, ((screen.width / 4 - this.lives * 35) + 70 * i) - constants.GAME_OFFSET_X, -65)
             }
         }
+    }
+
+    drawName(ctx) {
+        ctx.beginPath();
+        ctx.font = "100px Silkscreen";
+        ctx.fillStyle = "#202020";
+        ctx.textAlign = "center";
+        ctx.fillText("Marbl.io", (constants.GAME_DIMENSION_X / 2), -30);
     }
 
     handleLoss(){
