@@ -1,4 +1,5 @@
 import * as constants from "./scripts/constants"
+import * as utils from "./scripts/utils"
 import Marble from "./scripts/marble";
 import Game from "./scripts/game";
 import Hole from "./scripts/hole";
@@ -21,8 +22,8 @@ function setDPI(canvas, dpi) {
 addEventListener('DOMContentLoaded', (event) => {
 
     const canvasElement = document.getElementById("main-app");
-    canvasElement.width = constants.GAME_DIMENSION_X;
-    canvasElement.height = constants.GAME_DIMENSION_Y;
+    canvasElement.width = screen.width; //constants.GAME_DIMENSION_X;
+    canvasElement.height = screen.height; //constants.GAME_DIMENSION_Y;
     setDPI(canvasElement, 192)
 
 
@@ -50,7 +51,7 @@ addEventListener('DOMContentLoaded', (event) => {
     
     const marblio = new Game();
     const marvyn = new Marble({ pos: [constants.MAP_GRID_SIZE * 33.5, constants.MAP_GRID_SIZE * 3], radius: 15, vel: [0, 0] , game: marblio})
-    const hole = new Hole({points:42 ,pos: [60, 60], game: marblio})
+    const hole = new Hole({points:42 ,pos: [60, 60], game: marblio, winner: false})
     marblio.marble = marvyn;
     marblio.holes.push(hole);
     marblio.addWalls();
@@ -58,21 +59,22 @@ addEventListener('DOMContentLoaded', (event) => {
 
     (function animloop() {
         requestAnimationFrame(animloop);
-        canvasCtx.clearRect(0, 0, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y);
+        canvasCtx.clearRect(0, 0, screen.width, screen.height);
         marblio.drawBackground(canvasCtx)
         hole.draw(canvasCtx, hole.pos, hole.radius, hole.points) 
         marvyn.draw(canvasCtx);
-        
+        marblio.renderScore(canvasCtx)
+        marblio.renderLives(canvasCtx)
         marblio.drawWalls(canvasCtx)
         marvyn.drawVector(canvasCtx)
     })();
 
 
     setInterval(()=>{
-        marvyn.updateVectorOrientation();
+        marblio.handleVector(marvyn);
         marvyn.drawVector(canvasCtx);
         marvyn.updateTexture();
-        marvyn.colisionDetectedHole(marvyn.vel)
+        marblio.handleHoleHit()
         marvyn.move(marvyn.vel);
     }, 1000 / constants.FRAME_RATE)
 

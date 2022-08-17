@@ -1,7 +1,8 @@
-
+import * as utils from "./utils"
 
 let HOLE_DEFAULTS = {
     radius: 20, 
+    winner: false,
     draw: (ctx,pos, radius, points) => {
         ctx.beginPath();
         ctx.moveTo(pos[0], pos[1]);
@@ -30,7 +31,9 @@ class Hole {
         this.game = optionsHash.game;
         optionsHash.radius ||= HOLE_DEFAULTS.radius;
         this.radius = optionsHash.radius;
-        this.pos = optionsHash.pos;
+        this.pos = utils.translatePos(optionsHash.pos);
+        optionsHash.winner ||= HOLE_DEFAULTS.winner;
+        this.winner = optionsHash.winner 
 
         optionsHash.draw ||= HOLE_DEFAULTS.draw
 

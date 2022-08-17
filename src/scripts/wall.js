@@ -1,4 +1,5 @@
 import * as constants from "./constants" 
+import * as texture from "./texture" 
 
    const wallPng = new Image();
 

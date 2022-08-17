@@ -1,10 +1,11 @@
-import * as constants from "./constants" 
+import * as constants from "./constants"
+import * as utils from "./utils"
 
 let MARBLE_DEFAULTS = {
     radius: 5,
     vel: [0, 0],
     texture: (canvasCtx, context) => {
-        let gradient = canvasCtx.createRadialGradient(context.pos[0] - (context.radius / 2.5), context.pos[1] - (context.radius / 2.5), 5, context.pos[0], context.pos[1], (context.radius * 2));
+        let gradient = canvasCtx.createRadialGradient((context.pos[0]) - (context.radius / 2.5), context.pos[1] - (context.radius / 2.5), 5, context.pos[0], context.pos[1], (context.radius * 2));
         gradient.addColorStop(0, 'white');
         gradient.addColorStop(1, 'black');
         return gradient;
@@ -22,7 +23,7 @@ class Marble {
         this.game = optionsHash.game;
         optionsHash.radius ||= MARBLE_DEFAULTS.radius
         this.radius = optionsHash.radius;
-        this.pos = optionsHash.pos;
+        this.pos = utils.translatePos(optionsHash.pos);
         this.vel = optionsHash.vel;
         optionsHash.texture ||= MARBLE_DEFAULTS.texture;
         this.texture = optionsHash.texture;
@@ -34,8 +35,8 @@ class Marble {
         // this.beta = undefined;
         // this.gamma = undefined;
         window.addEventListener('mousemove', (event) => {
-            this.mousePosX = event.clientX;
-            this.mousePosY = event.clientY;
+            this.mousePosX = event.offsetX;
+            this.mousePosY = event.offsetY;
             //(((constants.GAME_DIMENSION_X / 2) + 10) - this.mousePosX)/((constants.GAME_DIMENSION_X / 2))*-10
         });
         window.addEventListener("deviceorientation",  (event) =>  {
@@ -102,23 +103,23 @@ class Marble {
     drawVector(ctx) {
         
         
-        const relativeMousePosX = this.mousePosX - document.getElementById("main-app").getBoundingClientRect().left 
-        const relativeMousePosY = this.mousePosY - document.getElementById("main-app").getBoundingClientRect().top 
-        const relativeGameCenter = [constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2]
+        
+        
         // console.log(relativeMousePosX, relativeMousePosY)
         ctx.beginPath();
         ctx.strokeStyle = "black"
-        ctx.moveTo(relativeGameCenter[0], relativeGameCenter[1]);
+        ctx.moveTo(constants.WINDOW_CENTER_X, constants.WINDOW_CENTER_Y);
 
        if (this.beta) {
            ctx.lineTo(
-               relativeGameCenter[0] + (Math.max(Math.min(this.beta / 2.5, 10), -10) * 10),
-               relativeGameCenter[1] + (Math.max(Math.min(this.gamma/2.5, 10), -10) * -10)
+               constants.WINDOW_CENTER_X + (Math.max(Math.min(this.beta / 2.5, 10), -10) * 10),
+               constants.WINDOW_CENTER_Y + (Math.max(Math.min(this.gamma/2.5, 10), -10) * -10)
            );
        } else {
         ctx.lineTo(
-            relativeGameCenter[0] + (((relativeGameCenter[0] - relativeMousePosX) / relativeGameCenter[0]) * -100),
-            relativeGameCenter[1] + (((relativeGameCenter[1] - relativeMousePosY) / relativeGameCenter[1]) * -100)
+            constants.WINDOW_CENTER_X + ((constants.WINDOW_CENTER_X - this.mousePosX) / constants.WINDOW_CENTER_X) * -100,
+            constants.WINDOW_CENTER_Y + ((constants.WINDOW_CENTER_Y - this.mousePosY) / constants.WINDOW_CENTER_Y) * -100,
+            
         );
        }
         ctx.lineWidth = 5;
@@ -135,7 +136,7 @@ class Marble {
             objTexture = this.texture(ctx, this);
         }
         else {
-            objTexture = ctx.createRadialGradient(this.pos[0] - (this.radius / 2.5), this.pos[1] - (this.radius / 2.5), 5, this.pos[0], this.pos[1], (this.radius * 2));
+            objTexture = ctx.createRadialGradient(this.pos[0] - (this.radius / 2.5), this.pos[1] - (this.radius / 2.5), 5, utils.this.pos[0], this.pos[1], (this.radius * 2));
             objTexture.addColorStop(0, 'white');
             objTexture.addColorStop(1, 'black');
         }
@@ -233,7 +234,7 @@ class Marble {
     updateVectorMouse(){
         // if (this.mousePosX < constants.GAME_DIMENSION_X + 10 && this.mousePosY < constants.GAME_DIMENSION_Y + 10 ) {
             const horizontalCenter = screen.width / 2;
-            const verticalCenter = document.getElementById("main-app").getBoundingClientRect().top + (constants.GAME_DIMENSION_Y / 2)
+            const verticalCenter = screen.height/2
 
             this.vel[0] = ((horizontalCenter - this.mousePosX) / horizontalCenter) * -20
 
@@ -285,10 +286,8 @@ class Marble {
 
     colisionDetectedHole(vel) {
         for (let ele of this.game.holes) {
-            if (this.willCollideHole(ele, vel)) {
-                alert("hole")
+            if (this.willCollideHole(ele, this.vel)) {
                 return ele;
-                
             }
         }
         return false
