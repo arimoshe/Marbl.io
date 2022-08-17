@@ -101,14 +101,9 @@ class Marble {
     // }
     
     drawVector(ctx) {
-        
-        
-        
-        
-        // console.log(relativeMousePosX, relativeMousePosY)
         ctx.beginPath();
         ctx.strokeStyle = "black"
-        ctx.moveTo(constants.WINDOW_CENTER_X, constants.WINDOW_CENTER_Y);
+        ctx.moveTo(constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2);
 
        if (this.beta) {
            ctx.lineTo(
@@ -117,8 +112,8 @@ class Marble {
            );
        } else {
         ctx.lineTo(
-            constants.WINDOW_CENTER_X + ((constants.WINDOW_CENTER_X - this.mousePosX) / constants.WINDOW_CENTER_X) * -100,
-            constants.WINDOW_CENTER_Y + ((constants.WINDOW_CENTER_Y - this.mousePosY) / constants.WINDOW_CENTER_Y) * -100,
+            (constants.GAME_DIMENSION_X / 2) + (((constants.GAME_DIMENSION_X / 2) - (this.mousePosX - constants.GAME_OFFSET_X)) / (constants.GAME_DIMENSION_X / 2)) * -100,
+            (constants.GAME_DIMENSION_Y / 2) + (((constants.GAME_DIMENSION_Y / 2) - (this.mousePosY -  constants.GAME_OFFSET_Y)) / (constants.GAME_DIMENSION_Y / 2)) * -100,
             
         );
        }
@@ -234,7 +229,7 @@ class Marble {
     updateVectorMouse(){
         // if (this.mousePosX < constants.GAME_DIMENSION_X + 10 && this.mousePosY < constants.GAME_DIMENSION_Y + 10 ) {
             const horizontalCenter = screen.width / 2;
-            const verticalCenter = screen.height/2
+            const verticalCenter = constants.GAME_OFFSET_Y + (constants.GAME_DIMENSION_Y / 2)
 
             this.vel[0] = ((horizontalCenter - this.mousePosX) / horizontalCenter) * -20
 

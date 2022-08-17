@@ -70,16 +70,19 @@ class Game {
 
     drawBackground(ctx) {
         ctx.beginPath();
+        ctx.rect(-constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, screen.width, screen.height);
+        ctx.fillStyle = "grey";
+        ctx.fill();
+        ctx.beginPath();
         ctx.rect(utils.translatePosX(0), utils.translatePosY(0), constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y);
         ctx.fillStyle = "#efefef";
         ctx.fill();
+        
     }
 
     drawWalls(ctx) {
-        // ctx.beginPath();
-        // ctx.rect(constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2,3,3)
-        // ctx.fill();
-        for (let ele of this.walls)
+        
+        for (let ele of this.walls) {
             
             if (ele.texture.image) {
 
@@ -89,6 +92,7 @@ class Game {
                 ctx.rect(ele.pos[0],ele.pos[1], ele.size, ele.size);
                 ctx.fill();
             }
+        }
     }
 
     handleVector (marble){
@@ -124,10 +128,10 @@ class Game {
     renderScore(ctx) {
         ctx.beginPath();
         ctx.font = "16px Silkscreen";
-        ctx.fillStyle = "grey";
-        ctx.fillText("Score", 3*screen.width/4, 85 );
+        ctx.fillStyle = "#e0e0e0";;
+        ctx.fillText("Score", 3 * (window.innerWidth - constants.GAME_OFFSET_X) / 4, - 70 );
         ctx.font = "60px Silkscreen";
-        ctx.fillText(this.earnedPoints + this.currentLevelScore, 3 * screen.width / 4, 130);
+        ctx.fillText(this.earnedPoints + this.currentLevelScore, 3 * (window.innerWidth - constants.GAME_OFFSET_X) / 4, -20);
 
     }
     
@@ -136,12 +140,12 @@ class Game {
 
         
         ctx.font = "16px Silkscreen";
-        ctx.fillStyle = "grey";
-        ctx.fillText("Lives", screen.width / 4, 85);
+        ctx.fillStyle = "#e0e0e0";
+        ctx.fillText("Lives", (window.innerWidth / 4) - constants.GAME_OFFSET_X, -70);
         for (let i=0; i<this.lives; i++) {
             
             if (texture.HEART_IMG) {
-                ctx.drawImage(texture.HEART_IMG, (screen.width / 4 - this.lives * 35) + 70 * i, 85)
+                ctx.drawImage(texture.HEART_IMG, ((screen.width / 4 - this.lives * 35) + 70 * i) - constants.GAME_OFFSET_X, -65)
             }
         }
     }

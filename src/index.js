@@ -22,14 +22,38 @@ function setDPI(canvas, dpi) {
 addEventListener('DOMContentLoaded', (event) => {
 
     const canvasElement = document.getElementById("main-app");
-    canvasElement.width = screen.width; //constants.GAME_DIMENSION_X;
-    canvasElement.height = screen.height; //constants.GAME_DIMENSION_Y;
+    canvasElement.width = window.innerWidth //1920; //constants.GAME_DIMENSION_X;
+    canvasElement.height = window.innerHeight //1080//constants.GAME_DIMENSION_Y;
     setDPI(canvasElement, 192)
 
-
     const canvasCtx = canvasElement.getContext('2d');
+    canvasCtx.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
+    // canvasCtx.beginPath();
+    // canvasCtx.lineWidth = "6";
+    // canvasCtx.strokeStyle = "violet";
+    // canvasCtx.rect(5, 5, 290, 140);
+    // canvasCtx.stroke();
 
+    // // Green rectangle
+    // canvasCtx.beginPath();
+    // canvasCtx.lineWidth = "4";
+    // canvasCtx.strokeStyle = "green";
+    // canvasCtx.rect(30, 30, 50, 50);
+    // canvasCtx.stroke();
 
+    // // Blue rectangle
+    // canvasCtx.beginPath();
+    // canvasCtx.lineWidth = "10";
+    // canvasCtx.strokeStyle = "blue";
+    // canvasCtx.rect(1600, 700, 150, 90);
+    // canvasCtx.stroke();
+    
+    
+    // if (screen.width<1000) {
+    //     canvasCtx.translate(300,160)
+    // canvasCtx.scale(.45,.45);
+    // }
+    
     // function openFullscreen() {
     //     if (canvasElement.requestFullscreen) {
     //         canvasElement.requestFullscreen();
@@ -57,25 +81,35 @@ addEventListener('DOMContentLoaded', (event) => {
     marblio.addWalls();
     
 
-    (function animloop() {
+    (function animloop() {    
         requestAnimationFrame(animloop);
-        canvasCtx.clearRect(0, 0, screen.width, screen.height);
-        marblio.drawBackground(canvasCtx)
-        hole.draw(canvasCtx, hole.pos, hole.radius, hole.points) 
-        marvyn.draw(canvasCtx);
-        marblio.renderScore(canvasCtx)
-        marblio.renderLives(canvasCtx)
-        marblio.drawWalls(canvasCtx)
-        marvyn.drawVector(canvasCtx)
+        if (!constants.PAUSED) {
+            canvasCtx.clearRect(0, 0, screen.width, screen.height);
+            marblio.drawBackground(canvasCtx)
+            hole.draw(canvasCtx, hole.pos, hole.radius, hole.points) 
+            marvyn.draw(canvasCtx);
+            marblio.renderScore(canvasCtx)
+            marblio.renderLives(canvasCtx)
+            marblio.drawWalls(canvasCtx)
+            marvyn.drawVector(canvasCtx)
+        } else {
+            canvasCtx.beginPath();
+            canvasCtx.font = "100px sans-serif";
+            canvasCtx.fillStyle = "#999999";
+            canvasCtx.textAlign = "center"
+            canvasCtx.fillText("PAUSED", constants.GAME_DIMENSION_X/2, constants.GAME_DIMENSION_Y/2);
+        }
     })();
 
 
-    setInterval(()=>{
-        marblio.handleVector(marvyn);
-        marvyn.drawVector(canvasCtx);
-        marvyn.updateTexture();
-        marblio.handleHoleHit()
-        marvyn.move(marvyn.vel);
+    const gameInterval = setInterval(()=>{
+        if(!constants.PAUSED) {
+            marblio.handleVector(marvyn);
+            marvyn.drawVector(canvasCtx);
+            marvyn.updateTexture();
+            marblio.handleHoleHit()
+            marvyn.move(marvyn.vel);// dsfsadf
+        }
     }, 1000 / constants.FRAME_RATE)
 
     

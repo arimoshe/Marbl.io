@@ -1,3 +1,4 @@
+export let PAUSED = !document.hasFocus();
 export const FRAME_RATE =60;
 export const MAP_GRID_X = 84;
 export const MAP_GRID_Y = 49;
@@ -6,6 +7,8 @@ export const GAME_DIMENSION_X = MAP_GRID_X * MAP_GRID_SIZE;
 console.log(GAME_DIMENSION_X);
 export const GAME_DIMENSION_Y = MAP_GRID_Y * MAP_GRID_SIZE;
 console.log(GAME_DIMENSION_Y);
+export let GAME_OFFSET_X = (window.innerWidth - GAME_DIMENSION_X) / 2
+export let GAME_OFFSET_Y = (window.innerHeight - GAME_DIMENSION_Y) - 20
 export let GAME_REL_CENTER_X = undefined
 export let GAME_REL_CENTER_Y = undefined
 
@@ -21,6 +24,26 @@ addEventListener('DOMContentLoaded', (event) => {
     GAME_REL_CENTER_Y = document.getElementById("main-app").width / 2
 });
 
+window.addEventListener("blur", (event) => {
+    PAUSED = true
+})
+
+window.addEventListener("focus", (event) => {
+    PAUSED = false
+})
+document.addEventListener("mouseleave", (event) => {
+    if (event.clientY <= 1 || event.clientX <= 1 || (event.clientX >= window.innerWidth-1 || event.clientY >= window.innerHeight-1)) {
+        PAUSED = true;
+    }
+});
+document.addEventListener("mouseenter", (event) => {
+     PAUSED = false;
+});
+
+document.addEventListener("click", (event) => {
+   PAUSED = false;
+   
+});
 // window.addEventListener('resize', (event) => { 
 //    updateVectorOrientation()  WINDOW_CENTER_X 
 // })

@@ -11,15 +11,18 @@ body {
 
 .canvas-container {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: center;
-  height: 100%;
-}
-
-#main-app {
-  align-self: center;
 }
 
 body {
   overflow: hidden;
+}
+
+#fullscreen {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  height: 100px;
+  width: 100px;
 }
