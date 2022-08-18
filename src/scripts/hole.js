@@ -41,7 +41,7 @@ class Hole {
         this.pos = utils.translatePos(optionsHash.pos);
         optionsHash.winner ||= HOLE_DEFAULTS.winner;
         this.winner = optionsHash.winner 
-
+        this.special = undefined,
         optionsHash.draw ||= HOLE_DEFAULTS.draw
 
         this.draw = optionsHash.draw

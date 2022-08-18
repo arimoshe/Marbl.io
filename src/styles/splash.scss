@@ -1,0 +1,54 @@
+#splash-container {
+    display: flex;
+    align-items:flex-start;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+    background-color: #e0e0e0;
+    height: 100vh
+    
+}
+
+#splash {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+button {
+    
+    padding: 20px;
+    margin: 30px;
+    font-family: Silkscreen, sans-serif;
+    font-size: 50px;
+}
+
+h1 {
+    margin: 50px;
+    font-family: Silkscreen, sans-serif;
+    font-size: 20vh;
+}
+h2{
+    margin: 20px;
+    font-family: Silkscreen, sans-serif;
+    font-size: 4vh;
+}
+
+#high-score {
+    
+        font-family: Silkscreen, sans-serif;
+        font-size: 10vh;
+        line-height: 9vh;
+        padding-bottom: 50px;
+}
+#social-links-container  {
+    display: flex;
+    justify-content:space-evenly;
+    width: 100%;
+}
+#social-links-container img {
+    width: 8vw;
+}

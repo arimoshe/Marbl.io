@@ -1,8 +1,8 @@
 import * as ctx from "../index"
 import Hole from "./hole";
 
-export let PAUSED = false
-export const FRAME_RATE = .1;
+// export let PAUSED = false
+export const FRAME_RATE = 60;
 export let SCALE = window.innerHeight/1080*.9;
 export const DPI = 96;
 export const MAP_GRID_X = 84;
@@ -54,24 +54,17 @@ addEventListener('DOMContentLoaded', (event) => {
 //     window.dispatchEvent(pauseEvent);
 // });
 
-document.addEventListener("click", event => {
-    // let tempPause = PAUSED
-    // PAUSED = false; 
-    // if (tempPause) {window.dispatchEvent(pauseEvent);}
-    console.log(`new Hole({points: 0, pos:[${Math.floor((event.clientX - GAME_OFFSET_X ) * (1 / SCALE)-10)}, ${Math.floor((event.clientY - GAME_OFFSET_Y ) * (1 / SCALE)+5)}], winner: false }),`)
-    ctx.marblio.levels[ctx.marblio.levelReached].holes.push(new Hole({ points: 0, pos: [(event.clientX - GAME_OFFSET_X ) * (1 / SCALE)-10, (event.clientY - GAME_OFFSET_Y) * (1 / SCALE)+5], winner: false }))
-    
-});
 
 
-window.addEventListener('resize', (event) => {
-    canvasElement.width = window.innerWidth 
-    canvasElement.height = window.innerHeight 
-    setDPI(canvasElement, DPI)
-    SCALE = window.innerHeight / 1080 * .9;
-    console.log(ctx.canvasCtx)
-    ctx.canvasCtx.scale(SCALE, SCALE)
-    console.log(ctx.canvasCtx)
-    GAME_OFFSET_X = ((window.innerWidth - (GAME_DIMENSION_X * SCALE)) / 2);
-    GAME_OFFSET_Y = (((window.innerHeight - (GAME_DIMENSION_Y * SCALE)) / 2));
-})
+
+// window.addEventListener('resize', (event) => {
+//     canvasElement.width = window.innerWidth 
+//     canvasElement.height = window.innerHeight 
+//     setDPI(canvasElement, DPI)
+//     SCALE = window.innerHeight / 1080 * .9;
+//     console.log(ctx.canvasCtx)
+//     ctx.canvasCtx.scale(SCALE, SCALE)
+//     console.log(ctx.canvasCtx)
+//     GAME_OFFSET_X = ((window.innerWidth - (GAME_DIMENSION_X * SCALE)) / 2);
+//     GAME_OFFSET_Y = (((window.innerHeight - (GAME_DIMENSION_Y * SCALE)) / 2));
+// })

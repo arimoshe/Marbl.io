@@ -2,6 +2,7 @@ import * as constants from "./scripts/constants"
 import * as utils from "./scripts/utils"
 import Marble from "./scripts/marble";
 import Game from "./scripts/game";
+import * as vars from "./scripts/game"
 import Hole from "./scripts/hole";
 
 
@@ -20,6 +21,7 @@ export function setDPI(canvas, dpi) {
 export let canvasCtx;
 export let marblio;
 export let canvasElement;
+export let drawActions;
 
 addEventListener('DOMContentLoaded', (event) => {
 
@@ -49,52 +51,61 @@ addEventListener('DOMContentLoaded', (event) => {
     //     openFullscreen();
     //     canvasElement.requestPointerLock();
     // });
+    marblio = new Game(canvasCtx); 
+    document.getElementById("high-score").innerText = marblio.highScore
 
-    marblio = new Game(canvasCtx);
+    document.getElementById("new-game").addEventListener("click", (event) => {
+        
+
+        marblio.beginGame();
+    })
+
     
     // const hole = new Hole({points:42 ,pos: [60, 60], game: marblio, winner: false})
     // marblio.marble = marvyn;
     // marblio.holes.push(hole);
     // marblio.addWalls();
 
-    const pauseActions = () => {
+    // const pauseActions = () => {
         
-        // canvasCtx.filter = "blur(20px)"
-        let imgData = canvasCtx.getImageData(0,0, window.innerWidth * (constants.DPI / 96), window.innerHeight * (constants.DPI / 96));
-        createImageBitmap(imgData)
-        .then( result => { 
-            // canvasCtx.drawImage(result, -constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, window.innerWidth + constants.GAME_OFFSET_X, window.innerHeight + constants.GAME_OFFSET_Y ); 
-            // canvasCtx.filter = "none"
-            canvasCtx.beginPath();
-            canvasCtx.font = "100px sans-serif";
-            canvasCtx.fillStyle = "#999999";
-            canvasCtx.textAlign = "center"
-            canvasCtx.fillText("PAUSED", constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2);   
-        })
+    //     // canvasCtx.filter = "blur(20px)"
+    //     let imgData = canvasCtx.getImageData(0,0, window.innerWidth * (constants.DPI / 96), window.innerHeight * (constants.DPI / 96));
+    //     createImageBitmap(imgData)
+    //     .then( result => { 
+    //         // canvasCtx.drawImage(result, -constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, window.innerWidth + constants.GAME_OFFSET_X, window.innerHeight + constants.GAME_OFFSET_Y ); 
+    //         // canvasCtx.filter = "none"
+    //         canvasCtx.beginPath();
+    //         canvasCtx.font = "100px sans-serif";
+    //         canvasCtx.fillStyle = "#999999";
+    //         canvasCtx.textAlign = "center"
+    //         canvasCtx.fillText("PAUSED", constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2);   
+    //     })
         
-    };
+    // };
 
-    const drawActions = () => {
-        // console.log("drawloop");
-        canvasCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        marblio.drawBackground(canvasCtx)
-        
-        
-        marblio.drawScore(canvasCtx);
-        marblio.drawLives(canvasCtx);
-        marblio.drawName(canvasCtx);
-        marblio.drawLevel(marblio.levelReached);
-        marblio.marble.draw(canvasCtx);
-        marblio.marble.drawVector(canvasCtx);
+    drawActions = () => {
+        if (!vars.PAUSED) {
+            canvasCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            marblio.drawBackground(canvasCtx)
+            marblio.drawScore(canvasCtx);
+            marblio.drawLives(canvasCtx);
+            marblio.drawName(canvasCtx);
+            marblio.drawLevel(marblio.levelReached);
+            marblio.marble.draw(canvasCtx);
+            marblio.marble.drawVector(canvasCtx);
+        }
     }
 
     const gameActions = () => {
-        marblio.handleVector(marblio.marble);
-        marblio.marble.updateBoardRotataion();
-        marblio.marble.updateTexture();
-        marblio.handleHoleHit();
-        marblio.handleLoss();
-        marblio.marble.move(marblio.marble.vel);
+        if (!vars.PAUSED) {
+            marblio.handleVector(marblio.marble);
+            marblio.marble.updateBoardRotataion();
+            marblio.marble.updateTexture();
+            marblio.handleHoleHit(marblio.levelReached);
+            marblio.handleLoss();
+            marblio.marble.move(marblio.marble.vel);
+            
+        }
     }
     
     function animate() {  

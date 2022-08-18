@@ -2,6 +2,7 @@ import * as constants from "./constants"
 import Wall from "./wall";
 import Hole from "./hole";
 
+let special = (game) => { game.lives++; game.marble.pos = [650, 415] }
 
 class Maze {
     constructor(optionsHash ) {
@@ -84,15 +85,14 @@ console.log(level2)
 let level3Walls = [].concat(boundryWalls)
 
 let level3Holes = [
-    new Hole({ points: 0, pos: [630, 435], winner: false }),
-    new Hole({ points: 0, pos: [630, 415], winner: false }),
-    new Hole({ points: 0, pos: [630, 360], winner: false }),
-    new Hole({ points: 0, pos: [630, 305], winner: false }),
-    new Hole({ points: 0, pos: [630, 179], winner: false }),
-    new Hole({ points: 0, pos: [630, 129], winner: false }),
-    new Hole({ points: 0, pos: [630, 86], winner: false }),
-    new Hole({ points: 0, pos: [630, 41], winner: false }),
-    new Hole({ points: 0, pos: [670, 435], winner: false }),
+    new Hole({ points: 0, pos: [595, 415], winner: false }),
+    new Hole({ points: 0, pos: [595, 360], winner: false }),
+    new Hole({ points: 0, pos: [595, 305], winner: false }),
+    new Hole({ points: 0, pos: [595, 250], winner: false }),
+    new Hole({ points: 0, pos: [595, 195], winner: false }),
+    new Hole({ points: 0, pos: [595, 140], winner: false }),
+    new Hole({ points: 0, pos: [595, 85], winner: false }),
+    new Hole({ points: 0, pos: [595, 36], winner: false, radius: 18 }), 
     new Hole({ points: 0, pos: [705, 415], winner: false }),
     new Hole({ points: 0, pos: [705, 360], winner: false }),
     new Hole({ points: 0, pos: [705, 305], winner: false }),
@@ -104,10 +104,109 @@ let level3Holes = [
     new Hole({ points: 0, pos: [815, 85], winner: false }),
     new Hole({ points: 0, pos: [870, 85], winner: false }),
     new Hole({ points: 0, pos: [870, 140], winner: false }),
-    
+    new Hole({ points: 0, pos: [870, 195], winner: false }),
+    new Hole({ points: 0, pos: [870, 250], winner: false }),
+    new Hole({ points: 0, pos: [870, 305], winner: false }),
+    new Hole({ points: 0, pos: [870, 360], winner: false }),
+    new Hole({ points: 0, pos: [870, 415], winner: false }),
+    new Hole({ points: 0, pos: [870, 470], winner: false }),
+    new Hole({ points: 0, pos: [870, 580], winner: false }),
+    new Hole({ points: 0, pos: [870, 635], winner: false }),
+    new Hole({ points: 0, pos: [870, 690], winner: false }),
+    new Hole({ points: 0, pos: [815, 690], winner: false }),
+    new Hole({ points: 0, pos: [760, 690], winner: false }),
+    new Hole({ points: 0, pos: [705, 690], winner: false }),
+    new Hole({ points: 0, pos: [650, 690], winner: false }),
+    new Hole({ points: 0, pos: [760, 580], winner: false }),
+    new Hole({ points: 0, pos: [815, 580], winner: false }),
+    new Hole({ points: 0, pos: [705, 580], winner: false }),
+    new Hole({ points: 0, pos: [650, 580], winner: false }),
+    new Hole({ points: 0, pos: [595, 580], winner: false }),
+    new Hole({ points: 0, pos: [595, 690], winner: false }),
+    new Hole({ points: 0, pos: [595, 635], winner: false }),
+    // new Hole({ points: 0, pos: [980, 745], winner: false }),
+    new Hole({ points: 0, pos: [980, 690], winner: false }),
+    new Hole({ points: 0, pos: [980, 635], winner: false }),
+    new Hole({ points: 0, pos: [980, 580], winner: false }),
+    new Hole({ points: 0, pos: [980, 525], winner: false }),
+    new Hole({ points: 0, pos: [980, 470], winner: false }),
+    new Hole({ points: 0, pos: [980, 415], winner: false }),
+    new Hole({ points: 0, pos: [980, 360], winner: false }),
+    new Hole({ points: 0, pos: [980, 305], winner: false }),
+    new Hole({ points: 0, pos: [980, 250], winner: false }),
+    new Hole({ points: 0, pos: [980, 195], winner: false }),
+    new Hole({ points: 0, pos: [980, 140], winner: false }),
+    new Hole({ points: 0, pos: [980, 85], winner: false }),
+    new Hole({ points: 0, pos: [980, 36], winner: false , radius: 18}),
+    new Hole({ points: 0, pos: [705, 470], winner: false }),
+    new Hole({ points: 0, pos: [760, 470], winner: false }),
+    new Hole({ points: 0, pos: [815, 470], winner: false }),
+    new Hole({ points: 0, pos: [870, 470], winner: false }),
+    new Hole({ points: 0, pos: [650, 470], winner: false }),
+    new Hole({ points: 0, pos: [595, 470], winner: false }),
+    new Hole({ points: 0, pos: [815, 470], winner: false }),
+    new Hole({ points: 0, pos: [870, 470], winner: false }),
+    new Hole({ points: 0, pos: [485, 745], winner: false }),
+    new Hole({ points: 0, pos: [485, 690], winner: false }),
+    new Hole({ points: 0, pos: [485, 635], winner: false }),
+    new Hole({ points: 0, pos: [485, 580], winner: false }),
+    new Hole({ points: 0, pos: [485, 525], winner: false }),
+    new Hole({ points: 0, pos: [485, 470], winner: false }),
+    new Hole({ points: 0, pos: [485, 415], winner: false }),
+    new Hole({ points: 0, pos: [485, 360], winner: false }),
+    new Hole({ points: 0, pos: [485, 305], winner: false }),
+    new Hole({ points: 0, pos: [485, 250], winner: false }),
+    new Hole({ points: 0, pos: [485, 195], winner: false }),
+    new Hole({ points: 0, pos: [485, 140], winner: false }),
+    new Hole({ points: 0, pos: [485, 85], winner: false }),
+    new Hole({ points: 0, pos: [365, 33], winner: false, radius: 18 }),
+    new Hole({ points: 0, pos: [365, 690], winner: false }),
+    new Hole({ points: 0, pos: [365, 635], winner: false }),
+    new Hole({ points: 0, pos: [365, 580], winner: false }),
+    new Hole({ points: 0, pos: [365, 525], winner: false }),
+    new Hole({ points: 0, pos: [365, 470], winner: false }),
+    new Hole({ points: 0, pos: [365, 415], winner: false }),
+    new Hole({ points: 0, pos: [365, 360], winner: false }),
+    new Hole({ points: 0, pos: [365, 305], winner: false }),
+    new Hole({ points: 0, pos: [365, 250], winner: false }),
+    new Hole({ points: 0, pos: [365, 195], winner: false }),
+    new Hole({ points: 0, pos: [365, 140], winner: false }),
+    new Hole({ points: 0, pos: [365, 85], winner: false }),
+    new Hole({ points: 100, pos: [185, 150], winner: true , radius:80}),
+    new Hole({
+        special: special,
+        points: "?", pos: [1160, 150], winner: false, radius: 80, 
+        draw: (ctx, pos, radius, points) => {
+            ctx.beginPath();
+            ctx.moveTo(pos[0], pos[1]);
+            ctx.arc(pos[0], pos[1], radius - 4, 0, 2 * Math.PI);
+            let strokeGradient = ctx.createLinearGradient(pos[0], pos[1] - radius, pos[0], pos[1] + radius);
+            strokeGradient.addColorStop(0, '#c0c0c0');
+            strokeGradient.addColorStop(1, 'white');
+            ctx.strokeStyle = strokeGradient;
+            ctx.lineWidth = radius / 2;
+            ctx.stroke();
+            let fillGradient = ctx.createRadialGradient(pos[0], pos[1], radius * 2, pos[0], pos[1] + radius, 0);
+            fillGradient.addColorStop(0, '#990000');
+            // fillGradient.addColorStop(1, '#66bbFF');
+            fillGradient.addColorStop(1, '#dddddd');
+            ctx.fillStyle = fillGradient;
+            ctx.fill();
+            ctx.fillStyle = '#efefef';
+            ctx.beginPath();
+            ctx.ellipse(pos[0], pos[1] + (radius * 1.55), 10, 30, Math.PI / 2, 0, Math.PI * 2);
+            ctx.filter = 'blur(5px)'
+            ctx.fill();
+            ctx.filter = 'none'
+            ctx.fillStyle = 'black';
+            ctx.font = "16px Silkscreen";
+            ctx.textAlign = "center"
+            ctx.fillText(points, pos[0], pos[1] + (radius * 1.6))
+        }
+}),
 ]
-
-export const level3 = new Maze({ walls: level3Walls, holes: level3Holes, levelNum1: 3, levelName: "Getting Harder", startPos: [constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2] })
+console.log(level3Holes)
+export const level3 = new Maze({ walls: level3Walls, holes: level3Holes, levelNum1: 3, levelName: "Getting Harder", startPos: [650, 415] })
 console.log(level2)
 
 export default Maze;
