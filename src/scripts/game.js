@@ -13,7 +13,7 @@ class Game {
         this.marble = [];
         
         this.lives = 3;
-        this.levelReached = 2;
+        this.levelReached = 1;
         this.earnedPoints = 0;
         this.currentLevelScore = 0;
         this.highScore = 0;

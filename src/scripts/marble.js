@@ -269,7 +269,7 @@ class Marble {
         const a = ((this.pos[0] + vel[0]) - hole.pos[0]);
         const b = ((this.pos[1] + vel[1]) - hole.pos[1]);
 
-        return this.radius/10  + hole.radius > Math.sqrt(a ** 2 + b ** 2);
+        return   hole.radius > Math.sqrt(a ** 2 + b ** 2);
 
 
         
