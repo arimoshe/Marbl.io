@@ -35,9 +35,8 @@ class Marble {
         // this.beta = undefined;
         // this.gamma = undefined;
         window.addEventListener('mousemove', (event) => {
-            this.mousePosX = event.offsetX;
-            this.mousePosY = event.offsetY;
-            //(((constants.GAME_DIMENSION_X / 2) + 10) - this.mousePosX)/((constants.GAME_DIMENSION_X / 2))*-10
+            this.mousePosX = event.clientX;
+            this.mousePosY = event.clientY;
         });
         window.addEventListener("deviceorientation",  (event) =>  {
             // console.log (event)
@@ -101,25 +100,31 @@ class Marble {
     // }
     
     drawVector(ctx) {
-        ctx.beginPath();
-        ctx.strokeStyle = "black"
-        ctx.moveTo(constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2);
+    //     ctx.beginPath();
+    //     ctx.strokeStyle = "black"
+    //     ctx.moveTo(constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2);
 
-       if (this.beta) {
-           ctx.lineTo(
-               constants.WINDOW_CENTER_X + (Math.max(Math.min(this.beta / 2.5, 10), -10) * 10),
-               constants.WINDOW_CENTER_Y + (Math.max(Math.min(this.gamma/2.5, 10), -10) * -10)
-           );
-       } else {
-        ctx.lineTo(
-            (constants.GAME_DIMENSION_X / 2) + (((constants.GAME_DIMENSION_X / 2) - (this.mousePosX - constants.GAME_OFFSET_X)) / (constants.GAME_DIMENSION_X / 2)) * -100,
-            (constants.GAME_DIMENSION_Y / 2) + (((constants.GAME_DIMENSION_Y / 2) - (this.mousePosY -  constants.GAME_OFFSET_Y)) / (constants.GAME_DIMENSION_Y / 2)) * -100,
+    //    if (this.beta) {
+    //        ctx.lineTo(
+    //            constants.WINDOW_CENTER_X + (Math.max(Math.min(this.beta / 2.5, 10), -10) * 10),
+    //            constants.WINDOW_CENTER_Y + (Math.max(Math.min(this.gamma/2.5, 10), -10) * -10)
+    //        );
+    //    } else {
+    //     ctx.lineTo(
+    //         (
+    //             (constants.GAME_DIMENSION_X *constants.SCALE)/ 2)
+    //              + ((((constants.GAME_DIMENSION_X*constants.SCALE) / 2) - (this.mousePosX - constants.GAME_OFFSET_X)) 
+    //              / ((constants.GAME_DIMENSION_X * constants.SCALE) / 2)) 
+    //              * -100,
+
+
+    //         ((constants.GAME_DIMENSION_Y * constants.SCALE) / 2) + ((((constants.GAME_DIMENSION_Y * constants.SCALE) / 2) - (this.mousePosY -  constants.GAME_OFFSET_Y)) / ((constants.GAME_DIMENSION_Y * constants.SCALE) / 2)) * -100,
             
-        );
-       }
-        ctx.lineWidth = 5;
+    //     );
+    //    }
+    //     ctx.lineWidth = 5;
 
-        ctx.stroke();
+    //     ctx.stroke();
     }
 
     draw (ctx) {
@@ -228,8 +233,8 @@ class Marble {
 
     updateVectorMouse(){
         // if (this.mousePosX < constants.GAME_DIMENSION_X + 10 && this.mousePosY < constants.GAME_DIMENSION_Y + 10 ) {
-            const horizontalCenter = screen.width / 2;
-            const verticalCenter = constants.GAME_OFFSET_Y + (constants.GAME_DIMENSION_Y / 2)
+            const horizontalCenter = window.innerWidth / 2;
+            const verticalCenter = constants.GAME_OFFSET_Y + ((constants.GAME_DIMENSION_Y * constants.SCALE) / 2)
 
             this.vel[0] = ((horizontalCenter - this.mousePosX) / horizontalCenter) * -20
 
@@ -263,7 +268,8 @@ class Marble {
         
         const a = ((this.pos[0] + vel[0]) - hole.pos[0]);
         const b = ((this.pos[1] + vel[1]) - hole.pos[1]);
-        return this.radius + (hole.radius/10) > Math.sqrt(a ** 2 + b ** 2);
+        console.log(this.radius + hole, Math.sqrt(a ** 2 + b ** 2))
+        return this.radius  + hole.radius > Math.sqrt(a ** 2 + b ** 2);
 
 
         
@@ -271,7 +277,7 @@ class Marble {
     }
 
     colisionDetectedWall(vel) {
-        for (let ele of this.game.walls) {
+        for (let ele of this.game.levels[this.game.levelReached].walls) {
             if (this.willCollideWall(ele, vel)) {
                 return true;
             }
@@ -280,7 +286,8 @@ class Marble {
     }
 
     colisionDetectedHole(vel) {
-        for (let ele of this.game.holes) {
+        for (let ele of this.game.levels[this.game.levelReached].walls) {
+            
             if (this.willCollideHole(ele, this.vel)) {
                 return ele;
             }

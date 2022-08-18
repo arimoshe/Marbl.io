@@ -28,7 +28,7 @@ addEventListener('DOMContentLoaded', (event) => {
 
     const canvasCtx = canvasElement.getContext('2d');
     canvasCtx.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
-    
+    canvasCtx.scale(constants.SCALE, constants.SCALE)
     // if (screen.width<1000) {
     //     canvasCtx.translate(300,160)
     // canvasCtx.scale(.45,.45);
@@ -48,21 +48,21 @@ addEventListener('DOMContentLoaded', (event) => {
     //     canvasElement.requestPointerLock();
     // });
 
-    const marblio = new Game();
+    const marblio = new Game(canvasCtx);
     const marvyn = new Marble({ pos: [constants.MAP_GRID_SIZE * 33.5, constants.MAP_GRID_SIZE * 3], radius: 15, vel: [0, 0] , game: marblio})
-    const hole = new Hole({points:42 ,pos: [60, 60], game: marblio, winner: false})
+    // const hole = new Hole({points:42 ,pos: [60, 60], game: marblio, winner: false})
     marblio.marble = marvyn;
-    marblio.holes.push(hole);
-    marblio.addWalls();
+    // marblio.holes.push(hole);
+    // marblio.addWalls();
 
     const pauseActions = () => {
         
-        canvasCtx.filter = "blur(20px)"
-        let imgData = canvasCtx.getImageData(0, 0, window.innerWidth * (constants.DPI / 96), window.innerHeight * (constants.DPI / 96));
+        // canvasCtx.filter = "blur(20px)"
+        let imgData = canvasCtx.getImageData(0,0, window.innerWidth * (constants.DPI / 96), window.innerHeight * (constants.DPI / 96));
         createImageBitmap(imgData)
         .then( result => { 
-            canvasCtx.drawImage(result, -constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, window.innerWidth, window.innerHeight); 
-            canvasCtx.filter = "none"
+            // canvasCtx.drawImage(result, -constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, window.innerWidth + constants.GAME_OFFSET_X, window.innerHeight + constants.GAME_OFFSET_Y ); 
+            // canvasCtx.filter = "none"
             canvasCtx.beginPath();
             canvasCtx.font = "100px sans-serif";
             canvasCtx.fillStyle = "#999999";
@@ -74,14 +74,15 @@ addEventListener('DOMContentLoaded', (event) => {
 
     const drawActions = () => {
         // console.log("drawloop");
-        canvasCtx.clearRect(0, 0, screen.width, screen.height);
+        canvasCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
         marblio.drawBackground(canvasCtx)
-        hole.draw(canvasCtx, hole.pos, hole.radius, hole.points)
-        marvyn.draw(canvasCtx);
+        
+        
         marblio.drawScore(canvasCtx);
         marblio.drawLives(canvasCtx);
         marblio.drawName(canvasCtx);
-        marblio.drawWalls(canvasCtx);
+        marblio.drawLevel(marblio.levelReached);
+        marvyn.draw(canvasCtx);
         marvyn.drawVector(canvasCtx);
     }
 
@@ -116,7 +117,6 @@ addEventListener('DOMContentLoaded', (event) => {
             clearInterval(gameInterval);
 
         } else {
-            console.log("bad bunny")
             animate();
             clearInterval(gameInterval)
             gameInterval = setInterval(gameActions, 1000 / constants.FRAME_RATE)

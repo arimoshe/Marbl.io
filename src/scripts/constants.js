@@ -1,5 +1,6 @@
 export let PAUSED = false
 export const FRAME_RATE = 60;
+export let SCALE = window.innerWidth/1920;
 export const DPI = 96;
 export const MAP_GRID_X = 84;
 export const MAP_GRID_Y = 49;
@@ -8,13 +9,14 @@ export const GAME_DIMENSION_X = MAP_GRID_X * MAP_GRID_SIZE;
 console.log(GAME_DIMENSION_X);
 export const GAME_DIMENSION_Y = MAP_GRID_Y * MAP_GRID_SIZE;
 console.log(GAME_DIMENSION_Y);
-export let GAME_OFFSET_X = (window.innerWidth - GAME_DIMENSION_X) / 2
-export let GAME_OFFSET_Y = (window.innerHeight - GAME_DIMENSION_Y) - 20
+console.log("GAME_OFFSET_X", (window.innerWidth - (GAME_DIMENSION_X * SCALE)))
+export let GAME_OFFSET_X = ((window.innerWidth - (GAME_DIMENSION_X * SCALE)) / 2) 
+export let GAME_OFFSET_Y = ((window.innerHeight - (GAME_DIMENSION_Y * SCALE)) - 20)
 export let GAME_REL_CENTER_X = undefined
 export let GAME_REL_CENTER_Y = undefined
 
-export let WINDOW_CENTER_X = screen.width / 2;
-export let WINDOW_CENTER_Y = screen.height / 2;
+export let WINDOW_CENTER_X = window.innerWidth / 2;
+export let WINDOW_CENTER_Y = window.innerHeight / 2;
 
 
 export let WINDOW_REL_CENTER_GAME_X = undefined;
@@ -49,6 +51,7 @@ document.addEventListener("mouseleave", (event) => {
 
 document.addEventListener("click", (event) => {
     PAUSED = false;
+    console.log(`new Hole({ points: 0, pos: [${event.clientX - GAME_OFFSET_X}, ${event.clientY - GAME_OFFSET_Y -10}], winner: false }),`)
     window.dispatchEvent(pauseEvent);
    
 });

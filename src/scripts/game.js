@@ -1,81 +1,68 @@
 import * as constants from "./constants"
 import * as utils from "./utils"
 import Wall from "./wall";
+import Maze from "./maze";
+import * as mazes from "./maze";
+
 import * as texture from "./texture" 
 
 
 class Game {
-    constructor() {
-        this.walls = [];
+    constructor(context) {
+        this.levels = { 1: mazes.level1, 2: mazes.level2 }
         this.marble = [];
-        this.holes = [];
+        
         this.lives = 3;
-        this.levelReached = 1;
+        this.levelReached = 2;
         this.earnedPoints = 0;
         this.currentLevelScore = 0;
-        this.highScore = 0
+        this.highScore = 0;
+        this.context = context;
     }
 
 
     
 
-    addWalls() {
-        for (let i = 0; i < constants.MAP_GRID_Y; i++) {
-            let wallTop = new Wall({ pos: utils.translatePos([0, constants.MAP_GRID_SIZE * i]) });
-            this.walls.push(wallTop);
+    drawLevelWalls(levelNum) {
+        for (let ele of this.levels[levelNum].walls) {
             
-        }
-        for (let j = 1; j < constants.MAP_GRID_X; j++) {
-            this.walls.push(new Wall({ pos: utils.translatePos([constants.MAP_GRID_SIZE * j, 0]) }))
-        }
-        for (let k = 0; k < constants.MAP_GRID_X; k++) {
-            this.walls.push(new Wall({ pos: utils.translatePos([k * constants.MAP_GRID_SIZE, constants.GAME_DIMENSION_Y - constants.MAP_GRID_SIZE] )}))
-        }
-        for (let l = 0; l < constants.MAP_GRID_Y; l++) {
-            this.walls.push(new Wall({ pos: utils.translatePos([constants.GAME_DIMENSION_X - constants.MAP_GRID_SIZE, l * constants.MAP_GRID_SIZE]) }))
-        }
-        for (let m = 1; m <= 7; m++) {
-            if (m % 2 === 0) {
-                for (let n = 0; n <= constants.MAP_GRID_X-15; n++) {
-                    this.walls.push(new Wall({ pos: utils.translatePos([n *constants.MAP_GRID_SIZE , m * constants.MAP_GRID_SIZE * 6])}))
-                }
+            if (ele.texture.image) {
+                this.context.drawImage(ele.texture.image, ele.texture.sx, ele.texture.sy, ele.texture.swidth, ele.texture.sheight, ele.pos[0], ele.pos[1], ele.texture.width, ele.texture.height)
             } else {
-                for (let n = 15; n < constants.MAP_GRID_X; n++) {
-                    this.walls.push(new Wall({ pos: utils.translatePos([n * constants.MAP_GRID_SIZE, m * constants.MAP_GRID_SIZE * 6]) }))
-                }
+                this.context.beginPath();
+                this.context.rect(ele.pos[0], ele.pos[1], ele.size, ele.size);
+                this.context.fill();
             }
-            
-
         }
+    }
+
+
+    drawLevelHoles(levelNum){
+        for (let ele of this.levels[levelNum].holes) {
+            ele.draw(this.context, ele.pos, ele.radius, ele.points)
+        }
+    }
+
+    drawLevel(levelNum) {
+        
+        this.drawLevelWalls(levelNum);
+        this.drawLevelHoles(levelNum);
 
     }
 
     drawBackground(ctx) {
         ctx.beginPath();
-        ctx.rect(-constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, screen.width, screen.height);
+        ctx.rect(-constants.GAME_OFFSET_X / constants.SCALE, -constants.GAME_OFFSET_Y / constants.SCALE, window.innerWidth / constants.SCALE, window.innerHeight / constants.SCALE);
         ctx.fillStyle = "grey";
         ctx.fill();
         ctx.beginPath();
-        ctx.rect(utils.translatePosX(0), utils.translatePosY(0), constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y);
+        ctx.rect(0, 0, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y);
         ctx.fillStyle = "#efefef";
         ctx.fill();
         
     }
 
-    drawWalls(ctx) {
-        
-        for (let ele of this.walls) {
-            
-            if (ele.texture.image) {
-
-                ctx.drawImage(ele.texture.image, ele.texture.sx, ele.texture.sy, ele.texture.swidth, ele.texture.sheight, ele.pos[0], ele.pos[1], ele.texture.width, ele.texture.height)
-            } else {
-                ctx.beginPath();
-                ctx.rect(ele.pos[0],ele.pos[1], ele.size, ele.size);
-                ctx.fill();
-            }
-        }
-    }
+    
 
     handleVector (marble){
         // alert(marble.beta)
@@ -110,10 +97,10 @@ class Game {
     drawScore(ctx) {
         ctx.beginPath();
         ctx.font = "16px Silkscreen";
-        ctx.fillStyle = "#e0e0e0";;
-        ctx.fillText("Score", 3 * (window.innerWidth - constants.GAME_OFFSET_X) / 4, - 70 );
+        ctx.fillStyle = "#e0e0e0";
+        ctx.fillText("Score", constants.GAME_DIMENSION_X * .85, - 70 );
         ctx.font = "60px Silkscreen";
-        ctx.fillText(this.earnedPoints + this.currentLevelScore, 3 * (window.innerWidth - constants.GAME_OFFSET_X) / 4, -20);
+        ctx.fillText(this.earnedPoints + this.currentLevelScore, constants.GAME_DIMENSION_X  * .85 , -20);
 
     }
     
@@ -123,11 +110,11 @@ class Game {
         
         ctx.font = "16px Silkscreen";
         ctx.fillStyle = "#e0e0e0";
-        ctx.fillText("Lives", (window.innerWidth / 4) - constants.GAME_OFFSET_X, -70);
+        ctx.fillText("Lives", constants.GAME_DIMENSION_X * .15, -70);
         for (let i=0; i<this.lives; i++) {
             
             if (texture.HEART_IMG) {
-                ctx.drawImage(texture.HEART_IMG, ((screen.width / 4 - this.lives * 35) + 70 * i) - constants.GAME_OFFSET_X, -65)
+                ctx.drawImage(texture.HEART_IMG, (constants.GAME_DIMENSION_X * .075) + (70 * i), -65)
             }
         }
     }
