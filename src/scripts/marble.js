@@ -39,18 +39,18 @@ class Marble {
             this.mousePosY = event.clientY;
         });
         window.addEventListener("deviceorientation",  (event) =>  {
-            // console.log (event)
-            const absolute = event.absolute;
-            const alpha = event.alpha;
-            const beta = event.beta;
-            const gamma = event.gamma;
-            this.alpha = lowPass(this.alpha, event.alpha, 0.8);
-            this.beta = lowPass(this.beta, event.beta, 0.8);
-            this.gamma = lowPass(this.gamma, event.gamma, 0.8);
-            this.vel[0] = Math.max(Math.min(event.beta / 2.5, 10), -10) * -1;
-            this.vel[1] = Math.max(Math.min(event.gamma / 2.5, 10), -10) ;
             
-            console.log("alpha:", alpha, "beta:", beta, "gamma:", gamma)
+            this.alpha = event.alpha
+            this.beta = event.beta;
+            this.gamma = event.gamma;
+            // this.alpha = lowPass(this.alpha, event.alpha, 0.8);
+            // this.beta = lowPass(this.beta, event.beta, 0.8);
+            // this.gamma = lowPass(this.gamma, event.gamma, 0.8);
+            // alert(this.beta)
+            // this.vel[0] = Math.max(Math.min(event.beta / 2.5, 10), -10) * -1;
+            // this.vel[1] = Math.max(Math.min(event.gamma / 2.5, 10), -10) ;
+            
+            // console.log("alpha:", alpha, "beta:", beta, "gamma:", gamma)
         }, false);
         
 
@@ -69,8 +69,8 @@ class Marble {
             );
             // gradient.addColorStop(0, 'rgba(0, 255, 0, 1)');
             // gradient.addColorStop(1, 'transparent');
-            gradient.addColorStop(0, 'white');
-            gradient.addColorStop(1, 'black');
+            gradient.addColorStop(0, 'cornflowerblue');
+            gradient.addColorStop(1, 'blue');
             return gradient;
         }
         // this.texture2 = (canvasCtx, context) => {
@@ -88,16 +88,7 @@ class Marble {
         // }
     }
  
-    // translateScreenCoordToGameCoords (position) {
-    //     console.log("position:",position) 
-    //     console.log([position[0] - document.getElementById("main-app").getBoundingClientRect().left, position[1] - document.getElementById("main-app").getBoundingClientRect().top])
-    //         // [
-    //         //     position[0] - document.getElementById("main-app").getBoundingClientRect().left, 
-    //         //     position[1] - document.getElementById("main-app").getBoundingClientRect().top
-    //         // ]
-    //         // )
-    //     return [position[0] - document.getElementById("main-app").getBoundingClientRect().left, position[1] - document.getElementById("main-app").getBoundingClientRect().top]
-    // }
+   
     
     drawVector(ctx) {
     //     ctx.beginPath();
@@ -224,9 +215,10 @@ class Marble {
     
 
     updateVectorOrientation() {
-        if (this.beta && this.gamma) {
+        if (this.beta) {
+            // alert(this.beta)
             this.vel[0] = Math.max(Math.min(this.beta/2.5, 10), -10)  ;
-            this.vel[1] = Math.max(Math.min(this.gamma / 2.5, 10), -10)  ;
+            this.vel[1] = Math.max(Math.min(this.gamma / -2.5, 10), -10)  ;
         }
     }
     
@@ -237,6 +229,7 @@ class Marble {
     }
 
     updateVectorMouse(){
+        if (!this.beta) {
         // if (this.mousePosX < constants.GAME_DIMENSION_X + 10 && this.mousePosY < constants.GAME_DIMENSION_Y + 10 ) {
             const horizontalCenter = window.innerWidth / 2;
             const verticalCenter = constants.GAME_OFFSET_Y + ((constants.GAME_DIMENSION_Y * constants.SCALE) / 2)
@@ -244,7 +237,7 @@ class Marble {
             this.vel[0] = ((horizontalCenter - this.mousePosX) / horizontalCenter) * -20
 
             this.vel[1] = ((verticalCenter - this.mousePosY) / verticalCenter) * -20
-            
+        }
             
         
     }   

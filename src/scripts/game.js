@@ -15,7 +15,7 @@ class Game {
         
         
         this.lives = 3;
-        this.levelReached = 1;
+        this.levelReached = 3;
         this.earnedPoints = 0;
         this.currentLevelScore = 0;
         this.highScore = 0;
@@ -83,6 +83,7 @@ class Game {
         if (hole && hole.winner) {
             this.earnedPoints += hole.points;
             this.levelReached += 1;
+            this.currentLevelScore = 0;
             alert("Nice Job!");
             this.marble.pos = [constants.GAME_DIMENSION_X - 60, 60];
         }
@@ -91,6 +92,7 @@ class Game {
             if (hole.points > this.currentLevelScore) { this.currentLevelScore = hole.points;}
             this.lives -= 1;
             this.marble.pos = [constants.GAME_DIMENSION_X - 60, 60];
+            console.log(this.earnedPoints)
         }
         else {
 

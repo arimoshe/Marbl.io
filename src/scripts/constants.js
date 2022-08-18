@@ -2,7 +2,7 @@ import * as ctx from "../index"
 import Hole from "./hole";
 
 export let PAUSED = false
-export const FRAME_RATE = 60;
+export const FRAME_RATE = .1;
 export let SCALE = window.innerHeight/1080*.9;
 export const DPI = 96;
 export const MAP_GRID_X = 84;
@@ -28,48 +28,50 @@ addEventListener('DOMContentLoaded', (event) => {
     GAME_REL_CENTER_X = document.getElementById("main-app").width /2
     GAME_REL_CENTER_Y = document.getElementById("main-app").width /2
 });
-const pauseEvent = new Event('pauseToggle'); 
+// const pauseEvent = new Event('pauseToggle'); 
 
 
-window.addEventListener("blur", (event) => {
-    let tempPause = PAUSED;
-    PAUSED = true;
-    if (!tempPause) { window.dispatchEvent(pauseEvent); }
-})
+// window.addEventListener("blur", (event) => {
+//     let tempPause = PAUSED;
+//     PAUSED = true;
+//     if (!tempPause) { window.dispatchEvent(pauseEvent); }
+// })
 
-window.addEventListener("focus", (event) => {
-    let tempPause = PAUSED
-    PAUSED = false;
-    if (tempPause) { window.dispatchEvent(pauseEvent); }
-})
-document.addEventListener("mouseleave", (event) => {
-    if (event.clientY <= 1 || event.clientX <= 1 || (event.clientX >= window.innerWidth-1 || event.clientY >= window.innerHeight-1)) {
-        let tempPause = PAUSED;
-        PAUSED = true;
-        if (!tempPause) { window.dispatchEvent(pauseEvent); }
-    }
-});
+// window.addEventListener("focus", (event) => {
+//     let tempPause = PAUSED
+//     PAUSED = false;
+//     if (tempPause) { window.dispatchEvent(pauseEvent); }
+// })
+// document.addEventListener("mouseleave", (event) => {
+//     if (event.clientY <= 1 || event.clientX <= 1 || (event.clientX >= window.innerWidth-1 || event.clientY >= window.innerHeight-1)) {
+//         let tempPause = PAUSED;
+//         PAUSED = true;
+//         if (!tempPause) { window.dispatchEvent(pauseEvent); }
+//     }
+// });
 // document.addEventListener("mouseenter", (event) => {
 //     PAUSED = false;
 //     window.dispatchEvent(pauseEvent);
 // });
 
 document.addEventListener("click", event => {
-    let tempPause = PAUSED
-    PAUSED = false; 
-    if (tempPause) {window.dispatchEvent(pauseEvent);}
-    console.log(`new Hole([${Math.floor((event.clientX - GAME_OFFSET_X - 10) * (1 / SCALE))}, ${Math.floor((event.clientY - GAME_OFFSET_Y - 10) * (1 / SCALE))}], winner: false },`)
-    ctx.marblio.levels[ctx.marblio.levelReached].holes.push(new Hole({ points: 0, pos: [(event.clientX - GAME_OFFSET_X - 10) * (1 / SCALE), (event.clientY - GAME_OFFSET_Y - 10) * (1 / SCALE)], winner: false }))
+    // let tempPause = PAUSED
+    // PAUSED = false; 
+    // if (tempPause) {window.dispatchEvent(pauseEvent);}
+    console.log(`new Hole({points: 0, pos:[${Math.floor((event.clientX - GAME_OFFSET_X ) * (1 / SCALE)-10)}, ${Math.floor((event.clientY - GAME_OFFSET_Y ) * (1 / SCALE)+5)}], winner: false }),`)
+    ctx.marblio.levels[ctx.marblio.levelReached].holes.push(new Hole({ points: 0, pos: [(event.clientX - GAME_OFFSET_X ) * (1 / SCALE)-10, (event.clientY - GAME_OFFSET_Y) * (1 / SCALE)+5], winner: false }))
     
 });
 
 
-// window.addEventListener('resize', (event) => {
-
-//     SCALE = window.innerHeight / 1080 * .9;
-//     console.log(ctx.canvasCtx)
-//     ctx.canvasCtx.scale(SCALE, SCALE)
-//     console.log(ctx.canvasCtx)
-//     GAME_OFFSET_X = ((window.innerWidth - (GAME_DIMENSION_X * SCALE)) / 2);
-//     GAME_OFFSET_Y = (((window.innerHeight - (GAME_DIMENSION_Y * SCALE)) / 2));
-// })
+window.addEventListener('resize', (event) => {
+    canvasElement.width = window.innerWidth 
+    canvasElement.height = window.innerHeight 
+    setDPI(canvasElement, DPI)
+    SCALE = window.innerHeight / 1080 * .9;
+    console.log(ctx.canvasCtx)
+    ctx.canvasCtx.scale(SCALE, SCALE)
+    console.log(ctx.canvasCtx)
+    GAME_OFFSET_X = ((window.innerWidth - (GAME_DIMENSION_X * SCALE)) / 2);
+    GAME_OFFSET_Y = (((window.innerHeight - (GAME_DIMENSION_Y * SCALE)) / 2));
+})

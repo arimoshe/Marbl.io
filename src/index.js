@@ -5,7 +5,7 @@ import Game from "./scripts/game";
 import Hole from "./scripts/hole";
 
 
-function setDPI(canvas, dpi) {
+export function setDPI(canvas, dpi) {
     // Set up CSS size.
     canvas.style.width = canvas.style.width || canvas.width + 'px';
     canvas.style.height = canvas.style.height || canvas.height + 'px';
@@ -17,12 +17,13 @@ function setDPI(canvas, dpi) {
     var ctx = canvas.getContext('2d');
     ctx.scale(scaleFactor, scaleFactor);
 }
-export let canvasCtx
-export let marblio
+export let canvasCtx;
+export let marblio;
+export let canvasElement;
 
 addEventListener('DOMContentLoaded', (event) => {
 
-    const canvasElement = document.getElementById("main-app");
+    canvasElement = document.getElementById("main-app");
     canvasElement.width = window.innerWidth //1920; //constants.GAME_DIMENSION_X;
     canvasElement.height = window.innerHeight //1080//constants.GAME_DIMENSION_Y;
     setDPI(canvasElement, constants.DPI)
@@ -113,18 +114,18 @@ addEventListener('DOMContentLoaded', (event) => {
     // }
   
     
-    window.addEventListener("pauseToggle", (e) => {
-        if (constants.PAUSED) {
-            clearInterval(gameInterval);
-            pauseActions();
+    // window.addEventListener("pauseToggle", (e) => {
+    //     if (constants.PAUSED) {
+    //         clearInterval(gameInterval);
+    //         pauseActions();
             
 
-        } else {
-            animate();
-            clearInterval(gameInterval)
-            gameInterval = setInterval(gameActions, 1000 / constants.FRAME_RATE)
-        }
-    })
+    //     } else {
+    //         animate();
+    //         clearInterval(gameInterval)
+    //         gameInterval = setInterval(gameActions, 1000 / constants.FRAME_RATE)
+    //     }
+    // })
 
  });
 
