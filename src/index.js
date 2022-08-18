@@ -101,7 +101,7 @@ addEventListener('DOMContentLoaded', (event) => {
             marblio.handleVector(marblio.marble);
             marblio.marble.updateBoardRotataion();
             marblio.marble.updateTexture();
-            marblio.handleHoleHit(marblio.levelReached);
+            marblio.handleHoleHit();
             marblio.handleLoss();
             marblio.marble.move(marblio.marble.vel);
             

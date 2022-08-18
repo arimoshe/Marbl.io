@@ -99,10 +99,12 @@ class Game {
             this.levelReached += 1;
             this.currentLevelScore = 0;
             alert("Nice Job!");
+            alert(this.levels[this.levelReached].startPos)
                 this.marble.pos = [constants.GAME_DIMENSION_X - 60, 60];
             this.pauseAndStartButton();
         }
         else if (hole && !hole.winner) {
+                alert(this.levels[this.levelReached].startPos)
                 this.marble.pos = [constants.GAME_DIMENSION_X - 60, 60];
             alert("Sorry, You didn't quite make it! ")
             if (hole.points > this.currentLevelScore) { this.currentLevelScore = hole.points;}
@@ -170,11 +172,6 @@ class Game {
             if (this.earnedPoints > this.highScore) {
                 this.highScore = this.earnedPoints
             }
-            document.getElementById("high-score").innerText = marblio.highScore
-            let splash = document.getElementById("splash-container");
-            let canvas = document.getElementById("main-app");
-            splash.style.display = "inherit";
-            canvas.style.display = "none";
             this.resetGame()
         }
     }
