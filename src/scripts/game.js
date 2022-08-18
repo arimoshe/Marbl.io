@@ -99,12 +99,12 @@ class Game {
             this.levelReached += 1;
             this.currentLevelScore = 0;
             alert("Nice Job!");
-            alert(this.levels[this.levelReached].startPos)
+            
                 this.marble.pos = [constants.GAME_DIMENSION_X - 60, 60];
             this.pauseAndStartButton();
         }
         else if (hole && !hole.winner) {
-                alert(this.levels[this.levelReached].startPos)
+                
                 this.marble.pos = [constants.GAME_DIMENSION_X - 60, 60];
             alert("Sorry, You didn't quite make it! ")
             if (hole.points > this.currentLevelScore) { this.currentLevelScore = hole.points;}
