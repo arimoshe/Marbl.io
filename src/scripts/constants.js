@@ -1,6 +1,9 @@
+import * as ctx from "../index"
+
+
 export let PAUSED = false
 export const FRAME_RATE = 60;
-export let SCALE = window.innerWidth/1920*.8;
+export let SCALE = window.innerHeight/1080*.9;
 export const DPI = 96;
 export const MAP_GRID_X = 84;
 export const MAP_GRID_Y = 49;
@@ -9,9 +12,8 @@ export const GAME_DIMENSION_X = MAP_GRID_X * MAP_GRID_SIZE;
 console.log(GAME_DIMENSION_X);
 export const GAME_DIMENSION_Y = MAP_GRID_Y * MAP_GRID_SIZE;
 console.log(GAME_DIMENSION_Y);
-console.log("GAME_OFFSET_X", (window.innerWidth - (GAME_DIMENSION_X * SCALE)))
 export let GAME_OFFSET_X = ((window.innerWidth - (GAME_DIMENSION_X * SCALE)) / 2) 
-export let GAME_OFFSET_Y = (((window.innerHeight - (GAME_DIMENSION_Y * SCALE)) /2) + (150 * SCALE))
+export let GAME_OFFSET_Y = (((window.innerHeight - (GAME_DIMENSION_Y * SCALE)) /2))
 export let GAME_REL_CENTER_X = undefined
 export let GAME_REL_CENTER_Y = undefined
 
@@ -49,12 +51,19 @@ document.addEventListener("mouseleave", (event) => {
 //     window.dispatchEvent(pauseEvent);
 // });
 
-document.addEventListener("click", (event) => {
+document.addEventListener("click", event => {
     PAUSED = false;
-    console.log(`new Hole({ points: 0, pos: [${event.clientX - GAME_OFFSET_X}, ${event.clientY - GAME_OFFSET_Y -10}], winner: false }),`)
+console.log(`new Hole({ points: 0, pos: [${event.clientX - GAME_OFFSET_X}, ${event.clientY - GAME_OFFSET_Y - 10}], winner: false }),`);
     window.dispatchEvent(pauseEvent);
-   
 });
-// window.addEventListener('resize', (event) => { 
-//    updateVectorOrientation()  WINDOW_CENTER_X 
+
+
+// window.addEventListener('resize', (event) => {
+
+//     SCALE = window.innerHeight / 1080 * .9;
+//     console.log(ctx.canvasCtx)
+//     ctx.canvasCtx.scale(SCALE, SCALE)
+//     console.log(ctx.canvasCtx)
+//     GAME_OFFSET_X = ((window.innerWidth - (GAME_DIMENSION_X * SCALE)) / 2);
+//     GAME_OFFSET_Y = (((window.innerHeight - (GAME_DIMENSION_Y * SCALE)) / 2));
 // })

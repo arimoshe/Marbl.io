@@ -19,9 +19,16 @@ let HOLE_DEFAULTS = {
         fillGradient.addColorStop(1, '#dddddd');
         ctx.fillStyle = fillGradient;
         ctx.fill();
+        ctx.fillStyle = '#efefef';
+        ctx.beginPath();
+        ctx.ellipse(pos[0], pos[1] + (radius * 1.55), 10, 30, Math.PI/2, 0, Math.PI * 2);
+        ctx.filter = 'blur(5px)'
+        ctx.fill();
+        ctx.filter = 'none'
+        ctx.fillStyle = 'black';
         ctx.font = "16px Silkscreen";
         ctx.textAlign = "center"
-        ctx.fillText(points, pos[0], pos[1] + (radius * 2.2))
+        ctx.fillText(points, pos[0], pos[1] + (radius * 1.6))
     }
 }
 

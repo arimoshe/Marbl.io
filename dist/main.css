@@ -16,10 +16,10 @@ body {
 }
 
 body {
-  overflow: hidden;
+  transform: perspective(1200px);
 }
 
-#fullscreen {
+fullscreen {
   position: absolute;
   top: 10px;
   left: 10px;

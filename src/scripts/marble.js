@@ -230,6 +230,11 @@ class Marble {
         }
     }
     
+    updateBoardRotataion(){
+        // console.log(
+        // document.getElementById("canvas-container").style.transform = 'rotateY(30deg)'
+        document.getElementsByTagName("body")[0].style.transform = 'perspective(2000px) rotateY(' + this.vel[0]/2 + 'deg) rotateX(' +-this.vel[1]/2 + 'deg'
+    }
 
     updateVectorMouse(){
         // if (this.mousePosX < constants.GAME_DIMENSION_X + 10 && this.mousePosY < constants.GAME_DIMENSION_Y + 10 ) {
@@ -264,12 +269,12 @@ class Marble {
 
     }
 
-    willCollideHole(hole, vel) {
+    hasCollidedHole(hole) {
         
-        const a = ((this.pos[0] + vel[0]) - hole.pos[0]);
-        const b = ((this.pos[1] + vel[1]) - hole.pos[1]);
+        const a = (this.pos[0] - hole.pos[0]);
+        const b = (this.pos[1] - hole.pos[1]);
 
-        return   hole.radius > Math.sqrt(a ** 2 + b ** 2);
+        return  hole.radius > Math.sqrt(a ** 2 + b ** 2);
 
 
         
@@ -288,7 +293,7 @@ class Marble {
     colisionDetectedHole(vel) {
         for (let ele of this.game.levels[this.game.levelReached].holes) {
             
-            if (this.willCollideHole(ele, this.vel)) {
+            if (this.hasCollidedHole(ele)) {
                 return ele;
             }
         }

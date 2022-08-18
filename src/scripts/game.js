@@ -1,5 +1,6 @@
 import * as constants from "./constants"
 import * as utils from "./utils"
+import Marble from "./marble";
 import Wall from "./wall";
 import Maze from "./maze";
 import * as mazes from "./maze";
@@ -10,7 +11,8 @@ import * as texture from "./texture"
 class Game {
     constructor(context) {
         this.levels = { 1: mazes.level1, 2: mazes.level2 }
-        this.marble = [];
+       
+        
         
         this.lives = 3;
         this.levelReached = 1;
@@ -18,6 +20,7 @@ class Game {
         this.currentLevelScore = 0;
         this.highScore = 0;
         this.context = context;
+        this.marble = new Marble({ pos: this.levels[this.levelReached].startPos, radius: 15, vel: [0, 0], game: this });
     }
 
 
@@ -81,13 +84,13 @@ class Game {
             this.earnedPoints += hole.points;
             this.levelReached += 1;
             alert("Nice Job!");
-            this.marble.pos = utils.translatePos([constants.GAME_DIMENSION_X - 60, 60]);
+            this.marble.pos = [constants.GAME_DIMENSION_X - 60, 60];
         }
         else if (hole && !hole.winner) {
             alert("Sorry, You didn't quite make it! ")
             if (hole.points > this.currentLevelScore) { this.currentLevelScore = hole.points;}
             this.lives -= 1;
-            this.marble.pos = utils.translatePos([constants.GAME_DIMENSION_X - 60, 60]);
+            this.marble.pos = [constants.GAME_DIMENSION_X - 60, 60];
         }
         else {
 

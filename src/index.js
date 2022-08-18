@@ -17,7 +17,7 @@ function setDPI(canvas, dpi) {
     var ctx = canvas.getContext('2d');
     ctx.scale(scaleFactor, scaleFactor);
 }
-
+export let canvasCtx
 
 addEventListener('DOMContentLoaded', (event) => {
 
@@ -26,7 +26,7 @@ addEventListener('DOMContentLoaded', (event) => {
     canvasElement.height = window.innerHeight //1080//constants.GAME_DIMENSION_Y;
     setDPI(canvasElement, constants.DPI)
 
-    const canvasCtx = canvasElement.getContext('2d');
+    canvasCtx = canvasElement.getContext('2d');
     canvasCtx.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
     canvasCtx.scale(constants.SCALE, constants.SCALE)
     // if (screen.width<1000) {
@@ -49,9 +49,9 @@ addEventListener('DOMContentLoaded', (event) => {
     // });
 
     const marblio = new Game(canvasCtx);
-    const marvyn = new Marble({ pos: [constants.MAP_GRID_SIZE * 33.5, constants.MAP_GRID_SIZE * 3], radius: 15, vel: [0, 0] , game: marblio})
+    
     // const hole = new Hole({points:42 ,pos: [60, 60], game: marblio, winner: false})
-    marblio.marble = marvyn;
+    // marblio.marble = marvyn;
     // marblio.holes.push(hole);
     // marblio.addWalls();
 
@@ -82,15 +82,17 @@ addEventListener('DOMContentLoaded', (event) => {
         marblio.drawLives(canvasCtx);
         marblio.drawName(canvasCtx);
         marblio.drawLevel(marblio.levelReached);
-        marvyn.draw(canvasCtx);
-        marvyn.drawVector(canvasCtx);
+        marblio.marble.draw(canvasCtx);
+        marblio.marble.drawVector(canvasCtx);
     }
 
     const gameActions = () => {
-        marblio.handleVector(marvyn);
-        marvyn.updateTexture();
-        marblio.handleHoleHit()
-        marvyn.move(marvyn.vel);
+        marblio.handleVector(marblio.marble);
+        marblio.marble.updateBoardRotataion();
+        marblio.marble.updateTexture();
+        marblio.handleHoleHit();
+        marblio.handleLoss();
+        marblio.marble.move(marblio.marble.vel);
     }
     
     function animate() {  
@@ -124,3 +126,4 @@ addEventListener('DOMContentLoaded', (event) => {
     })
 
  });
+
