@@ -268,8 +268,8 @@ class Marble {
         
         const a = ((this.pos[0] + vel[0]) - hole.pos[0]);
         const b = ((this.pos[1] + vel[1]) - hole.pos[1]);
-        console.log(this.radius + hole, Math.sqrt(a ** 2 + b ** 2))
-        return this.radius  + hole.radius > Math.sqrt(a ** 2 + b ** 2);
+
+        return this.radius/10  + hole.radius > Math.sqrt(a ** 2 + b ** 2);
 
 
         
@@ -286,7 +286,7 @@ class Marble {
     }
 
     colisionDetectedHole(vel) {
-        for (let ele of this.game.levels[this.game.levelReached].walls) {
+        for (let ele of this.game.levels[this.game.levelReached].holes) {
             
             if (this.willCollideHole(ele, this.vel)) {
                 return ele;
