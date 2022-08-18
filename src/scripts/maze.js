@@ -67,4 +67,31 @@ let level2Holes = [
 export const level2 = new Maze({ walls: level2Walls, holes: level2Holes, levelNum1: 1, levelName: "Getting Harder", startPos: [constants.GAME_DIMENSION_X -60, 60] })
 console.log(level2)
 
+
+let level3Walls = [].concat(boundryWalls)
+
+let level3Holes = [
+    new Hole({ points: 100, pos: [1283, 729], winner: true }),
+    new Hole({ points: 12, pos: [60, 60], winner: false, radius: 35 }),
+    new Hole({ points: 12, pos: [205, 111], winner: false, radius: 27 }),
+    new Hole({ points: 23, pos: [438, 137], winner: false }),
+    new Hole({ points: 28, pos: [788, 173], winner: false }),
+    new Hole({ points: 45, pos: [245, 230], winner: false }),
+    new Hole({ points: 100, pos: [1283, 729], winner: true }),
+    new Hole({ points: 12, pos: [60, 60], winner: false, radius: 35 }),
+    new Hole({ points: 12, pos: [205, 111], winner: false, radius: 27 }),
+    new Hole({ points: 23, pos: [438, 137], winner: false }),
+    new Hole({ points: 28, pos: [788, 173], winner: false }),
+    new Hole({ points: 45, pos: [245, 230], winner: false }),
+    new Hole({ points: 100, pos: [1283, 729], winner: true }),
+    new Hole({ points: 12, pos: [60, 60], winner: false, radius: 35 }),
+    new Hole({ points: 12, pos: [205, 111], winner: false, radius: 27 }),
+    new Hole({ points: 23, pos: [438, 137], winner: false }),
+    new Hole({ points: 28, pos: [788, 173], winner: false }),
+    new Hole({ points: 45, pos: [245, 230], winner: false })
+]
+    
+export const level3 = new Maze({ walls: level3Walls, holes: level3Holes, levelNum1: 3, levelName: "Getting Harder", startPos: [constants.GAME_DIMENSION_X - 60, 60] })
+console.log(level2)
+
 export default Maze;

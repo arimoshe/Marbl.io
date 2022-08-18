@@ -10,7 +10,7 @@ import * as texture from "./texture"
 
 class Game {
     constructor(context) {
-        this.levels = { 1: mazes.level1, 2: mazes.level2 }
+        this.levels = { 1: mazes.level1, 2: mazes.level2, 3: mazes.level3}
        
         
         

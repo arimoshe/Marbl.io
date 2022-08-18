@@ -18,6 +18,7 @@ function setDPI(canvas, dpi) {
     ctx.scale(scaleFactor, scaleFactor);
 }
 export let canvasCtx
+export let marblio
 
 addEventListener('DOMContentLoaded', (event) => {
 
@@ -48,7 +49,7 @@ addEventListener('DOMContentLoaded', (event) => {
     //     canvasElement.requestPointerLock();
     // });
 
-    const marblio = new Game(canvasCtx);
+    marblio = new Game(canvasCtx);
     
     // const hole = new Hole({points:42 ,pos: [60, 60], game: marblio, winner: false})
     // marblio.marble = marvyn;
@@ -114,9 +115,9 @@ addEventListener('DOMContentLoaded', (event) => {
     
     window.addEventListener("pauseToggle", (e) => {
         if (constants.PAUSED) {
-
-            pauseActions();
             clearInterval(gameInterval);
+            pauseActions();
+            
 
         } else {
             animate();
@@ -126,4 +127,6 @@ addEventListener('DOMContentLoaded', (event) => {
     })
 
  });
+
+
 

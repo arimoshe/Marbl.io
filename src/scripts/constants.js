@@ -1,5 +1,5 @@
 import * as ctx from "../index"
-
+import Hole from "./hole";
 
 export let PAUSED = false
 export const FRAME_RATE = 60;
@@ -32,18 +32,21 @@ const pauseEvent = new Event('pauseToggle');
 
 
 window.addEventListener("blur", (event) => {
+    let tempPause = PAUSED;
     PAUSED = true;
-    window.dispatchEvent(pauseEvent);
+    if (!tempPause) { window.dispatchEvent(pauseEvent); }
 })
 
 window.addEventListener("focus", (event) => {
+    let tempPause = PAUSED
     PAUSED = false;
-    window.dispatchEvent(pauseEvent);
+    if (tempPause) { window.dispatchEvent(pauseEvent); }
 })
 document.addEventListener("mouseleave", (event) => {
     if (event.clientY <= 1 || event.clientX <= 1 || (event.clientX >= window.innerWidth-1 || event.clientY >= window.innerHeight-1)) {
+        let tempPause = PAUSED;
         PAUSED = true;
-        window.dispatchEvent(pauseEvent);
+        if (!tempPause) { window.dispatchEvent(pauseEvent); }
     }
 });
 // document.addEventListener("mouseenter", (event) => {
@@ -52,9 +55,12 @@ document.addEventListener("mouseleave", (event) => {
 // });
 
 document.addEventListener("click", event => {
-    PAUSED = false;
-console.log(`new Hole({ points: 0, pos: [${event.clientX - GAME_OFFSET_X}, ${event.clientY - GAME_OFFSET_Y - 10}], winner: false }),`);
-    window.dispatchEvent(pauseEvent);
+    let tempPause = PAUSED
+    PAUSED = false; 
+    if (tempPause) {window.dispatchEvent(pauseEvent);}
+    console.log(`new Hole([${Math.floor((event.clientX - GAME_OFFSET_X - 10) * (1 / SCALE))}, ${Math.floor((event.clientY - GAME_OFFSET_Y - 10) * (1 / SCALE))}], winner: false },`)
+    ctx.marblio.levels[ctx.marblio.levelReached].holes.push(new Hole({ points: 0, pos: [(event.clientX - GAME_OFFSET_X - 10) * (1 / SCALE), (event.clientY - GAME_OFFSET_Y - 10) * (1 / SCALE)], winner: false }))
+    
 });
 
 
