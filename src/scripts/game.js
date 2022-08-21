@@ -28,7 +28,7 @@ class Game {
             this.input.mousePosX = event.clientX;
             this.input.mousePosY = event.clientY;
         });
-       handleOrentation = (event) => {
+       const handleOrentation = (event) => {
 
             this.input.alpha = event.alpha
             this.input.beta = event.beta;

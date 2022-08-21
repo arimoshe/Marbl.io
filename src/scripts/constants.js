@@ -64,6 +64,7 @@ addEventListener('DOMContentLoaded', (event) => {
 
 
 window.addEventListener('resize', (event) => {
+    // console.log(index.canvasCtx)
     index.canvasCtx.restore();
     index.canvasCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     index.canvasElement.width = window.innerWidth ;
@@ -76,6 +77,5 @@ window.addEventListener('resize', (event) => {
     GAME_OFFSET_Y = (((window.innerHeight - (GAME_DIMENSION_Y * SCALE)) / 2));
     index.canvasCtx.translate(GAME_OFFSET_X, GAME_OFFSET_Y);
     index.canvasCtx.scale(SCALE, SCALE);
-    console.log(index.canvasElement.width, index.canvasElement.height, SCALE, GAME_OFFSET_X, GAME_OFFSET_Y)
     
 })

@@ -77,7 +77,7 @@ addEventListener('DOMContentLoaded', (event) => {
             DeviceMotionEvent.requestPermission()
             .then(response => {
                 if (response === "granted") {
-                    window.addEventListener('devicemotion', handleOrientation);
+                    window.addEventListener('devicemotion', Game.handleOrientation);
                 }
                 else {
                     alert("Device Orientation permission request was denied. Please allow to play on a mobile device.")
@@ -86,7 +86,7 @@ addEventListener('DOMContentLoaded', (event) => {
             .catch(console.error);
         }
         else{
-            window.addEventListener('devicemotion', handleOrientation);
+            window.addEventListener('devicemotion', Game.handleOrientation);
         }
 
         marblio.beginGame();
