@@ -45,7 +45,6 @@ addEventListener('DOMContentLoaded', (event) => {
     canvasCtx.save()
     canvasCtx.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
     canvasCtx.scale(constants.SCALE, constants.SCALE)
-    console.log(canvasElement.width, canvasElement.height, constants.SCALE, constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
     
     // canvasCtxUI = canvasElementUI.getContext('2d');
     // canvasCtxUI.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
@@ -73,22 +72,7 @@ addEventListener('DOMContentLoaded', (event) => {
     document.getElementById("high-score").innerText = marblio.highScore
 
     document.getElementById("new-game").addEventListener("click", (event) => {
-        if (typeof DeviceMotionEvent.requestPermission === 'function') {
-            DeviceMotionEvent.requestPermission()
-            .then(response => {
-                if (response === "granted") {
-                    window.addEventListener('devicemotion', Game.handleOrientation);
-                }
-                else {
-                    alert("Device Orientation permission request was denied. Please allow to play on a mobile device.")
-                }
-            })
-            .catch(console.error);
-        }
-        else{
-            window.addEventListener('devicemotion', Game.handleOrientation);
-        }
-
+        
         marblio.beginGame();
     })
 

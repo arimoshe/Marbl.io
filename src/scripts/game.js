@@ -12,6 +12,19 @@ import Input from "./input";
 
 export let PAUSED = true;
 
+const handleOrientation = (event) => {
+    alert("beta:",event.beta)
+    this.controls = "orientation"
+    this.input.alpha = event.alpha
+    this.input.beta = event.beta;
+    this.input.gamma = event.gamma;
+    // this.alpha = lowPass(this.alpha, event.alpha, 0.8);
+    // this.beta = lowPass(this.beta, event.beta, 0.8);
+    // this.gamma = lowPass(this.gamma, event.gamma, 0.8);
+
+    // console.log("alpha:", alpha, "beta:", beta, "gamma:", gamma)
+}
+
 class Game {
     constructor(context) {
         this.levels = { 1: mazes.level1, 2: mazes.level2, 3: mazes.level3}
@@ -22,23 +35,43 @@ class Game {
         this.highScore = 0;
         this.context = context;
         this.context = context;
+        this.controls = "mouse"
         this.marble = new Marble({ pos: [...this.levels[this.currentLevel].startPos], radius: 15, vel: [0, 0], game: this });
-        this.input = new Input(this);
+        this.input = new Input(this,0,0,0,0);
         window.addEventListener('mousemove', (event) => {
             this.input.mousePosX = event.clientX;
             this.input.mousePosY = event.clientY;
         });
-       const handleOrentation = (event) => {
-
-            this.input.alpha = event.alpha
-            this.input.beta = event.beta;
-            this.input.gamma = event.gamma;
-            // this.alpha = lowPass(this.alpha, event.alpha, 0.8);
-            // this.beta = lowPass(this.beta, event.beta, 0.8);
-            // this.gamma = lowPass(this.gamma, event.gamma, 0.8);
-
-            // console.log("alpha:", alpha, "beta:", beta, "gamma:", gamma)
+        
+        
+        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+            alert("requestPermission")
+            DeviceMotionEvent.requestPermission()
+                .then(response => {
+                    if (response === "granted") {
+                        window.addEventListener('deviceorientation', handleOrientation);
+                    }
+                    else {
+                        alert("Device Orientation permission request was denied. Please allow to play on a mobile device.")
+                    }
+                })
+                .catch(console.error);
         }
+        else {
+            alert("no peremission needed")
+            window.addEventListener('deviceorientation', (event) => {
+
+                console.log(event)
+                this.controls = "orientation"
+                this.input.alpha = event.alpha
+                this.input.beta = event.beta;
+                this.input.gamma = event.gamma;
+
+            });
+        }
+       
+
+
     }
 
     gameActions = () => {
@@ -97,11 +130,13 @@ class Game {
     }
 
     handleInput (){
-        if (this.input.beta) {
-            this.input.updateVectorOrientation()    
-        } else {
-            this.input.updateVectorMouse()
-        } 
+        // if (this.controls === "orientation") {
+        //     this.input.updateVectorOrientation()    
+        // } else {
+        //     this.input.updateVectorMouse()
+        // } 
+        this.input.updateVectorOrientation() 
+
     }
 
     handleHoleHit(){
