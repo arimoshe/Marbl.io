@@ -130,12 +130,12 @@ class Game {
     }
 
     handleInput (){
-        // if (this.controls === "orientation") {
-        //     this.input.updateVectorOrientation()    
-        // } else {
-        //     this.input.updateVectorMouse()
-        // } 
-        this.input.updateVectorOrientation() 
+        if (this.controls === "orientation") {
+            this.input.updateVectorOrientation()    
+        } else {
+            this.input.updateVectorMouse()
+        } 
+        // this.input.updateVectorOrientation() 
 
     }
 
