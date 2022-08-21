@@ -12,18 +12,18 @@ import Input from "./input";
 
 export let PAUSED = true;
 
-const handleOrientation = (event) => {
-    alert("beta:",event.beta)
-    this.controls = "orientation"
-    this.input.alpha = event.alpha
-    this.input.beta = event.beta;
-    this.input.gamma = event.gamma;
-    // this.alpha = lowPass(this.alpha, event.alpha, 0.8);
-    // this.beta = lowPass(this.beta, event.beta, 0.8);
-    // this.gamma = lowPass(this.gamma, event.gamma, 0.8);
+// const handleOrientation = (event) => {
+//     alert("beta:",event.beta)
+//     this.controls = "orientation"
+//     this.input.alpha = event.alpha
+//     this.input.beta = event.beta;
+//     this.input.gamma = event.gamma;
+//     // this.alpha = lowPass(this.alpha, event.alpha, 0.8);
+//     // this.beta = lowPass(this.beta, event.beta, 0.8);
+//     // this.gamma = lowPass(this.gamma, event.gamma, 0.8);
 
-    // console.log("alpha:", alpha, "beta:", beta, "gamma:", gamma)
-}
+//     // console.log("alpha:", alpha, "beta:", beta, "gamma:", gamma)
+// }
 
 class Game {
     constructor(context) {
@@ -58,10 +58,9 @@ class Game {
                 .catch(console.error);
         }
         else {
-            alert("no peremission needed")
             window.addEventListener('deviceorientation', (event) => {
 
-                console.log(event)
+                // console.log(event)
                 this.controls = "orientation"
                 this.input.alpha = event.alpha
                 this.input.beta = event.beta;
