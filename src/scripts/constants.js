@@ -2,16 +2,23 @@ import * as ctx from "../index"
 import Hole from "./hole";
 
 // export let PAUSED = false
+
+
+
+
+
+
 export const FRAME_RATE = 60;
 export let SCALE = window.innerHeight/1080*.9;
-export const DPI = 96;
+export const DPI = 48;
+export const UIDPI = 96;
 export const MAP_GRID_X = 84;
 export const MAP_GRID_Y = 49;
 export const MAP_GRID_SIZE = 16;
 export const GAME_DIMENSION_X = MAP_GRID_X * MAP_GRID_SIZE;
-console.log(GAME_DIMENSION_X);
+
 export const GAME_DIMENSION_Y = MAP_GRID_Y * MAP_GRID_SIZE;
-console.log(GAME_DIMENSION_Y);
+
 export let GAME_OFFSET_X = ((window.innerWidth - (GAME_DIMENSION_X * SCALE)) / 2) 
 export let GAME_OFFSET_Y = (((window.innerHeight - (GAME_DIMENSION_Y * SCALE)) /2))
 export let GAME_REL_CENTER_X = undefined

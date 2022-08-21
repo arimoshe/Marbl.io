@@ -37,10 +37,10 @@ for (let l = 0; l < constants.MAP_GRID_Y; l++) {
 
 let level1Walls = [].concat(boundryWalls)
 
-let level1Holes = [new Hole({ points: 100, pos: [constants.GAME_DIMENSION_X - (60 * constants.SCALE), constants.GAME_DIMENSION_Y - (60 * constants.SCALE)], winner: true })]
+let level1Holes = [new Hole({ points: 100, pos: [constants.GAME_DIMENSION_X - 50, constants.GAME_DIMENSION_Y - 50 ], winner: true })]
 
 export const level1 = new Maze({ walls: level1Walls, holes: level1Holes, levelNum1: 1, levelName: "An Easy Start", startPos: [60, 60]})
-console.log(level1)
+
 let level2Walls = [].concat(boundryWalls)
 
 for (let m = 1; m <= 7; m++) {
@@ -79,7 +79,7 @@ let level2Holes = [
 ]
 
 export const level2 = new Maze({ walls: level2Walls, holes: level2Holes, levelNum1: 1, levelName: "Getting Harder", startPos: [constants.GAME_DIMENSION_X -60, 60] })
-console.log(level2)
+
 
 
 let level3Walls = [].concat(boundryWalls)
@@ -194,19 +194,19 @@ let level3Holes = [
             ctx.fill();
             ctx.fillStyle = '#efefef';
             ctx.beginPath();
-            ctx.ellipse(pos[0], pos[1] + (radius * 1.55), 10, 30, Math.PI / 2, 0, Math.PI * 2);
+            ctx.ellipse(pos[0], pos[1] + (radius * 1.4), 10, 30, Math.PI / 2, 0, Math.PI * 2);
             ctx.filter = 'blur(5px)'
             ctx.fill();
             ctx.filter = 'none'
             ctx.fillStyle = 'black';
-            ctx.font = "16px Silkscreen";
+            ctx.font = "22px Silkscreen";
             ctx.textAlign = "center"
-            ctx.fillText(points, pos[0], pos[1] + (radius * 1.6))
+            ctx.fillText(points, pos[0], pos[1] + (radius * 1.45))
         }
 }),
 ]
-console.log(level3Holes)
-export const level3 = new Maze({ walls: level3Walls, holes: level3Holes, levelNum1: 3, levelName: "Getting Harder", startPos: [650, 415] })
-console.log(level2)
+
+export const level3 = new Maze({ walls: level3Walls, holes: level3Holes, levelNum1: 3, levelName: "Not Easy", startPos: [650, 415] })
+
 
 export default Maze;

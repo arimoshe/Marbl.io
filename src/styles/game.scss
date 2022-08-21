@@ -4,15 +4,27 @@ body {
 
 
 .canvas-container {
-    display: flex;
-    align-items:baseline;
-    justify-content: center;
+    // display: flex;
+    // align-items:baseline;
+    // justify-content: center;
+    position: relative;
     
 }
 
 #main-app {
     display: none;
-  
+    image-rendering: pixelated;
+    position: absolute;
+    top:0;
+    left: 0;
+}
+
+#ui {
+
+    display: none;
+    position: absolute;
+        top: 0;
+        left: 0;
 }
 
 body {

@@ -12,27 +12,43 @@ export function setDPI(canvas, dpi) {
     canvas.style.height = canvas.style.height || canvas.height + 'px';
 
     // Resize canvas and scale future draws.
+
     var scaleFactor = dpi / 96;
+    if (Math.ceil(canvas.width * scaleFactor) / Math.min(Math.ceil(canvas.width * scaleFactor), 3840) !== 1) {
+        scaleFactor = canvas.width/3840
+    }
+
     canvas.width = Math.ceil(canvas.width * scaleFactor);
     canvas.height = Math.ceil(canvas.height * scaleFactor);
     var ctx = canvas.getContext('2d');
     ctx.scale(scaleFactor, scaleFactor);
 }
 export let canvasCtx;
+export let canvasCtxUI;
 export let marblio;
 export let canvasElement;
+export let canvasElementUI;
 export let drawActions;
 
 addEventListener('DOMContentLoaded', (event) => {
 
-    canvasElement = document.getElementById("main-app");
-    canvasElement.width = window.innerWidth //1920; //constants.GAME_DIMENSION_X;
-    canvasElement.height = window.innerHeight //1080//constants.GAME_DIMENSION_Y;
-    setDPI(canvasElement, constants.DPI)
+    // canvasElement = document.getElementById("main-app");
+    // canvasElement.width = window.innerWidth 
+    // canvasElement.height = window.innerHeight 
+    // setDPI(canvasElement, constants.DPI)
+    canvasElementUI = document.getElementById("ui");
+    canvasElementUI.width = window.innerWidth
+    canvasElementUI.height = window.innerHeight
+    setDPI(canvasElementUI, constants.UIDPI)
 
-    canvasCtx = canvasElement.getContext('2d');
-    canvasCtx.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
-    canvasCtx.scale(constants.SCALE, constants.SCALE)
+    // canvasCtx = canvasElement.getContext('2d');
+    // canvasCtx.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
+    // canvasCtx.scale(constants.SCALE, constants.SCALE)
+    
+    canvasCtxUI = canvasElementUI.getContext('2d');
+    canvasCtxUI.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
+    canvasCtxUI.scale(constants.SCALE, constants.SCALE)
+
     // if (screen.width<1000) {
     //     canvasCtx.translate(300,160)
     // canvasCtx.scale(.45,.45);
@@ -51,7 +67,7 @@ addEventListener('DOMContentLoaded', (event) => {
     //     openFullscreen();
     //     canvasElement.requestPointerLock();
     // });
-    marblio = new Game(canvasCtx); 
+    marblio = new Game(canvasCtxUI, canvasCtxUI); 
     document.getElementById("high-score").innerText = marblio.highScore
 
     document.getElementById("new-game").addEventListener("click", (event) => {
@@ -83,45 +99,7 @@ addEventListener('DOMContentLoaded', (event) => {
         
     // };
 
-    drawActions = () => {
-        if (!vars.PAUSED) {
-            canvasCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-            marblio.drawBackground(canvasCtx)
-            marblio.drawScore(canvasCtx);
-            marblio.drawLives(canvasCtx);
-            marblio.drawName(canvasCtx);
-            marblio.drawLevel(marblio.levelReached);
-            marblio.marble.draw(canvasCtx);
-            marblio.marble.drawVector(canvasCtx);
-        }
-    }
-
-    const gameActions = () => {
-        if (!vars.PAUSED) {
-            marblio.handleVector(marblio.marble);
-            marblio.marble.updateBoardRotataion();
-            marblio.marble.updateTexture();
-            marblio.handleHoleHit();
-            marblio.handleLoss();
-            marblio.marble.move(marblio.marble.vel);
-            
-        }
-    }
     
-    function animate() {  
-       
-        if (!constants.PAUSED) {
-            drawActions()
-            requestAnimationFrame(animate);
-            ;
-        }
-    };
-    animate()
-
-    
-    let gameInterval ;
-    // if (!constants.PAUSED) {
-        gameInterval = setInterval(gameActions, 1000 / constants.FRAME_RATE);
     // }
   
     

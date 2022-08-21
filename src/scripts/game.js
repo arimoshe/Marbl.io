@@ -5,107 +5,122 @@ import Wall from "./wall";
 import Maze from "./maze";
 import * as mazes from "./maze";
 import * as index from "../index";
-
-import * as texture from "./texture" 
+import * as texture from "./texture"
+import * as collision from "./collision" 
+import * as draw from "./draw"
+import Input from "./input";
 
 export let PAUSED = true;
 
 class Game {
     constructor(context) {
         this.levels = { 1: mazes.level1, 2: mazes.level2, 3: mazes.level3}
-        this.levelsStartPos = { 1: mazes.level1.startPos, 2: mazes.level2.startPos, 3: mazes.level3.startPos }
-        
-        
+        this.currentLevel = 1;
         this.lives = 3;
-        this.levelReached = 1;
         this.earnedPoints = 0;
         this.currentLevelScore = 0;
         this.highScore = 0;
         this.context = context;
-        this.marble = new Marble({ pos: this.levels[this.levelReached].startPos, radius: 15, vel: [0, 0], game: this });
-        this.startButton = undefined
-        
+        this.context = context;
+        this.marble = new Marble({ pos: [...this.levels[this.currentLevel].startPos], radius: 15, vel: [0, 0], game: this });
+        this.input = new Input(this);
+        window.addEventListener('mousemove', (event) => {
+            this.input.mousePosX = event.clientX;
+            this.input.mousePosY = event.clientY;
+        });
+        window.addEventListener("deviceorientation", (event) => {
+
+            this.input.alpha = event.alpha
+            this.input.beta = event.beta;
+            this.input.gamma = event.gamma;
+            // this.alpha = lowPass(this.alpha, event.alpha, 0.8);
+            // this.beta = lowPass(this.beta, event.beta, 0.8);
+            // this.gamma = lowPass(this.gamma, event.gamma, 0.8);
+
+            // console.log("alpha:", alpha, "beta:", beta, "gamma:", gamma)
+        }, false);
+    }
+
+    gameActions = () => {
+        if (!PAUSED) {
+            
+            this.handleInput();
+            this.handleHoleHit();
+            this.handleLoss();
+            this.marble.move(this.marble.vel);
+            
+        }
     }
 
 
     beginGame() {
+
         let splash = document.getElementById("splash-container")
         let canvas = document.getElementById("main-app")
+        let ui = document.getElementById("ui")
         splash.style.display = "none";
+        ui.style.display = "inherit"
         canvas.style.display = "inherit";
-        PAUSED = false;
-        this.pauseAndStartButton()
-    }
-
-    drawLevelWalls(levelNum) {
-        for (let ele of this.levels[levelNum].walls) {
-            
-            if (ele.texture.image) {
-                this.context.drawImage(ele.texture.image, ele.texture.sx, ele.texture.sy, ele.texture.swidth, ele.texture.sheight, ele.pos[0], ele.pos[1], ele.texture.width, ele.texture.height)
-            } else {
-                this.context.beginPath();
-                this.context.rect(ele.pos[0], ele.pos[1], ele.size, ele.size);
-                this.context.fill();
-            }
-        }
-    }
-
-
-    drawLevelHoles(levelNum){
-        for (let ele of this.levels[levelNum].holes) {
-            ele.draw(this.context, ele.pos, ele.radius, ele.points)
-        }
-    }
-
-    drawLevel(levelNum) {
-        
-        this.drawLevelWalls(levelNum);
-        this.drawLevelHoles(levelNum);
-
-    }
-
-    drawBackground(ctx) {
-        ctx.beginPath();
-        ctx.rect(-constants.GAME_OFFSET_X / constants.SCALE, -constants.GAME_OFFSET_Y / constants.SCALE, window.innerWidth / constants.SCALE, window.innerHeight / constants.SCALE);
-        ctx.fillStyle = "grey";
-        ctx.fill();
-        ctx.beginPath();
-        ctx.rect(0, 0, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y);
-        ctx.fillStyle = "#efefef";
-        ctx.fill();
-        
-    }
-
+        const animate = () => {console.log
     
+            this.drawGame()
+            
+            requestAnimationFrame(animate);
+        };
+        animate();
+        
+        let gameInterval = setInterval(() =>{
+            
+            this.gameActions()
+            
+        }, 1000 / constants.FRAME_RATE);
+        // PAUSED = false;
+        this.pauseAndStartButton();
+        
+    };
 
-    handleVector (marble){
-        // alert(marble.beta)
-        if (marble.beta) {
-            // alert()
-            marble.updateVectorOrientation()    
+
+    drawGame() {
+        if (!PAUSED) {
+            
+            
+            draw.drawBackground(this.context);
+            draw.drawLevelWalls(this.context, this, this.currentLevel);
+            draw.drawLevelHoles(this.context,  this,this.currentLevel);
+            draw.drawVector(this.context, this);
+            draw.drawMarble(this.context, this.marble);
+            draw.drawScore(this.context, this);
+            draw.drawName(this.context);
+            draw.drawLives(this.context, this);
+            draw.updateBoardRotataion(this.marble)
+            
+
+        }
+    }
+
+    handleInput (){
+        if (this.input.beta) {
+            this.input.updateVectorOrientation()    
         } else {
-
-            this.marble.updateVectorMouse()
+            this.input.updateVectorMouse()
         } 
     }
 
     handleHoleHit(){
 
         
-        let hole = this.marble.colisionDetectedHole(this.marble.vel);
+        let hole = collision.collideAnyHole(this);
         // console.log(hole);
             if (hole && hole.winner) {
             this.earnedPoints += hole.points;
-            this.levelReached += 1;
+            this.currentLevel += 1;
             this.currentLevelScore = 0;
-            alert("Nice Job!");
+            this.handleNextLevel()
             
-                this.marble.pos = [constants.GAME_DIMENSION_X - 60, 60];
-            this.pauseAndStartButton();
         }
         else if (hole && !hole.winner) {
                 
-                this.marble.pos = [constants.GAME_DIMENSION_X - 60, 60];
+                this.marble.pos = [...this.levels[this.currentLevel].startPos]
             alert("Sorry, You didn't quite make it! ")
             if (hole.points > this.currentLevelScore) { this.currentLevelScore = hole.points;}
             this.lives -= 1;
@@ -115,53 +130,44 @@ class Game {
     }
 
     pauseAndStartButton(){
-        index.drawActions()
+        this.marble.vel = [0,0];
+        draw.updateBoardRotataion(this.marble);
         PAUSED = true;
-        this.context.beginPath();
-        this.context.fillStyle = "grey"
-        this.context.roundRect(constants.GAME_DIMENSION_X / 2 - 112.5, constants.GAME_DIMENSION_Y/2 -55 , 225, 110, 20)
-        console.log()
-        this.context.fill()
-        this.context.beginPath();
-        this.context.font = "38px Silkscreen"
-        this.context.fillStyle = "#e0e0e0"
-        this.context.fillText("Start",constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2+10)
-    }
-
-    
-
-    drawScore(ctx) {
-        ctx.beginPath();
-        ctx.font = "16px Silkscreen";
-        ctx.fillStyle = "#e0e0e0";
-        ctx.fillText("Score", constants.GAME_DIMENSION_X * .85, - 70 );
-        ctx.font = "60px Silkscreen";
-        ctx.fillText(this.earnedPoints + this.currentLevelScore, constants.GAME_DIMENSION_X  * .85 , -20);
-
-    }
-    
-    drawLives (ctx) {
-        ctx.beginPath();
-
+        draw.drawBackground(this.context);
+        draw.drawLevelWalls(this.context, this, this.currentLevel);
+        draw.drawLevelHoles(this.context, this, this.currentLevel);
+        draw.drawMarble(this.context, this.marble);
+        draw.drawScore(this.context, this);
+        draw.drawName(this.context);
+        draw.drawLives(this.context, this);
         
-        ctx.font = "16px Silkscreen";
-        ctx.fillStyle = "#e0e0e0";
-        ctx.fillText("Lives", constants.GAME_DIMENSION_X * .15, -70);
-        for (let i=0; i<this.lives; i++) {
-            
-            if (texture.HEART_IMG) {
-                ctx.drawImage(texture.HEART_IMG, (constants.GAME_DIMENSION_X * .075) + (70 * i), -65)
-            }
-        }
+        
+        
+        draw.drawButton(
+            this.context, 
+            [(constants.GAME_DIMENSION_X / 2 + constants.MAP_GRID_SIZE * constants.SCALE) - 30, 
+            (constants.GAME_DIMENSION_Y / 2 + constants.MAP_GRID_SIZE * constants.SCALE)+10], 
+            225, 
+            110, 
+            20, 
+            "Start",
+            "grey", 
+            "#e0e0e0", 
+            "38px", 
+            "Silkscreen"
+        )
+        // this.context.beginPath();
+        // this.context.fillStyle = "grey"
+        // util.roundRect(constants.GAME_DIMENSION_X / 2 - 112.5, constants.GAME_DIMENSION_Y/2 -55 , 225, 110, 20, true, false);
+        // this.context.beginPath();
+        // this.context.font = "38px Silkscreen"
+        // this.context.fillStyle = "#e0e0e0"
+        // this.context.fillText("Start",constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2+10)
     }
 
-    drawName(ctx) {
-        ctx.beginPath();
-        ctx.font = "100px Silkscreen";
-        ctx.fillStyle = "#202020";
-        ctx.textAlign = "center";
-        ctx.fillText("Marbl.io", (constants.GAME_DIMENSION_X / 2), -30);
-    }
+    
+
+    
 
     
 
@@ -176,24 +182,34 @@ class Game {
         }
     }
     
-    handleWin(){
-        if (this.levelReached === 4)
-        alert("YOU WIN! (This Demo)\n Thanks for playing!")
-        this.highScore = this.earnedPoints;
-        document.getElementById("high-score").innerText = this.highScore
-        this.resetGame();
-
+    handleNextLevel(){
+        if (this.currentLevel < 4) {
+            alert("Nice Job!");
+            this.marble.pos = [...this.levels[this.currentLevel].startPos];
+            this.pauseAndStartButton();
+        } else {
+            alert("YOU WIN! (This Demo)\n Thanks for playing!")
+            this.highScore = this.earnedPoints;
+            document.getElementById("high-score").innerText = this.highScore
+            this.resetGame();
+        }
     }
 
     resetGame(){ 
-        let splash = document.getElementById("splash-container");
-        let canvas = document.getElementById("main-app");
+        document.getElementById("high-score").innerText = this.highScore
+
+        let splash = document.getElementById("splash-container")
+        let canvas = document.getElementById("main-app")
+        let ui = document.getElementById("ui")
         splash.style.display = "inherit";
+        ui.style.display = "none"
         canvas.style.display = "none";
         this.lives = 3;
         this.earnedPoints = 0;
         this.currentLevelScore = 0;
-        this.levelReached = 1;
+        this.currentLevel = 1;
+        console.log([...this.levels[this.currentLevel].startPos]);
+        this.marble.pos = [...this.levels[this.currentLevel].startPos]
     }
     
 
@@ -202,16 +218,30 @@ class Game {
 }
 
 addEventListener('DOMContentLoaded', (event) => {
-    document.getElementById("main-app").addEventListener("click", event => {
+    
+
+
+    document.getElementById("ui").addEventListener("click", event => {
     
     
         PAUSED = false;     
+
+        
   
     
     // console.log(`new Hole({points: 0, pos:[${Math.floor((event.clientX - GAME_OFFSET_X) * (1 / SCALE) - 10)}, ${Math.floor((event.clientY - GAME_OFFSET_Y) * (1 / SCALE) + 5)}], winner: false }),`)
-    // ctx.marblio.levels[ctx.marblio.levelReached].holes.push(new Hole({ points: 0, pos: [(event.clientX - GAME_OFFSET_X) * (1 / SCALE) - 10, (event.clientY - GAME_OFFSET_Y) * (1 / SCALE) + 5], winner: false }))
+    // ctx.marblio.levels[ctx.marblio.currentLevel].holes.push(new Hole({ points: 0, pos: [(event.clientX - GAME_OFFSET_X) * (1 / SCALE) - 10, (event.clientY - GAME_OFFSET_Y) * (1 / SCALE) + 5], winner: false }))
 
 });
 })
+
+
+
+
+
+
+// if (!constants.PAUSED) {
+
+
 
 export default Game;

@@ -1,3 +1,9 @@
+
+
+#rotate {
+    display: none;
+}
+
 #splash-container {
     display: flex;
     align-items:flex-start;
@@ -18,21 +24,25 @@
     flex-wrap: wrap;
 }
 
+#button-container {
+display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
 button {
     
-    padding: 20px;
-    margin: 30px;
+    padding: 4vh 8vh;
     font-family: Silkscreen, sans-serif;
-    font-size: 50px;
+    font-size: 8vh;
 }
 
 h1 {
-    margin: 50px;
+    margin: 4vh;
     font-family: Silkscreen, sans-serif;
     font-size: 20vh;
 }
 h2{
-    margin: 20px;
+    margin: 4vh;
     font-family: Silkscreen, sans-serif;
     font-size: 4vh;
 }
@@ -42,7 +52,7 @@ h2{
         font-family: Silkscreen, sans-serif;
         font-size: 10vh;
         line-height: 9vh;
-        padding-bottom: 50px;
+        margin-bottom: 2vh;
 }
 #social-links-container  {
     display: flex;
@@ -51,4 +61,26 @@ h2{
 }
 #social-links-container img {
     width: 8vw;
+}
+@media only screen and (max-device-width: 480px) {
+    #rotate {
+        font-family: Silkscreen, sans-serif;
+        display: table-cell;
+        width: 100vw;
+        height: 100vh;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 30px;
+        background-color: e0e0e0;
+    }
+
+    #splash-container {
+        display: none;
+    }
+
+    #canvas-container {
+        display: none;
+    }
+
+
 }
