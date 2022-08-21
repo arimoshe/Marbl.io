@@ -28,7 +28,7 @@ class Game {
             this.input.mousePosX = event.clientX;
             this.input.mousePosY = event.clientY;
         });
-        window.addEventListener("deviceorientation", (event) => {
+       handleOrentation = (event) => {
 
             this.input.alpha = event.alpha
             this.input.beta = event.beta;
@@ -38,7 +38,7 @@ class Game {
             // this.gamma = lowPass(this.gamma, event.gamma, 0.8);
 
             // console.log("alpha:", alpha, "beta:", beta, "gamma:", gamma)
-        }, false);
+        }
     }
 
     gameActions = () => {

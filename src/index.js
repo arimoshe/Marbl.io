@@ -73,7 +73,21 @@ addEventListener('DOMContentLoaded', (event) => {
     document.getElementById("high-score").innerText = marblio.highScore
 
     document.getElementById("new-game").addEventListener("click", (event) => {
-        
+        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+            DeviceMotionEvent.requestPermission()
+            .then(response => {
+                if (response === "granted") {
+                    window.addEventListener('devicemotion', handleOrientation);
+                }
+                else {
+                    alert("Device Orientation permission request was denied. Please allow to play on a mobile device.")
+                }
+            })
+            .catch(console.error);
+        }
+        else{
+            window.addEventListener('devicemotion', handleOrientation);
+        }
 
         marblio.beginGame();
     })
