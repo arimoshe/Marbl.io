@@ -57,9 +57,7 @@ class Game {
 
         let splash = document.getElementById("splash-container")
         let canvas = document.getElementById("main-app")
-        let ui = document.getElementById("ui")
         splash.style.display = "none";
-        ui.style.display = "inherit"
         canvas.style.display = "inherit";
         const animate = () => {console.log
     
@@ -221,7 +219,7 @@ addEventListener('DOMContentLoaded', (event) => {
     
 
 
-    document.getElementById("ui").addEventListener("click", event => {
+    document.getElementById("main-app").addEventListener("click", event => {
     
     
         PAUSED = false;     

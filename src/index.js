@@ -32,22 +32,24 @@ export let drawActions;
 
 addEventListener('DOMContentLoaded', (event) => {
 
-    // canvasElement = document.getElementById("main-app");
-    // canvasElement.width = window.innerWidth 
-    // canvasElement.height = window.innerHeight 
-    // setDPI(canvasElement, constants.DPI)
-    canvasElementUI = document.getElementById("ui");
-    canvasElementUI.width = window.innerWidth
-    canvasElementUI.height = window.innerHeight
-    setDPI(canvasElementUI, constants.UIDPI)
+    canvasElement = document.getElementById("main-app");
+    canvasElement.width = window.innerWidth 
+    canvasElement.height = window.innerHeight 
+    setDPI(canvasElement, constants.DPI)
+    // canvasElementUI = document.getElementById("ui");
+    // canvasElementUI.width = window.innerWidth
+    // canvasElementUI.height = window.innerHeight
+    // setDPI(canvasElementUI, constants.UIDPI)
 
-    // canvasCtx = canvasElement.getContext('2d');
-    // canvasCtx.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
-    // canvasCtx.scale(constants.SCALE, constants.SCALE)
+    canvasCtx = canvasElement.getContext('2d');
+    canvasCtx.save()
+    canvasCtx.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
+    canvasCtx.scale(constants.SCALE, constants.SCALE)
+    console.log(canvasElement.width, canvasElement.height, constants.SCALE, constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
     
-    canvasCtxUI = canvasElementUI.getContext('2d');
-    canvasCtxUI.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
-    canvasCtxUI.scale(constants.SCALE, constants.SCALE)
+    // canvasCtxUI = canvasElementUI.getContext('2d');
+    // canvasCtxUI.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
+    // canvasCtxUI.scale(constants.SCALE, constants.SCALE)
 
     // if (screen.width<1000) {
     //     canvasCtx.translate(300,160)
@@ -67,7 +69,7 @@ addEventListener('DOMContentLoaded', (event) => {
     //     openFullscreen();
     //     canvasElement.requestPointerLock();
     // });
-    marblio = new Game(canvasCtxUI, canvasCtxUI); 
+    marblio = new Game(canvasCtx); 
     document.getElementById("high-score").innerText = marblio.highScore
 
     document.getElementById("new-game").addEventListener("click", (event) => {
