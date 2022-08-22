@@ -97,8 +97,8 @@ class Game {
         splash.style.display = "none";
         
         displayCanvases(document.getElementsByTagName("canvas"))
-        
-        canvas.style.display = "inherit";
+        draw.drawBackground(this.contexts['background'].getContext('2d'));
+        draw.drawName(this.contexts["background"].getContext('2d'));
 
         const animate = () => {
     
@@ -123,9 +123,9 @@ class Game {
         if (!PAUSED) {
             
             
-            
-            draw.drawVector(this.context, this);
-            draw.drawMarble(this.context, this.marble);
+            this.contexts['main-app'].getContext('2d').clearRect(0,0, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y)
+            draw.drawVector(this.contexts['main-app'].getContext('2d'), this);
+            draw.drawMarble(this.contexts['main-app'].getContext('2d'), this.marble);
             draw.updateBoardRotataion(this.marble)
             
 
@@ -169,20 +169,22 @@ class Game {
         this.marble.vel = [0,0];
         draw.updateBoardRotataion(this.marble);
         PAUSED = true;
-        draw.drawBackground(this.context['background']);
-        draw.drawName(this.context["background"]);
-        draw.drawLevelWalls(this.context['map'], this, this.currentLevel);
-        draw.drawLevelHoles(this.context['map'], this, this.currentLevel);
-        draw.drawMarble(this.context['main-app'], this.marble);
-        draw.drawScore(this.context['ui'], this);
-        draw.drawLives(this.context['ui'], this);
+        this.contexts['ui'].getContext('2d').clearRect(-constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, this.contexts['ui'].width, this.contexts['ui'].height)
+        this.contexts['map'].getContext('2d').clearRect(-constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, this.contexts['map'].width, this.contexts['map'].height)
+        this.contexts['main-app'].getContext('2d').clearRect(0, 0, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y)
+        
+        draw.drawLevelWalls(this.contexts['map'].getContext('2d'), this, this.currentLevel);
+        draw.drawLevelHoles(this.contexts['map'].getContext('2d'), this, this.currentLevel);
+        draw.drawMarble(this.contexts['main-app'].getContext('2d'), this.marble);
+        draw.drawScore(this.contexts['ui'].getContext('2d'), this);
+        draw.drawLives(this.contexts['ui'].getContext('2d'), this);
         
         
         
         draw.drawButton(
-            this.context, 
-            [(constants.GAME_DIMENSION_X / 2 + constants.MAP_GRID_SIZE * constants.SCALE) - 30, 
-            (constants.GAME_DIMENSION_Y / 2 + constants.MAP_GRID_SIZE * constants.SCALE)+10], 
+            this.contexts['main-app'].getContext('2d'), 
+            [(constants.GAME_DIMENSION_X / 2)  , 
+            (constants.GAME_DIMENSION_Y / 2)], 
             225, 
             110, 
             20, 
@@ -258,7 +260,7 @@ addEventListener('DOMContentLoaded', (event) => {
     // console.log(`new Hole({points: 0, pos:[${Math.floor((event.clientX - GAME_OFFSET_X) * (1 / SCALE) - 10)}, ${Math.floor((event.clientY - GAME_OFFSET_Y) * (1 / SCALE) + 5)}], winner: false }),`)
     // ctx.marblio.levels[ctx.marblio.currentLevel].holes.push(new Hole({ points: 0, pos: [(event.clientX - GAME_OFFSET_X) * (1 / SCALE) - 10, (event.clientY - GAME_OFFSET_Y) * (1 / SCALE) + 5], winner: false }))
 
-});
+    });
 })
 
 

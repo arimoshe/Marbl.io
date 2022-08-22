@@ -3,7 +3,6 @@ import Marble from "./scripts/marble";
 import Game from "./scripts/game";
 import * as vars from "./scripts/game"
 import Hole from "./scripts/hole";
-import { electron } from "webpack";
 
 
 export function setDPI(canvas, dpi) {
@@ -40,7 +39,7 @@ addEventListener('DOMContentLoaded', (event) => {
     })
 
     Array.from(document.getElementsByTagName("canvas")).forEach(canvas => {
-        context = canvas.getContext('2d');
+        let context = canvas.getContext('2d');
         context.save();
         context.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y);
         context.scale(constants.SCALE, constants.SCALE);

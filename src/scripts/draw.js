@@ -3,11 +3,11 @@ import * as utils from "./utils";
 import * as texture from "./texture"
 
 export const drawBackground = (ctx) =>{
-    ctx.rect(-constants.GAME_OFFSET_X / constants.SCALE, -constants.GAME_OFFSET_Y / constants.SCALE, window.innerWidth / constants.SCALE, window.innerHeight / constants.SCALE);
+    ctx.rect(-(window.innerWidth - constants.GAME_DIMENSION_X / 2), -(window.innerHeight - constants.GAME_DIMENSION_Y / 2), document.getElementById("main-app").width, document.getElementById("main-app").height);
     ctx.fillStyle = "grey";
     ctx.fill();
     ctx.beginPath();
-    ctx.rect(6, 6, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y);
+    ctx.rect(0, 0, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y);
     ctx.fillStyle = "#efefef";
     ctx.fill();
 
@@ -98,7 +98,8 @@ export const drawButton = (ctx, pos, width, height, cornerRadius, text, backgrou
     ctx.fill(); 
     ctx.beginPath();
     ctx.font = `${textSize} ${font}`
-    ctx.textBaseline = "middle";
+    ctx.textBaseline = "alphabetic";
+    ctx.textAlign = "center"
     ctx.fillStyle = textColor
     ctx.fillText(text, pos[0], pos[1])
 }
