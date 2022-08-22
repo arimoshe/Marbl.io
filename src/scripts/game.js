@@ -10,7 +10,7 @@ import * as collision from "./collision"
 import * as draw from "./draw"
 import Input from "./input";
 
-export let PAUSED = true;
+
 
 // const handleOrientation = (event) => {
 //     alert("beta:",event.beta)
@@ -35,8 +35,9 @@ export const hideCanvases = (canvasArr)=> {
 class Game {
     constructor() {
         this.levels = { 1: mazes.level1, 2: mazes.level2, 3: mazes.level3}
-        this.currentLevel = 1;
+        this.currentLevel = 3;
         this.lives = 3;
+        this.PAUSED = true;
         this.earnedPoints = 0;
         this.currentLevelScore = 0;
         this.highScore = 0;
@@ -51,7 +52,7 @@ class Game {
         
         
         if (typeof DeviceMotionEvent.requestPermission === 'function') {
-            alert("requestPermission")
+    
             DeviceMotionEvent.requestPermission()
                 .then(response => {
                     if (response === "granted") {
@@ -74,17 +75,16 @@ class Game {
 
             });
         }
-       
+        
 
 
     }
 
     gameActions = () => {
-        if (!PAUSED) {
+        if (!this.PAUSED) {
             
             this.handleInput();
             this.handleHoleHit();
-            this.handleLoss();
             this.marble.move(this.marble.vel);
             
         }
@@ -120,7 +120,7 @@ class Game {
 
 
     drawGame() {
-        if (!PAUSED) {
+        if (!this.PAUSED) {
             
             
             this.contexts['main-app'].getContext('2d').clearRect(0,0, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y)
@@ -155,20 +155,32 @@ class Game {
             
         }
         else if (hole && !hole.winner) {
-                
+            if (this.lives === 1) {
+                this.lives -=1;
+                this.handleLoss();
+
+            } else { 
+            
                 this.marble.pos = [...this.levels[this.currentLevel].startPos]
-            alert("Sorry, You didn't quite make it! ")
-            if (hole.points > this.currentLevelScore) { this.currentLevelScore = hole.points;}
-            this.lives -= 1;
-            this.pauseAndStartButton();
+                this.popModal("Sorry, You didn't quite make it!")
+                if (hole.points > this.currentLevelScore) { this.currentLevelScore = hole.points;}
+                this.lives -= 1;
+                this.pauseAndStartButton();
+            }
         }
     
+    }
+
+    popModal(text) {
+        let modalText = document.querySelector("#modal p");
+        modalText.innerText = text 
+        document.getElementById("modal").style.display = "flex"
     }
 
     pauseAndStartButton(){
         this.marble.vel = [0,0];
         draw.updateBoardRotataion(this.marble);
-        PAUSED = true;
+        this.PAUSED = true;
         this.contexts['ui'].getContext('2d').clearRect(-constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, this.contexts['ui'].width, this.contexts['ui'].height)
         this.contexts['map'].getContext('2d').clearRect(-constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, this.contexts['map'].width, this.contexts['map'].height)
         this.contexts['main-app'].getContext('2d').clearRect(0, 0, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y)
@@ -203,25 +215,24 @@ class Game {
     
 
     handleLoss(){
-        if (this.lives === 0) {
             this.earnedPoints += this.currentLevelScore;
-            alert(`Game Over \n You Scored ${this.earnedPoints} Points`)
+            this.popModal(`Game Over \n You Scored ${this.earnedPoints} Points`)
             if (this.earnedPoints > this.highScore) {
                 this.highScore = this.earnedPoints
             }
             this.resetGame()
-        }
     }
     
     handleNextLevel(){
         if (this.currentLevel < 4) {
-            alert("Nice Job!");
+            this.popModal("Nice Job!");
             this.marble.pos = [...this.levels[this.currentLevel].startPos];
             this.pauseAndStartButton();
         } else {
-            alert("YOU WIN! (This Demo)\n Thanks for playing!")
+            
             this.highScore = this.earnedPoints;
             document.getElementById("high-score").innerText = this.highScore
+            this.popModal("YOU WIN! (This Demo)\n Thanks for playing!")
             this.resetGame();
         }
     }
@@ -238,6 +249,7 @@ class Game {
         this.currentLevel = 1;
         console.log([...this.levels[this.currentLevel].startPos]);
         this.marble.pos = [...this.levels[this.currentLevel].startPos]
+        this.pauseAndStartButton();
     }
     
 
@@ -245,23 +257,7 @@ class Game {
 
 }
 
-addEventListener('DOMContentLoaded', (event) => {
-    
 
-
-    document.getElementById("main-app").addEventListener("click", event => {
-    
-    
-        PAUSED = false;     
-
-        
-  
-    
-    // console.log(`new Hole({points: 0, pos:[${Math.floor((event.clientX - GAME_OFFSET_X) * (1 / SCALE) - 10)}, ${Math.floor((event.clientY - GAME_OFFSET_Y) * (1 / SCALE) + 5)}], winner: false }),`)
-    // ctx.marblio.levels[ctx.marblio.currentLevel].holes.push(new Hole({ points: 0, pos: [(event.clientX - GAME_OFFSET_X) * (1 / SCALE) - 10, (event.clientY - GAME_OFFSET_Y) * (1 / SCALE) + 5], winner: false }))
-
-    });
-})
 
 
 

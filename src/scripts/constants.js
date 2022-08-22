@@ -1,5 +1,6 @@
 import * as index from "../index"
 import Hole from "./hole";
+import * as draw from './draw'
 
 
 
@@ -62,23 +63,45 @@ addEventListener('DOMContentLoaded', (event) => {
 
 window.addEventListener('resize', (event) => {
     // console.log(index.canvasCtx)
-    if (document.getElementsByTagName("canvas")) { 
+    if (document.readyState !== "loading") { 
         SCALE = window.innerHeight / 1080 * .9;
         GAME_OFFSET_X = ((window.innerWidth - (GAME_DIMENSION_X * SCALE)) / 2);
         GAME_OFFSET_Y = (((window.innerHeight - (GAME_DIMENSION_Y * SCALE)) / 2));
         Array.from(document.getElementsByTagName("canvas")).forEach(canvas => {
-            context = canvas.getContext('2d');
+            let context = canvas.getContext('2d');
             context.restore();
             context.clearRect(0, 0, window.innerWidth, window.innerHeight);
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             canvas.style.width = window.innerWidth + "px"
             canvas.style.height = window.innerHeight + "px"
-            setDPI(canvas, DPI)
+            index.setDPI(canvas, DPI)
             context.translate(GAME_OFFSET_X, GAME_OFFSET_Y);
             context.scale(SCALE, SCALE);
         })
-
+        const contexts = document.getElementsByTagName("canvas");
+        draw.drawBackground(contexts['background'].getContext('2d'));
+        draw.drawName(contexts["background"].getContext('2d'));
+        draw.drawLevelWalls(contexts['map'].getContext('2d'), index.marblio, index.marblio.currentLevel);
+        draw.drawLevelHoles(contexts['map'].getContext('2d'), index.marblio, index.marblio.currentLevel);
+        draw.drawMarble(contexts['main-app'].getContext('2d'), index.marblio.marble);
+        draw.drawScore(contexts['ui'].getContext('2d'), index.marblio);
+        draw.drawLives(contexts['ui'].getContext('2d'), index.marblio);
+        if (index.marblio.PAUSED) {
+            draw.drawButton(
+                contexts['main-app'].getContext('2d'),
+                [(GAME_DIMENSION_X / 2),
+                (GAME_DIMENSION_Y / 2)],
+                225,
+                110,
+                20,
+                "Start",
+                "grey",
+                "#e0e0e0",
+                "38px",
+                "Silkscreen"
+            )
+        }
     }
     
 })

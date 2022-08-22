@@ -45,7 +45,9 @@ addEventListener('DOMContentLoaded', (event) => {
         context.scale(constants.SCALE, constants.SCALE);
     })
 
-
+    
+        
+    
     
     // canvasCtxUI = canvasElementUI.getContext('2d');
     // canvasCtxUI.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
@@ -74,7 +76,18 @@ addEventListener('DOMContentLoaded', (event) => {
 
     document.getElementById("new-game").addEventListener("click", (event) => {
         
-        marblio.beginGame();
+    marblio.beginGame();
+
+    document.getElementById("main-app").addEventListener("click", event => {
+        marblio.PAUSED = false;
+        // console.log(`new Hole({points: 0, pos:[${Math.floor((event.clientX - GAME_OFFSET_X) * (1 / SCALE) - 10)}, ${Math.floor((event.clientY - GAME_OFFSET_Y) * (1 / SCALE) + 5)}], winner: false }),`)
+        // ctx.marblio.levels[ctx.marblio.currentLevel].holes.push(new Hole({ points: 0, pos: [(event.clientX - GAME_OFFSET_X) * (1 / SCALE) - 10, (event.clientY - GAME_OFFSET_Y) * (1 / SCALE) + 5], winner: false }))
+    });
+    document.getElementById("modal-button").addEventListener("click", event => {
+        document.getElementById("modal").style.display = "none"
+    })
+
+
     })
 
 

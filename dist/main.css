@@ -131,3 +131,38 @@ body, div, canvas {
   margin: 0;
   padding: 0;
 }
+
+#modal {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  display: none;
+  position: absolute;
+  top: calc(50vh - 100px);
+  left: calc(50vw - 200px);
+  width: 400px;
+  height: 200px;
+  font-family: Silkscreen, sans-serif;
+  font-size: 3vh;
+  background-color: #d0d0d0;
+  border-radius: 3px;
+  color: #000000;
+  z-index: 10;
+  padding: 30px;
+  text-align: center;
+}
+
+#modal-button {
+  background-color: grey;
+  color: white;
+}
+
+#modal-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  position: relative;
+}
