@@ -13,9 +13,9 @@ export function setDPI(canvas, dpi) {
     // Resize canvas and scale future draws.
 
     var scaleFactor = dpi / 96;
-    if (Math.ceil(canvas.width * scaleFactor) / Math.min(Math.ceil(canvas.width * scaleFactor), 3840) !== 1) {
-        scaleFactor = canvas.width/3840
-    }
+    // if (Math.ceil(canvas.width * scaleFactor) / Math.min(Math.ceil(canvas.width * scaleFactor), 3840) !== 1) {
+    //     scaleFactor = canvas.width/3840
+    // }
 
     canvas.width = Math.ceil(canvas.width * scaleFactor);
     canvas.height = Math.ceil(canvas.height * scaleFactor);
