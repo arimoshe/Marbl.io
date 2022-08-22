@@ -79,7 +79,6 @@ class Game {
 
     checkScreenOrientation = () => {
         if (screen.orientation) {
-            alert("test")
             switch (screen.orientation) {
                 case "landscape-primary":
                     
@@ -97,7 +96,6 @@ class Game {
                     console.log("The orientation API isn't supported in this browser :(");
             }
         } else {
-            alert("test2");
             switch (window.orientation) {
                 
                 case 90:
