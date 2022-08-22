@@ -1,8 +1,14 @@
 import * as constants from "./constants"
 import Wall from "./wall";
 import Hole from "./hole";
+import * as draw from "./draw"
 
-let special = (game) => { game.lives++; game.marble.pos = [650, 415] }
+let specialFunction = (game) => { 
+    game.lives++;
+    game.marble.pos = [650, 415]
+    draw.drawLives(game.contexts['ui'].getContext('2d'), game);
+    game.pauseAndStartButton();
+     }
 
 class Maze {
     constructor(optionsHash ) {
@@ -174,7 +180,7 @@ let level3Holes = [
     new Hole({ points: 0, pos: [365, 85], winner: false }),
     new Hole({ points: 100, pos: [185, 150], winner: true , radius:80}),
     new Hole({
-        special: special,
+        special: specialFunction,
         points: "?", pos: [1160, 150], winner: false, radius: 80, 
         draw: (ctx, pos, radius, points) => {
             ctx.beginPath();
@@ -188,7 +194,6 @@ let level3Holes = [
             ctx.stroke();
             let fillGradient = ctx.createRadialGradient(pos[0], pos[1], radius * 2, pos[0], pos[1] + radius, 0);
             fillGradient.addColorStop(0, '#990000');
-            // fillGradient.addColorStop(1, '#66bbFF');
             fillGradient.addColorStop(1, '#dddddd');
             ctx.fillStyle = fillGradient;
             ctx.fill();
@@ -203,10 +208,10 @@ let level3Holes = [
             ctx.textAlign = "center"
             ctx.fillText(points, pos[0], pos[1] + (radius * 1.45))
         }
-}),
+})
 ]
 
 export const level3 = new Maze({ walls: level3Walls, holes: level3Holes, levelNum1: 3, levelName: "Not Easy", startPos: [650, 415] })
-
+level3.holes[87].special = specialFunction;
 
 export default Maze;

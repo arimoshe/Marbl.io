@@ -49,28 +49,7 @@ addEventListener('DOMContentLoaded', (event) => {
         
     
     
-    // canvasCtxUI = canvasElementUI.getContext('2d');
-    // canvasCtxUI.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
-    // canvasCtxUI.scale(constants.SCALE, constants.SCALE)
-
-    // if (screen.width<1000) {
-    //     canvasCtx.translate(300,160)
-    // canvasCtx.scale(.45,.45);
-    // }
     
-    // function openFullscreen() {
-    //     if (canvasElement.requestFullscreen) {
-    //         canvasElement.requestFullscreen();
-    //     } else if (canvasElement.webkitRequestFullscreen) { /* Safari */
-    //         canvasElement.webkitRequestFullscreen();
-    //     } else if (canvasElement.msRequestFullscreen) { /* IE11 */
-    //         canvasElement.msRequestFullscreen();
-    //     }
-    // }
-    // document.getElementById("fullscreen").addEventListener("click", function () {
-    //     openFullscreen();
-    //     canvasElement.requestPointerLock();
-    // });
     marblio = new Game(canvasCtx); 
     document.getElementById("high-score").innerText = marblio.highScore
 
@@ -80,8 +59,6 @@ addEventListener('DOMContentLoaded', (event) => {
 
     document.getElementById("main-app").addEventListener("click", event => {
         marblio.PAUSED = false;
-        // console.log(`new Hole({points: 0, pos:[${Math.floor((event.clientX - GAME_OFFSET_X) * (1 / SCALE) - 10)}, ${Math.floor((event.clientY - GAME_OFFSET_Y) * (1 / SCALE) + 5)}], winner: false }),`)
-        // ctx.marblio.levels[ctx.marblio.currentLevel].holes.push(new Hole({ points: 0, pos: [(event.clientX - GAME_OFFSET_X) * (1 / SCALE) - 10, (event.clientY - GAME_OFFSET_Y) * (1 / SCALE) + 5], winner: false }))
     });
     document.getElementById("modal-button").addEventListener("click", event => {
         document.getElementById("modal").style.display = "none"

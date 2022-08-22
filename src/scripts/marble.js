@@ -6,7 +6,6 @@ let MARBLE_DEFAULTS = {
     radius: 5,
     vel: [0, 0],
     texture: (ctx, marble) => {
-        // console.log(marble.pos)
         let gradient = ctx.createRadialGradient(marble.pos[0] + (((constants.GAME_DIMENSION_X / 2) + 10) - marble.pos[0]) / ((constants.GAME_DIMENSION_X / 2)) * (marble.radius / -2),
             marble.pos[1] + Math.abs((((constants.GAME_DIMENSION_X / 2) + 10) - marble.pos[1]) / ((constants.GAME_DIMENSION_X / 2))) * (marble.radius / -2),
             1,
@@ -14,8 +13,6 @@ let MARBLE_DEFAULTS = {
             marble.pos[1],
             marble.radius * 1.5
         );
-        // gradient.addColorStop(0, 'rgba(0, 255, 0, 1)');
-        // gradient.addColorStop(1, 'transparent');
         gradient.addColorStop(0, 'cornflowerblue');
         gradient.addColorStop(1, 'blue');
         return gradient;

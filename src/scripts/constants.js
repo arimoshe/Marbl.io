@@ -32,32 +32,6 @@ addEventListener('DOMContentLoaded', (event) => {
     GAME_REL_CENTER_X = document.getElementById("main-app").width /2
     GAME_REL_CENTER_Y = document.getElementById("main-app").width /2
 });
-// const pauseEvent = new Event('pauseToggle'); 
-
-
-// window.addEventListener("blur", (event) => {
-//     let tempPause = PAUSED;
-//     PAUSED = true;
-//     if (!tempPause) { window.dispatchEvent(pauseEvent); }
-// })
-
-// window.addEventListener("focus", (event) => {
-//     let tempPause = PAUSED
-//     PAUSED = false;
-//     if (tempPause) { window.dispatchEvent(pauseEvent); }
-// })
-// document.addEventListener("mouseleave", (event) => {
-//     if (event.clientY <= 1 || event.clientX <= 1 || (event.clientX >= window.innerWidth-1 || event.clientY >= window.innerHeight-1)) {
-//         let tempPause = PAUSED;
-//         PAUSED = true;
-//         if (!tempPause) { window.dispatchEvent(pauseEvent); }
-//     }
-// });
-// document.addEventListener("mouseenter", (event) => {
-//     PAUSED = false;
-//     window.dispatchEvent(pauseEvent);
-// });
-
 
 
 

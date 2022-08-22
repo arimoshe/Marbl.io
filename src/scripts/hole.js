@@ -15,7 +15,6 @@ let HOLE_DEFAULTS = {
         ctx.stroke();
         let fillGradient = ctx.createRadialGradient(pos[0], pos[1], radius*2, pos[0], pos[1] + radius, 0);
         fillGradient.addColorStop(0, '#000000');
-        // fillGradient.addColorStop(1, '#66bbFF');
         fillGradient.addColorStop(1, '#dddddd');
         ctx.fillStyle = fillGradient;
         ctx.fill();

@@ -12,19 +12,6 @@ import Input from "./input";
 
 
 
-// const handleOrientation = (event) => {
-//     alert("beta:",event.beta)
-//     this.controls = "orientation"
-//     this.input.alpha = event.alpha
-//     this.input.beta = event.beta;
-//     this.input.gamma = event.gamma;
-//     // this.alpha = lowPass(this.alpha, event.alpha, 0.8);
-//     // this.beta = lowPass(this.beta, event.beta, 0.8);
-//     // this.gamma = lowPass(this.gamma, event.gamma, 0.8);
-
-//     // console.log("alpha:", alpha, "beta:", beta, "gamma:", gamma)
-// }
-
 export const displayCanvases = (canvasArr) =>{
     Array.from(canvasArr).forEach(ele => ele.style.display = "inherit")
 }
@@ -35,7 +22,7 @@ export const hideCanvases = (canvasArr)=> {
 class Game {
     constructor() {
         this.levels = { 1: mazes.level1, 2: mazes.level2, 3: mazes.level3}
-        this.currentLevel = 3;
+        this.currentLevel = 1;
         this.lives = 3;
         this.PAUSED = true;
         this.earnedPoints = 0;
@@ -143,29 +130,34 @@ class Game {
     }
 
     handleHoleHit(){
-
-        
-        let hole = collision.collideAnyHole(this);
-        // console.log(hole);
-            if (hole && hole.winner) {
-            this.earnedPoints += hole.points;
-            this.currentLevel += 1;
-            this.currentLevelScore = 0;
-            this.handleNextLevel()
-            
+        let hole = collision.collideAnyHole(this)
+        if (hole.special) {
+            hole.special(this);
         }
-        else if (hole && !hole.winner) {
-            if (this.lives === 1) {
-                this.lives -=1;
-                this.handleLoss();
+        else {
+        
+            ;
+            // console.log(hole);
+                if (hole && hole.winner) {
+                this.earnedPoints += hole.points;
+                this.currentLevel += 1;
+                this.currentLevelScore = 0;
+                this.handleNextLevel()
+                
+            }
+            else if (hole && !hole.winner) {
+                if (this.lives === 1) {
+                    this.lives -=1;
+                    this.handleLoss();
 
-            } else { 
-            
-                this.marble.pos = [...this.levels[this.currentLevel].startPos]
-                this.popModal("Sorry, You didn't quite make it!")
-                if (hole.points > this.currentLevelScore) { this.currentLevelScore = hole.points;}
-                this.lives -= 1;
-                this.pauseAndStartButton();
+                } else { 
+                
+                    this.marble.pos = [...this.levels[this.currentLevel].startPos]
+                    this.popModal("Sorry, You didn't quite make it!")
+                    if (hole.points > this.currentLevelScore) { this.currentLevelScore = hole.points;}
+                    this.lives -= 1;
+                    this.pauseAndStartButton();
+                }
             }
         }
     
