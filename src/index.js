@@ -53,7 +53,7 @@ addEventListener('DOMContentLoaded', (event) => {
     marblio = new Game(canvasCtx); 
     document.getElementById("high-score").innerText = marblio.highScore
     document.getElementById("how-to").addEventListener("click", (event) => {
-        marblio.popModal("In Marbl.io, the goal is to roll the marble into the 100 point hole without hitting any other hole along the way. Falling in a non-final hole will give the player the points of the furthest reached hole.  <p class=\"center\">Controls</p>   <u>Mobile</u>: Rotate you phone to landacape view and engage the rotation lock. place the screen facing up and tilt the device to move the marble. <br> <u>Computer</u>: Use your mouse to control the marble. Move you mouse up, down, left and right from the center of the playing board to move the marble in that direction. ", "70vw", "70vh")
+        marblio.popModal("In Marbl.io, the goal is to roll the marble into the 100 point hole without hitting any other holes along the way. Falling in a previous hole will give the player the points listed below that hole for the furthest reached hole.  <p class=\"center\">Controls</p>   <u>Mobile</u>: Rotate your phone to landscape view and engage the rotation lock. Place the screen facing toward the sky and tilt the device to move the marble. <br> <u>Computer</u>: Use your mouse to control the marble. Move the mouse up, down, left and right from the center of the playing board to accelerate the marble in the corresponding direction. ", "70vw", "70vh")
     })
     document.getElementById("modal-button").addEventListener("click", event => {
         document.getElementById("modal-container").style.display = "none"
