@@ -137,10 +137,9 @@ body, div, canvas {
   justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
-  display: none;
+  display: flex;
   position: absolute;
-  top: calc(50vh - 100px);
-  left: calc(50vw - 200px);
+  font-size: 30px;
   width: 400px;
   height: 200px;
   font-family: Silkscreen, sans-serif;
@@ -150,7 +149,7 @@ body, div, canvas {
   color: #000000;
   z-index: 10;
   padding: 30px;
-  text-align: center;
+  text-align: justify;
 }
 
 #modal-button {
@@ -159,10 +158,16 @@ body, div, canvas {
 }
 
 #modal-container {
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
-  position: relative;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+}
+
+.center {
+  text-align: center;
 }

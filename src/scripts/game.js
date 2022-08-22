@@ -77,9 +77,44 @@ class Game {
         }
     }
 
+    checkScreenOrientation = () => {
+        if (screen.orientation) {
+            switch (screen.orientation) {
+                case "landscape-primary":
+                    
+                    break;
+                case "landscape-secondary":
+                    this.popModal("Please rotate your phone 180 degrees.")
+                    break;
+                case "portrait-secondary":
+
+                    break
+                case "portrait-primary":
+                    
+                    break;
+                default:
+                    console.log("The orientation API isn't supported in this browser :(");
+            }
+        } else {
+            switch (window.orientation) {
+                case 90:
+                    
+                    break;
+                case -90:
+                    this.popModal("Please rotate your phone 180 degrees.")
+                    break;
+                case 180:
+                    break
+                case 0 :
+                    
+                    break;
+            }
+        }
+    }
 
     beginGame() {
 
+        this.checkScreenOrientation()
         let splash = document.getElementById("splash-container")
         splash.style.display = "none";
         
@@ -163,10 +198,14 @@ class Game {
     
     }
 
-    popModal(text) {
+    popModal(text, width = 400, height = 200 ) {
+        let modal = document.getElementById("modal");
+        modal.style.width = width;
+        modal.style.height = height;
         let modalText = document.querySelector("#modal p");
-        modalText.innerText = text 
-        document.getElementById("modal").style.display = "flex"
+        modalText.innerHTML = text 
+        document.getElementById("modal-container").style.display = "flex"
+        modal.style.display = "flex"
     }
 
     pauseAndStartButton(){
