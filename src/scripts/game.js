@@ -282,6 +282,9 @@ class Game {
         this.currentLevel = 1;
         console.log([...this.levels[this.currentLevel].startPos]);
         this.marble.pos = [...this.levels[this.currentLevel].startPos]
+        this.contexts['ui'].getContext('2d').clearRect(-constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, this.contexts['ui'].width, this.contexts['ui'].height)
+        this.contexts['map'].getContext('2d').clearRect(-constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, this.contexts['map'].width, this.contexts['map'].height)
+        this.contexts['main-app'].getContext('2d').clearRect(0, 0, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y)
         this.pauseAndStartButton();
     }
     
