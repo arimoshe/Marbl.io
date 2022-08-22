@@ -13,6 +13,21 @@ body {
   position: relative;
 }
 
+#ui {
+  display: none;
+  position: absolute;
+}
+
+#map {
+  display: none;
+  position: absolute;
+}
+
+#background {
+  display: none;
+  position: absolute;
+}
+
 #main-app {
   display: none;
   position: absolute;

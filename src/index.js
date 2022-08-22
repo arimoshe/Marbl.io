@@ -1,9 +1,9 @@
 import * as constants from "./scripts/constants"
-import * as utils from "./scripts/utils"
 import Marble from "./scripts/marble";
 import Game from "./scripts/game";
 import * as vars from "./scripts/game"
 import Hole from "./scripts/hole";
+import { electron } from "webpack";
 
 
 export function setDPI(canvas, dpi) {
@@ -32,19 +32,21 @@ export let drawActions;
 
 addEventListener('DOMContentLoaded', (event) => {
 
-    canvasElement = document.getElementById("main-app");
-    canvasElement.width = window.innerWidth 
-    canvasElement.height = window.innerHeight 
-    setDPI(canvasElement, constants.DPI)
-    // canvasElementUI = document.getElementById("ui");
-    // canvasElementUI.width = window.innerWidth
-    // canvasElementUI.height = window.innerHeight
-    // setDPI(canvasElementUI, constants.UIDPI)
+    Array.from(document.getElementsByTagName("canvas")).forEach(canvas =>{
+        canvas.width = window.innerWidth
+        canvas.height = window.innerHeight
+        setDPI(canvas, constants.DPI)
 
-    canvasCtx = canvasElement.getContext('2d');
-    canvasCtx.save()
-    canvasCtx.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
-    canvasCtx.scale(constants.SCALE, constants.SCALE)
+    })
+
+    Array.from(document.getElementsByTagName("canvas")).forEach(canvas => {
+        context = canvas.getContext('2d');
+        context.save();
+        context.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y);
+        context.scale(constants.SCALE, constants.SCALE);
+    })
+
+
     
     // canvasCtxUI = canvasElementUI.getContext('2d');
     // canvasCtxUI.translate(constants.GAME_OFFSET_X, constants.GAME_OFFSET_Y)
@@ -76,45 +78,7 @@ addEventListener('DOMContentLoaded', (event) => {
         marblio.beginGame();
     })
 
-    
-    // const hole = new Hole({points:42 ,pos: [60, 60], game: marblio, winner: false})
-    // marblio.marble = marvyn;
-    // marblio.holes.push(hole);
-    // marblio.addWalls();
 
-    // const pauseActions = () => {
-        
-    //     // canvasCtx.filter = "blur(20px)"
-    //     let imgData = canvasCtx.getImageData(0,0, window.innerWidth * (constants.DPI / 96), window.innerHeight * (constants.DPI / 96));
-    //     createImageBitmap(imgData)
-    //     .then( result => { 
-    //         // canvasCtx.drawImage(result, -constants.GAME_OFFSET_X, -constants.GAME_OFFSET_Y, window.innerWidth + constants.GAME_OFFSET_X, window.innerHeight + constants.GAME_OFFSET_Y ); 
-    //         // canvasCtx.filter = "none"
-    //         canvasCtx.beginPath();
-    //         canvasCtx.font = "100px sans-serif";
-    //         canvasCtx.fillStyle = "#999999";
-    //         canvasCtx.textAlign = "center"
-    //         canvasCtx.fillText("PAUSED", constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2);   
-    //     })
-        
-    // };
-
-    
-    // }
-  
-    
-    // window.addEventListener("pauseToggle", (e) => {
-    //     if (constants.PAUSED) {
-    //         clearInterval(gameInterval);
-    //         pauseActions();
-            
-
-    //     } else {
-    //         animate();
-    //         clearInterval(gameInterval)
-    //         gameInterval = setInterval(gameActions, 1000 / constants.FRAME_RATE)
-    //     }
-    // })
 
  });
 

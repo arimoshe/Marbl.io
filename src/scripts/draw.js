@@ -7,7 +7,7 @@ export const drawBackground = (ctx) =>{
     ctx.fillStyle = "grey";
     ctx.fill();
     ctx.beginPath();
-    ctx.rect(6, 6, constants.GAME_DIMENSION_X-8, constants.GAME_DIMENSION_Y-8);
+    ctx.rect(6, 6, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y);
     ctx.fillStyle = "#efefef";
     ctx.fill();
 

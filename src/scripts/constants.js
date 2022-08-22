@@ -62,19 +62,23 @@ addEventListener('DOMContentLoaded', (event) => {
 
 window.addEventListener('resize', (event) => {
     // console.log(index.canvasCtx)
-    if (index.canvasCtx) { 
-        index.canvasCtx.restore()
-        index.canvasCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-        index.canvasElement.width = window.innerWidth ;
-        index.canvasElement.height = window.innerHeight ;
-        index.canvasElement.style.width = window.innerWidth+ "px"
-        index.canvasElement.style.height = window.innerHeight + "px"
-        index.setDPI(index.canvasElement, DPI)
+    if (document.getElementsByTagName("canvas")) { 
         SCALE = window.innerHeight / 1080 * .9;
         GAME_OFFSET_X = ((window.innerWidth - (GAME_DIMENSION_X * SCALE)) / 2);
         GAME_OFFSET_Y = (((window.innerHeight - (GAME_DIMENSION_Y * SCALE)) / 2));
-        index.canvasCtx.translate(GAME_OFFSET_X, GAME_OFFSET_Y);
-        index.canvasCtx.scale(SCALE, SCALE);
+        Array.from(document.getElementsByTagName("canvas")).forEach(canvas => {
+            context = canvas.getContext('2d');
+            context.restore();
+            context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            canvas.style.width = window.innerWidth + "px"
+            canvas.style.height = window.innerHeight + "px"
+            setDPI(canvas, DPI)
+            context.translate(GAME_OFFSET_X, GAME_OFFSET_Y);
+            context.scale(SCALE, SCALE);
+        })
+
     }
     
 })

@@ -25,16 +25,22 @@ export let PAUSED = true;
 //     // console.log("alpha:", alpha, "beta:", beta, "gamma:", gamma)
 // }
 
+export const displayCanvases = (canvasArr) =>{
+    Array.from(canvasArr).forEach(ele => ele.style.display = "inherit")
+}
+export const hideCanvases = (canvasArr)=> {
+    Array.from(canvasArr).forEach(ele => ele.style.display = "none")
+}
+
 class Game {
-    constructor(context) {
+    constructor() {
         this.levels = { 1: mazes.level1, 2: mazes.level2, 3: mazes.level3}
         this.currentLevel = 1;
         this.lives = 3;
         this.earnedPoints = 0;
         this.currentLevelScore = 0;
         this.highScore = 0;
-        this.context = context;
-        this.context = context;
+        this.contexts = document.getElementsByTagName("canvas")
         this.controls = "mouse"
         this.marble = new Marble({ pos: [...this.levels[this.currentLevel].startPos], radius: 15, vel: [0, 0], game: this });
         this.input = new Input(this,0,0,0,0);
@@ -88,10 +94,13 @@ class Game {
     beginGame() {
 
         let splash = document.getElementById("splash-container")
-        let canvas = document.getElementById("main-app")
         splash.style.display = "none";
+        
+        displayCanvases(document.getElementsByTagName("canvas"))
+        
         canvas.style.display = "inherit";
-        const animate = () => {console.log
+
+        const animate = () => {
     
             this.drawGame()
             
@@ -114,14 +123,9 @@ class Game {
         if (!PAUSED) {
             
             
-            draw.drawBackground(this.context);
-            draw.drawLevelWalls(this.context, this, this.currentLevel);
-            draw.drawLevelHoles(this.context,  this,this.currentLevel);
+            
             draw.drawVector(this.context, this);
             draw.drawMarble(this.context, this.marble);
-            draw.drawScore(this.context, this);
-            draw.drawName(this.context);
-            draw.drawLives(this.context, this);
             draw.updateBoardRotataion(this.marble)
             
 
@@ -165,13 +169,13 @@ class Game {
         this.marble.vel = [0,0];
         draw.updateBoardRotataion(this.marble);
         PAUSED = true;
-        draw.drawBackground(this.context);
-        draw.drawLevelWalls(this.context, this, this.currentLevel);
-        draw.drawLevelHoles(this.context, this, this.currentLevel);
-        draw.drawMarble(this.context, this.marble);
-        draw.drawScore(this.context, this);
-        draw.drawName(this.context);
-        draw.drawLives(this.context, this);
+        draw.drawBackground(this.context['background']);
+        draw.drawName(this.context["background"]);
+        draw.drawLevelWalls(this.context['map'], this, this.currentLevel);
+        draw.drawLevelHoles(this.context['map'], this, this.currentLevel);
+        draw.drawMarble(this.context['main-app'], this.marble);
+        draw.drawScore(this.context['ui'], this);
+        draw.drawLives(this.context['ui'], this);
         
         
         
@@ -188,13 +192,6 @@ class Game {
             "38px", 
             "Silkscreen"
         )
-        // this.context.beginPath();
-        // this.context.fillStyle = "grey"
-        // util.roundRect(constants.GAME_DIMENSION_X / 2 - 112.5, constants.GAME_DIMENSION_Y/2 -55 , 225, 110, 20, true, false);
-        // this.context.beginPath();
-        // this.context.font = "38px Silkscreen"
-        // this.context.fillStyle = "#e0e0e0"
-        // this.context.fillText("Start",constants.GAME_DIMENSION_X / 2, constants.GAME_DIMENSION_Y / 2+10)
     }
 
     
@@ -231,11 +228,8 @@ class Game {
         document.getElementById("high-score").innerText = this.highScore
 
         let splash = document.getElementById("splash-container")
-        let canvas = document.getElementById("main-app")
-        let ui = document.getElementById("ui")
         splash.style.display = "inherit";
-        ui.style.display = "none"
-        canvas.style.display = "none";
+        hideCanvases(document.getElementsByTagName("canvas"));
         this.lives = 3;
         this.earnedPoints = 0;
         this.currentLevelScore = 0;
