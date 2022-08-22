@@ -3,7 +3,7 @@ import * as utils from "./utils";
 import * as texture from "./texture"
 
 export const drawBackground = (ctx) =>{
-    ctx.rect(-(window.innerWidth - constants.GAME_DIMENSION_X / 2), -(window.innerHeight - constants.GAME_DIMENSION_Y / 2), document.getElementById("main-app").width, document.getElementById("main-app").height);
+    ctx.rect(-1000, -1000, 4000, 4000);
     ctx.fillStyle = "grey";
     ctx.fill();
     ctx.beginPath();
