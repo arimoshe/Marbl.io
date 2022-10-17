@@ -19,9 +19,11 @@ export const hideCanvases = (canvasArr)=> {
     Array.from(canvasArr).forEach(ele => ele.style.display = "none")
 }
 
+
+
 class Game {
     constructor() {
-        this.levels = { 1: mazes.level1, 2: mazes.level2, 3: mazes.level3}
+        this.levels = { 1: mazes.level1, 2: mazes.level2, 3: mazes.level3, 4: mazes.level4, 5: mazes.level5}
         this.currentLevel = 1;
         this.lives = 3;
         this.PAUSED = true;
@@ -32,6 +34,7 @@ class Game {
         this.controls = "mouse"
         this.marble = new Marble({ pos: [...this.levels[this.currentLevel].startPos], radius: 15, vel: [0, 0], game: this });
         this.input = new Input(this,0,0,0,0);
+        this.gameInterval = null;
         window.addEventListener('mousemove', (event) => {
             this.input.mousePosX = event.clientX;
             this.input.mousePosY = event.clientY;
@@ -68,8 +71,10 @@ class Game {
     }
 
     gameActions = () => {
+        
         if (!this.PAUSED) {
-            
+    
+            document.getElementById("main-app").removeEventListener("click", this.handleClick);
             this.handleInput();
             this.handleHoleHit();
             this.marble.move(this.marble.vel);
@@ -129,14 +134,15 @@ class Game {
             
             requestAnimationFrame(animate);
         };
-        animate();
         
-        let gameInterval = setInterval(() =>{
-            
-            this.gameActions()
-            
-        }, 1000 / constants.FRAME_RATE);
-        // PAUSED = false;
+        if (!this.gameInterval) {
+            animate();
+            this.gameInterval = setInterval(() =>{
+                
+                this.gameActions()
+                
+            }, 1000 / constants.FRAME_RATE);
+        }
         this.pauseAndStartButton();
         
     };
@@ -144,7 +150,6 @@ class Game {
 
     drawGame() {
         if (!this.PAUSED) {
-            
             
             this.contexts['main-app'].getContext('2d').clearRect(0,0, constants.GAME_DIMENSION_X, constants.GAME_DIMENSION_Y)
             draw.drawVector(this.contexts['main-app'].getContext('2d'), this);
@@ -165,41 +170,67 @@ class Game {
 
     }
 
+    handleClick (event) {
+        // alert((Math.abs(window.innerWidth/ 2) - event.clientX ))
+        if ((Math.abs((window.innerWidth / 2) - event.clientX - 16) < 113) && (Math.abs((window.innerHeight / 2) - event.clientY - 16) < 55))
+        this.PAUSED = false;
+    }
+
+
     handleHoleHit(){
         let hole = collision.collideAnyHole(this)
-        if (hole.special) {
-            hole.special(this);
-        }
-        else {
-        
-            ;
-            // console.log(hole);
-                if (hole && hole.winner) {
-                this.earnedPoints += hole.points;
-                this.currentLevel += 1;
-                this.currentLevelScore = 0;
-                this.handleNextLevel()
-                
+        if (hole) {
+            this.marble.hasCollided = true;
+            // this.marble.pos = [this.marble.pos[0] + this.marble.vel[0], this.marble.pos[1] + this.marble.vel[1]] 
+            this.marble.vel=[0,0]
+            for(let p = 1; p<=14; p++) {
+                setTimeout(() => {
+                    
+                    if (this.marble.radius > 0) {this.marble.radius--;}
+                    let xDif = hole.pos[0] - this.marble.pos[0];
+                    let yDif = hole.pos[1] - this.marble.pos[1];
+                    this.marble.pos = [this.marble.pos[0] + (xDif / 6), this.marble.pos[1] + (yDif / 6)]
+                }, (1000 / constants.FRAME_RATE)*p)
             }
-            else if (hole && !hole.winner) {
-                if (this.lives === 1) {
-                    this.lives -=1;
-                    this.handleLoss();
-
-                } else { 
+            setTimeout(() => {
                 
-                    this.marble.pos = [...this.levels[this.currentLevel].startPos]
-                    this.popModal("Sorry, You didn't quite make it!")
-                    if (hole.points > this.currentLevelScore) { this.currentLevelScore = hole.points;}
-                    this.lives -= 1;
-                    this.pauseAndStartButton();
+                if (hole.special) {
+                    hole.special(this);
                 }
-            }
+                else {
+                    
+                    if (hole && hole.winner) {
+                        this.marble.radius = 15;
+                        this.earnedPoints += hole.points;
+                        this.currentLevel += 1;
+                        this.currentLevelScore = 0;
+                        this.handleNextLevel()
+
+                    }
+                    else if (hole && !hole.winner) {
+                        if (this.lives === 1) {
+                            this.lives -= 1;
+                            this.marble.radius = 15;
+                            this.handleLoss();
+
+                        } else {
+
+                            this.marble.pos = [...this.levels[this.currentLevel].startPos]
+                            this.marble.radius = 15;
+                            this.popModal("Sorry, You didn't quite make it!")
+                            if (hole.points > this.currentLevelScore) { this.currentLevelScore = hole.points; }
+                            this.lives -= 1;
+                            this.pauseAndStartButton();
+                        }
+                    }
+                }
+            }, (1000 / constants.FRAME_RATE) * 15 )
         }
+       
     
     }
 
-    popModal(text, width = 400, height = 200 ) {
+    popModal(text, width = "40vw", height = "30vh" ) {
         let modal = document.getElementById("modal");
         modal.style.width = width;
         modal.style.height = height;
@@ -211,7 +242,9 @@ class Game {
 
     pauseAndStartButton(){
         this.checkScreenOrientation()
+        this.marble.radius = 15;
         this.marble.vel = [0,0];
+        this.marble.hasCollided = false
         draw.updateBoardRotataion(this.marble);
         this.PAUSED = true;
         this.contexts['ui'].getContext('2d').clearRect(-1000, -1000, 4000, 4000)
@@ -228,7 +261,7 @@ class Game {
         
         draw.drawButton(
             this.contexts['main-app'].getContext('2d'), 
-            [(constants.GAME_DIMENSION_X / 2)  , 
+            [(constants.GAME_DIMENSION_X / 2), 
             (constants.GAME_DIMENSION_Y / 2)], 
             225, 
             110, 
@@ -239,6 +272,7 @@ class Game {
             "38px", 
             "Silkscreen"
         )
+        document.getElementById("main-app").addEventListener("click", this.handleClick.bind(this));
     }
 
     
@@ -257,7 +291,7 @@ class Game {
     }
     
     handleNextLevel(){
-        if (this.currentLevel < 4) {
+        if (this.currentLevel < 6) {
             this.popModal("Nice Job!");
             this.marble.pos = [...this.levels[this.currentLevel].startPos];
             this.pauseAndStartButton();
@@ -280,11 +314,10 @@ class Game {
         this.earnedPoints = 0;
         this.currentLevelScore = 0;
         this.currentLevel = 1;
-        console.log([...this.levels[this.currentLevel].startPos]);
         this.marble.pos = [...this.levels[this.currentLevel].startPos]
-        this.contexts['ui'].getContext('2d').clearRect((-1000, -1000, 4000, 4000))
-        this.contexts['map'].getContext('2d').clearRect((-1000, -1000, 4000, 4000))
-        this.contexts['main-app'].getContext('2d').clearRect((-1000, -1000, 4000, 4000))
+        this.contexts['ui'].getContext('2d').clearRect(-1000, -1000, 4000, 4000)
+        this.contexts['map'].getContext('2d').clearRect(-1000, -1000, 4000, 4000)
+        this.contexts['main-app'].getContext('2d').clearRect(-1000, -1000, 4000, 4000)
         this.pauseAndStartButton();
     }
     

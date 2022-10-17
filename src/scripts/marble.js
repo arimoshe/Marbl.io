@@ -11,7 +11,7 @@ let MARBLE_DEFAULTS = {
             1,
             marble.pos[0],
             marble.pos[1],
-            marble.radius * 1.5
+            marble.radius < 0 ? 0 : marble.radius * 1.5
         );
         gradient.addColorStop(0, 'cornflowerblue');
         gradient.addColorStop(1, 'blue');
@@ -34,6 +34,7 @@ class Marble {
         this.texture = optionsHash.texture;
         optionsHash.texture ||= MARBLE_DEFAULTS.texture2;
         this.texture2 = optionsHash.texture2;
+        this.hasCollided = false;
         
 
     }
@@ -41,7 +42,7 @@ class Marble {
 
     move(vector) {
 
-        while (collision.collideAnyWall(this.game, vector)) {
+        while (collision.collideAnyWall(this.game, vector) && !this.hasCollied) {
             let xColision = !collision.collideAnyWall(this.game, [0, vector[1]])
             let yColision = !collision.collideAnyWall(this.game, [vector[0], 0])
 
@@ -107,7 +108,7 @@ class Marble {
         this.pos[0] += vector[0];
         this.pos[1] += vector[1];
     }
-
+    
     
 
 }

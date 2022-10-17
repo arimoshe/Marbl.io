@@ -4,15 +4,17 @@ import Hole from "./hole";
 import * as draw from "./draw"
 
 let specialFunction = (game) => { 
-    game.lives++;
+    if (game.lives < 4) game.lives++;
     game.marble.pos = [650, 415]
     draw.drawLives(game.contexts['ui'].getContext('2d'), game);
+    game.marble.radius = 15;
+    game.marble.isCollided = false;
     game.pauseAndStartButton();
      }
 
 class Maze {
     constructor(optionsHash ) {
-        this.levelNum = optionsHash.levelName
+        this.levelNum = optionsHash.levelNum1
         this.levelName = optionsHash.levelName
         this.startPos = optionsHash.startPos
         this.walls = optionsHash.walls;
@@ -45,23 +47,60 @@ let level1Walls = [].concat(boundryWalls)
 
 let level1Holes = [new Hole({ points: 100, pos: [constants.GAME_DIMENSION_X - 50, constants.GAME_DIMENSION_Y - 50 ], winner: true })]
 
-export const level1 = new Maze({ walls: level1Walls, holes: level1Holes, levelNum1: 1, levelName: "An Easy Start", startPos: [60, 60]})
+export const level1 = new Maze({ walls: level1Walls, holes: level1Holes, levelNum1: 1, levelName: "Can't Loose", startPos: [60, 60]})
 
-let level2Walls = [].concat(boundryWalls)
+let level2Walls = [].concat(boundryWalls);
+
+for (let q=0; q <= 60; q++) {
+    level2Walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE + (q * constants.MAP_GRID_SIZE), q * (constants.MAP_GRID_SIZE *(constants.GAME_DIMENSION_Y / constants.GAME_DIMENSION_X)) ]}))
+}
+
+let level2Holes = [new Hole({ points: 50, pos: [constants.GAME_DIMENSION_X - 50, constants.GAME_DIMENSION_Y - 50], winner: false, radius:30 })]
+level2Holes.push(new Hole({ points: 100, pos: [220, 60], winner: true }))
+
+export const level2 = new Maze({ walls: level2Walls, holes: level2Holes, levelNum1: 2, levelName: "Still Pretty Easy", startPos: [60, 90] })
+
+
+
+let level3Walls = [].concat(boundryWalls);
+
+for (let q = 2; q <= 30; q++) {
+    level3Walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 20, constants.GAME_DIMENSION_Y - (q * constants.MAP_GRID_SIZE) ] }))
+}
+
+for (let q = 2; q <= 30; q++) {
+    level3Walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 60, constants.GAME_DIMENSION_Y - (q * constants.MAP_GRID_SIZE)] }))
+}
+
+for (let q = 1; q <= 30; q++) {
+    level3Walls.push(new Wall({ pos: [constants.MAP_GRID_SIZE * 40, (q * constants.MAP_GRID_SIZE)] }))
+}
+
+let level3Holes = [];
+level3Holes.push(new Hole({ points: 25, pos: [constants.MAP_GRID_SIZE * 21, 80], winner: false, radius:50 }));
+level3Holes.push(new Hole({ points: 50, pos: [constants.MAP_GRID_SIZE * 41, constants.GAME_DIMENSION_Y - 80], winner: false, radius: 50 }));
+level3Holes.push(new Hole({ points: 75, pos: [constants.MAP_GRID_SIZE * 61, 80], winner: false, radius: 50 }));
+level3Holes.push(new Hole({ points: 100, pos: [constants.MAP_GRID_SIZE * 72, constants.GAME_DIMENSION_Y - 80], winner: true, radius:50 }));
+
+export const level3 = new Maze({ walls: level3Walls, holes: level3Holes, levelNum1: 23, levelName: "Getting Harder", startPos: [60, constants.GAME_DIMENSION_Y - 60] })
+
+
+
+let level4Walls = [].concat(boundryWalls)
 
 for (let m = 1; m <= 7; m++) {
     if (m % 2 === 0) {
         for (let n = 0; n <= constants.MAP_GRID_X - 15; n++) {
-            level2Walls.push(new Wall({ pos: [n * constants.MAP_GRID_SIZE, m * constants.MAP_GRID_SIZE * 6] }))
+            level4Walls.push(new Wall({ pos: [n * constants.MAP_GRID_SIZE, m * constants.MAP_GRID_SIZE * 6] }))
         }
     } else {
         for (let n = 15; n < constants.MAP_GRID_X; n++) {
-            level2Walls.push(new Wall({ pos: [n * constants.MAP_GRID_SIZE, m * constants.MAP_GRID_SIZE * 6] }))
+            level4Walls.push(new Wall({ pos: [n * constants.MAP_GRID_SIZE, m * constants.MAP_GRID_SIZE * 6] }))
         }
     }
 }
 
-let level2Holes = [
+let level4Holes = [
     new Hole({ points: 100, pos: [1283, 729], winner: true }),
     new Hole({ points: 12, pos: [60, 60], winner: false, radius: 35 }),
     new Hole({ points: 12, pos: [205, 111], winner: false , radius: 27}),
@@ -84,13 +123,28 @@ let level2Holes = [
     new Hole({ points: 95, pos: [179, 680], winner: false, radius: 50 }),
 ]
 
-export const level2 = new Maze({ walls: level2Walls, holes: level2Holes, levelNum1: 1, levelName: "Getting Harder", startPos: [constants.GAME_DIMENSION_X -60, 60] })
+export const level4 = new Maze({ walls: level4Walls, holes: level4Holes, levelNum1: 3, levelName: "The Real Deal", startPos: [constants.GAME_DIMENSION_X -60, 60] })
 
 
 
-let level3Walls = [].concat(boundryWalls)
+let level5Walls = [].concat(boundryWalls)
 
-let level3Holes = [
+
+level5Walls.push(new Wall({ pos: [610, 369] }))
+level5Walls.push(new Wall({ pos: [610, 385] }))
+level5Walls.push(new Wall({ pos: [610, 401] }))
+level5Walls.push(new Wall({ pos: [610, 417] }))
+level5Walls.push(new Wall({ pos: [610, 433] }))
+level5Walls.push(new Wall({ pos: [626, 433] }))
+level5Walls.push(new Wall({ pos: [642, 433] }))
+level5Walls.push(new Wall({ pos: [658, 433] }))
+level5Walls.push(new Wall({ pos: [674, 433] }))
+level5Walls.push(new Wall({ pos: [674, 369] }))
+level5Walls.push(new Wall({ pos: [674, 385] }))
+level5Walls.push(new Wall({ pos: [674, 401] }))
+level5Walls.push(new Wall({ pos: [674, 417] }))
+
+let level5Holes = [
     new Hole({ points: 0, pos: [595, 415], winner: false }),
     new Hole({ points: 0, pos: [595, 360], winner: false }),
     new Hole({ points: 0, pos: [595, 305], winner: false }),
@@ -211,7 +265,7 @@ let level3Holes = [
 })
 ]
 
-export const level3 = new Maze({ walls: level3Walls, holes: level3Holes, levelNum1: 3, levelName: "Not Easy", startPos: [650, 415] })
-level3.holes[87].special = specialFunction;
+export const level5 = new Maze({ walls: level5Walls, holes: level5Holes, levelNum1: 4, levelName: "Not Easy", startPos: [650, 415] })
+level5.holes[87].special = specialFunction;
 
 export default Maze;

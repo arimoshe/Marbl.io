@@ -58,16 +58,12 @@ addEventListener('DOMContentLoaded', (event) => {
     document.getElementById("modal-button").addEventListener("click", event => {
         document.getElementById("modal-container").style.display = "none"
     })
-    document.getElementById("main-app").addEventListener("click", event => {
-        marblio.PAUSED = false;
-    });
+    
 
     document.getElementById("new-game").addEventListener("click", (event) => {
         
-    marblio.beginGame();
+        marblio.beginGame();
 
-    
-   
     })
 
     
