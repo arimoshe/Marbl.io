@@ -25,12 +25,6 @@ export const hasCollidedHole = (marble, hole) => {
     return hole.radius > Math.sqrt(a ** 2 + b ** 2);
 }
 
-// export const willCollideHole = (marble, hole) => {
-//     const a = ((marble.pos[0] + marble.vel[0])- hole.pos[0]);
-//     const b = ((marble.pos[1] + marble.vel[1]) - hole.pos[1]);
-
-//     return hole.radius > Math.sqrt(a ** 2 + b ** 2);
-// }
 
 export const collideAnyWall = (game, vel) => {
     for (let ele of game.levels[game.currentLevel].walls) {

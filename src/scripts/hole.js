@@ -40,7 +40,7 @@ class Hole {
         this.pos = optionsHash.pos;
         optionsHash.winner ||= HOLE_DEFAULTS.winner;
         this.winner = optionsHash.winner 
-        this.special = undefined,
+        this.special = undefined;
         optionsHash.draw ||= HOLE_DEFAULTS.draw
 
         this.draw = optionsHash.draw
