@@ -41,20 +41,20 @@ class Game {
         });
         
         
-        if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+        // if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
     
-            DeviceMotionEvent.requestPermission()
-                .then(response => {
-                    if (response === "granted") {
-                        window.addEventListener('deviceorientation', handleOrientation);
-                    }
-                    else {
-                        alert("Device Orientation permission request was denied. Please allow to play on a mobile device.")
-                    }
-                })
-                .catch(console.error);
-        }
-        else {
+        //     DeviceMotionEvent.requestPermission()
+        //         .then(response => {
+        //             if (response === "granted") {
+        //                 window.addEventListener('deviceorientation', handleOrientation);
+        //             }
+        //             else {
+        //                 alert("Device Orientation permission request was denied. Please allow to play on a mobile device.")
+        //             }
+        //         })
+        //         .catch(console.error);
+        // }
+        // else {
             window.addEventListener('deviceorientation', (event) => {
 
                 this.controls = "orientation"
@@ -63,7 +63,7 @@ class Game {
                 this.input.gamma = event.gamma;
 
             });
-        }
+        // }
 
     }
 
@@ -158,11 +158,14 @@ class Game {
     }
 
     handleInput (){
-        if (this.controls === "orientation") {
-            this.input.updateVectorOrientation()    
-        } else {
-            this.input.updateVectorMouse()
-        } 
+
+        this.input.updateVectorOrientation();
+        this.input.updateVectorMouse(); 
+        // if (this.controls === "orientation") {
+               
+        // } else {
+            
+        // } 
         // this.input.updateVectorOrientation() 
 
     }
