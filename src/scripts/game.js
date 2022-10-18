@@ -41,7 +41,7 @@ class Game {
         });
         
         
-        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
     
             DeviceMotionEvent.requestPermission()
                 .then(response => {
@@ -57,7 +57,6 @@ class Game {
         else {
             window.addEventListener('deviceorientation', (event) => {
 
-                // console.log(event)
                 this.controls = "orientation"
                 this.input.alpha = event.alpha
                 this.input.beta = event.beta;

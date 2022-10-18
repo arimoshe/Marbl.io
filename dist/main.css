@@ -109,7 +109,7 @@ h2 {
   width: 8vw;
 }
 
-@media only screen and (max-device-width: 400px) {
+@mediaonly screen and (max-width: 479px) {
   #rotate {
     font-family: Silkscreen, sans-serif;
     display: table-cell;
